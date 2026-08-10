@@ -1,0 +1,30 @@
+import {
+  ArrowUpDown,
+  Car,
+  Dumbbell,
+  DoorOpen,
+  KeyRound,
+  LucideIcon,
+  ShieldCheck,
+  Tv,
+  UtensilsCrossed,
+  WashingMachine,
+  Waves,
+  Wifi,
+  Wind,
+} from "lucide-react";
+
+export const amenityIconMap: Record<string, LucideIcon> = {
+  "High-Speed WiFi": Wifi,
+  "Air Conditioning": Wind,
+  "Fully Equipped Kitchen": UtensilsCrossed,
+  "Smart TV": Tv,
+  "Washer & Dryer": WashingMachine,
+  "Private Parking": Car,
+  "Swimming Pool Access": Waves,
+  "Gym Access": Dumbbell,
+  Balcony: DoorOpen,
+  "24/7 Security": ShieldCheck,
+  "Elevator Access": ArrowUpDown,
+  "Self Check-In": KeyRound,
+};

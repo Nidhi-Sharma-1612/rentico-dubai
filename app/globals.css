@@ -2,25 +2,65 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0a1930;
+
+  /* Navy — primary / authority */
+  --color-navy-50: #f1f5fc;
+  --color-navy-100: #dce6f5;
+  --color-navy-200: #b0c4e6;
+  --color-navy-300: #7b9cd1;
+  --color-navy-400: #4a76b8;
+  --color-navy-500: #2a5694;
+  --color-navy-600: #1e4478;
+  --color-navy-700: #16345f;
+  --color-navy-800: #0f2547;
+  --color-navy-900: #0a1930;
+  --color-navy-950: #050b16;
+
+  /* Orange — accent / CTA */
+  --color-orange-50: #fff5ea;
+  --color-orange-100: #fee8d2;
+  --color-orange-200: #fdd2a8;
+  --color-orange-300: #fbb579;
+  --color-orange-400: #f89648;
+  --color-orange-500: #f5791f;
+  --color-orange-600: #e56414;
+  --color-orange-700: #c24e10;
+  --color-orange-800: #9c3d0c;
+  --color-orange-900: #7a2e08;
+  --color-orange-950: #431a05;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-navy-50: var(--color-navy-50);
+  --color-navy-100: var(--color-navy-100);
+  --color-navy-200: var(--color-navy-200);
+  --color-navy-300: var(--color-navy-300);
+  --color-navy-400: var(--color-navy-400);
+  --color-navy-500: var(--color-navy-500);
+  --color-navy-600: var(--color-navy-600);
+  --color-navy-700: var(--color-navy-700);
+  --color-navy-800: var(--color-navy-800);
+  --color-navy-900: var(--color-navy-900);
+  --color-navy-950: var(--color-navy-950);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-orange-50: var(--color-orange-50);
+  --color-orange-100: var(--color-orange-100);
+  --color-orange-200: var(--color-orange-200);
+  --color-orange-300: var(--color-orange-300);
+  --color-orange-400: var(--color-orange-400);
+  --color-orange-500: var(--color-orange-500);
+  --color-orange-600: var(--color-orange-600);
+  --color-orange-700: var(--color-orange-700);
+  --color-orange-800: var(--color-orange-800);
+  --color-orange-900: var(--color-orange-900);
+  --color-orange-950: var(--color-orange-950);
+
+  --font-sans: var(--font-plus-jakarta);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
 }

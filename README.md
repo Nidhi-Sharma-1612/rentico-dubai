@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rentico Dubai
 
-## Getting Started
+Marketing website for **Rentico Dubai**, a luxury short-term rental and property management company operating across Dubai's prime districts (Downtown, Business Bay, Palm Jumeirah, Dubai Marina, Dubai Hills and Sobha Hartland).
 
-First, run the development server:
+This is **Phase 1**: a fully-designed, static UI/UX build. Live property availability, booking and owner-portal data (via Guesty) are deferred to Phase 2 — all property/testimonial/article data currently lives in `lib/data/` as typed static content.
+
+## Tech stack
+
+- [Next.js](https://nextjs.org) 16 (App Router, TypeScript)
+- [Tailwind CSS](https://tailwindcss.com) v4
+- [Framer Motion](https://www.framer.com/motion/) for animation
+- [lucide-react](https://lucide.dev) for icons
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Other scripts:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build   # production build
+npm run start   # serve the production build
+npm run lint    # eslint
+```
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/                      Routes (App Router)
+  page.tsx                 Homepage
+  services/                Services overview + per-service detail pages
+  become-a-partner/        Owner partner pitch, benefits, inquiry form
+  insights/                Articles hub + [slug] article detail pages
+  about-us/                Company story, values, service areas
+  book-your-stay/          Property search/browse
+  properties/[slug]/       Property detail pages
+  owner-login/             External link out to the Guesty owner portal
+  privacy-policy/, terms-conditions/
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+components/
+  home/                    Homepage sections (Hero, TrustBar, Properties, FAQ, Testimonials, ...)
+  layout/                  Navbar, Footer, Logo
+  shared/                  Reusable primitives (Button, Container, BookingWidget, DateRangePicker, CTABanner, FAQAccordion, ...)
+  services/, partner/, about/, property/, insights/
+                           Section components scoped to their page area
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+lib/
+  types.ts                 Shared TypeScript types (Property, Service, Article, FAQ, ...)
+  data/                    Static content: properties, services, testimonials, articles, FAQs, nav
+  booking.ts, calendar.ts, utils.ts
+                           Booking query helpers, calendar math, misc utilities
+```
