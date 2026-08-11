@@ -1,16 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import Logo from "@/components/layout/Logo";
-import { serviceLinks } from "@/lib/data/nav";
+import { socialLinks } from "@/lib/data/social";
 import Container from "@/components/shared/Container";
-import { InstagramIcon, LinkedInIcon, TikTokIcon } from "@/components/shared/SocialIcons";
 
 const quickLinks = [
   { label: "Home", href: "/" },
+  { label: "Services", href: "/services" },
   { label: "About Us", href: "/about-us" },
   { label: "Become a Partner", href: "/become-a-partner" },
   { label: "Insights", href: "/insights" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const legalLinks = [
@@ -18,21 +19,10 @@ const legalLinks = [
   { label: "Terms & Conditions", href: "/terms-conditions" },
 ];
 
-const socials = [
-  { label: "WhatsApp", href: "https://wa.me/971521460222", icon: MessageCircle },
-  { label: "Instagram", href: "https://www.instagram.com/renticodubai/", icon: InstagramIcon },
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com/company/rentico-vacation-homes-rental-l-l-c/",
-    icon: LinkedInIcon,
-  },
-  { label: "TikTok", href: "https://www.tiktok.com/@renticodubai", icon: TikTokIcon },
-];
-
 export default function Footer() {
   return (
     <footer className="bg-navy-950 text-white">
-      <Container className="grid grid-cols-1 gap-12 py-16 lg:grid-cols-5 lg:py-20">
+      <Container className="grid grid-cols-1 gap-12 py-16 lg:grid-cols-4 lg:py-20">
         <div className="flex flex-col gap-4 lg:col-span-2">
           <div className="w-fit rounded-xl bg-white px-4 py-3">
             <Logo />
@@ -42,7 +32,7 @@ export default function Footer() {
             direct booking, transparent pricing, and a flawless stay every time.
           </p>
           <div className="flex gap-3 pt-2">
-            {socials.map((s) => (
+            {socialLinks.map((s) => (
               <Link
                 key={s.label}
                 href={s.href}
@@ -55,21 +45,6 @@ export default function Footer() {
               </Link>
             ))}
           </div>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <h4 className="text-sm font-semibold uppercase tracking-wider text-white/50">
-            Services
-          </h4>
-          <ul className="flex flex-col gap-3">
-            {serviceLinks.map((s) => (
-              <li key={s.href}>
-                <Link href={s.href} className="text-sm text-white/70 hover:text-orange-400">
-                  {s.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
         </div>
 
         <div className="flex flex-col gap-4">

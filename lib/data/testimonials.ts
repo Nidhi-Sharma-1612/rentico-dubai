@@ -74,7 +74,3 @@ export const testimonials: Testimonial[] = [
     rating: 5,
   },
 ];
-
-export const partnerTestimonials: Testimonial[] = testimonials.filter(
-  (t) => t.role.includes("Owner")
-);

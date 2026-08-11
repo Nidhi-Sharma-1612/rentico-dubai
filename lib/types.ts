@@ -23,11 +23,8 @@ export interface Property {
 export interface Service {
   slug: string;
   name: string;
-  shortDescription: string;
   description: string;
   icon: string;
-  features: string[];
-  process: { title: string; description: string }[];
 }
 
 export interface Testimonial {

@@ -118,7 +118,7 @@ export default function TermsConditionsPage() {
         title="Have a question about these terms?"
         description="Reach out to our team any time — we're happy to help."
         primaryLabel="Contact Us"
-        primaryHref="/become-a-partner"
+        primaryHref="/contact"
       />
     </>
   );

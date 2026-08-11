@@ -30,9 +30,7 @@ export default function FAQ() {
               Can&apos;t find what you&apos;re looking for? Reach out directly and our team will be happy to help.
             </p>
             <Button
-              href="https://wa.me/971521460222"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/contact"
               variant="outline"
               icon={<MessageCircle className="h-4 w-4" />}
               className="w-fit"

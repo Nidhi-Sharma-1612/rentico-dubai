@@ -127,7 +127,7 @@ export default function PrivacyPolicyPage() {
         title="Questions about your data?"
         description="Reach out to our team any time — we're happy to walk you through how your information is handled."
         primaryLabel="Contact Us"
-        primaryHref="/become-a-partner"
+        primaryHref="/contact"
       />
     </>
   );

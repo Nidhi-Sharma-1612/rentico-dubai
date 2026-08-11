@@ -6,7 +6,7 @@ import Button from "@/components/shared/Button";
 
 const propertyTypes = ["Apartment", "Villa", "Penthouse", "Townhouse", "Other"];
 
-export default function ContactForm() {
+export default function ContactForm({ showPropertyType = true }: { showPropertyType?: boolean }) {
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -42,16 +42,18 @@ export default function ContactForm() {
         <input required type="email" placeholder="Email" className={inputClass} />
         <input required type="tel" placeholder="Phone number" className={inputClass} />
       </div>
-      <select required defaultValue="" className={inputClass}>
-        <option value="" disabled>
-          Property Type
-        </option>
-        {propertyTypes.map((t) => (
-          <option key={t} value={t}>
-            {t}
+      {showPropertyType && (
+        <select required defaultValue="" className={inputClass}>
+          <option value="" disabled>
+            Property Type
           </option>
-        ))}
-      </select>
+          {propertyTypes.map((t) => (
+            <option key={t} value={t}>
+              {t}
+            </option>
+          ))}
+        </select>
+      )}
       <input placeholder="Subject" className={inputClass} />
       <textarea placeholder="Message" rows={4} className={inputClass} />
 
