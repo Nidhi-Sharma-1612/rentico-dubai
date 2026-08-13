@@ -6,7 +6,7 @@ import Container from "@/components/shared/Container";
 import BookingWidget from "@/components/shared/BookingWidget";
 import HeroBackground from "@/components/home/HeroBackground";
 
-export default function Hero() {
+export default function Hero({ unavailableDates }: { unavailableDates: string[] }) {
   return (
     <section className="relative isolate flex min-h-[calc(100vh-5rem)] flex-col justify-start overflow-hidden bg-navy-950 pt-36 pb-20 sm:pt-44 sm:pb-24 lg:pt-52 lg:pb-28">
       <HeroBackground />
@@ -50,7 +50,7 @@ export default function Hero() {
         transition={{ duration: 0.6, delay: 0.4 }}
         className="relative z-10 mx-auto mt-14 w-full max-w-6xl px-5 sm:px-8 lg:px-10"
       >
-        <BookingWidget />
+        <BookingWidget unavailableDates={unavailableDates} />
       </motion.div>
 
       <motion.div

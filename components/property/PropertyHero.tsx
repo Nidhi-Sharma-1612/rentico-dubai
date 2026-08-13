@@ -6,7 +6,7 @@ import { Property } from "@/lib/types";
 
 export default function PropertyHero({ property }: { property: Property }) {
   return (
-    <section className="relative flex h-[60vh] min-h-[440px] max-h-[620px] items-end overflow-hidden bg-navy-950">
+    <section className="relative flex h-[60vh] min-h-110 max-h-155 items-end overflow-hidden bg-navy-950">
       <Image
         src={property.image}
         alt={property.name}
@@ -35,11 +35,18 @@ export default function PropertyHero({ property }: { property: Property }) {
         </h1>
 
         <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium text-white/85">
-          <span className="flex items-center gap-1.5">
-            <Star className="h-4 w-4 fill-orange-400 text-orange-400" />
-            {property.rating}
-            <span className="text-white/60">({property.reviewCount} reviews)</span>
-          </span>
+          {property.reviewCount > 0 ? (
+            <span className="flex items-center gap-1.5">
+              <Star className="h-4 w-4 fill-orange-400 text-orange-400" />
+              {property.rating}
+              <span className="text-white/60">({property.reviewCount} reviews)</span>
+            </span>
+          ) : (
+            <span className="flex items-center gap-1.5 text-white/60">
+              <Star className="h-4 w-4 text-white/40" />
+              New listing
+            </span>
+          )}
           <span className="flex items-center gap-1.5">
             <MapPin className="h-4 w-4 text-orange-400" />
             {property.area}

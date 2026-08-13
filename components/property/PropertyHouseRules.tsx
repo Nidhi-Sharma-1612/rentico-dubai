@@ -1,6 +1,8 @@
 import { CircleCheck } from "lucide-react";
 
 export default function PropertyHouseRules({ rules }: { rules: string[] }) {
+  if (rules.length === 0) return null;
+
   return (
     <div className="border-b border-navy-900/8 py-8">
       <h2 className="mb-5 text-xl font-bold text-navy-900">House Rules</h2>

@@ -2,6 +2,8 @@ import { Check } from "lucide-react";
 import { amenityIconMap } from "@/components/property/amenityIcons";
 
 export default function PropertyAmenities({ amenities }: { amenities: string[] }) {
+  if (amenities.length === 0) return null;
+
   return (
     <div className="border-b border-navy-900/8 py-8">
       <h2 className="mb-5 text-xl font-bold text-navy-900">Amenities</h2>

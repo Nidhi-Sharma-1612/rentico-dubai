@@ -1,3 +1,6 @@
+/** How far ahead to fetch real availability for booking calendars. */
+export const AVAILABILITY_WINDOW_DAYS = 90;
+
 export function startOfDay(date: Date) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
@@ -13,15 +16,6 @@ export function isSameDay(a: Date | null, b: Date | null) {
 
 export function isPastDate(date: Date) {
   return startOfDay(date).getTime() < startOfDay(new Date()).getTime();
-}
-
-/**
- * Deterministic mock availability pattern — stands in for real Guesty
- * calendar data until the Phase 2 integration is wired up.
- */
-export function isDateUnavailable(date: Date) {
-  const seed = (date.getDate() * 7 + date.getMonth() * 13) % 11;
-  return seed === 0 || seed === 4;
 }
 
 export function addMonths(date: Date, months: number) {

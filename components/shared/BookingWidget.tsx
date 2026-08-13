@@ -2,11 +2,10 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Calendar, ChevronDown, MapPin, Search, Users } from "lucide-react";
+import { Calendar, MapPin, Search, Users, ChevronDown } from "lucide-react";
 import DateRangePicker from "@/components/shared/DateRangePicker";
 import { formatShort } from "@/lib/calendar";
 import { buildBookingQuery, DEFAULT_GUESTS } from "@/lib/booking";
-import { destinations } from "@/lib/data/destinations";
 
 const selectInputClass =
   "w-full min-w-0 truncate appearance-none bg-transparent pr-5 text-sm font-semibold text-navy-900 outline-none";
@@ -15,7 +14,8 @@ const dateFieldClass = "flex w-full flex-col gap-1 rounded-xl px-4 py-2.5 text-l
 
 interface BookingWidgetProps {
   className?: string;
-  initialDestination?: string;
+  /** Dates where the whole portfolio is booked out. */
+  unavailableDates?: string[];
   initialCheckIn?: Date | null;
   initialCheckOut?: Date | null;
   initialGuests?: number;
@@ -23,7 +23,7 @@ interface BookingWidgetProps {
 
 export default function BookingWidget({
   className = "",
-  initialDestination,
+  unavailableDates,
   initialCheckIn = null,
   initialCheckOut = null,
   initialGuests = DEFAULT_GUESTS,
@@ -31,11 +31,7 @@ export default function BookingWidget({
   const router = useRouter();
   const datesAnchorRef = useRef<HTMLButtonElement>(null);
   const [datesOpen, setDatesOpen] = useState(false);
-  const [destination, setDestination] = useState(
-    initialDestination && destinations.includes(initialDestination)
-      ? initialDestination
-      : destinations[0]
-  );
+  const unavailableSet = unavailableDates ? new Set(unavailableDates) : undefined;
   const [checkIn, setCheckIn] = useState<Date | null>(initialCheckIn);
   const [checkOut, setCheckOut] = useState<Date | null>(initialCheckOut);
   const [guests, setGuests] = useState(initialGuests);
@@ -44,30 +40,18 @@ export default function BookingWidget({
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        const query = buildBookingQuery({ destination, checkIn, checkOut, guests });
+        const query = buildBookingQuery({ checkIn, checkOut, guests });
         router.push(`/book-your-stay?${query}`);
       }}
       className={`grid w-full grid-cols-2 gap-3 rounded-2xl bg-white p-3 shadow-2xl shadow-navy-950/20 lg:grid-cols-[1.3fr_1fr_1fr_0.9fr_auto] lg:items-stretch lg:gap-0 lg:divide-x lg:divide-navy-900/8 lg:rounded-full lg:p-2 ${className}`}
     >
-      <label className="flex flex-col gap-1 rounded-xl px-4 py-2.5 text-left lg:px-6">
+      <div className="flex flex-col gap-1 rounded-xl px-4 py-2.5 text-left lg:px-6">
         <span className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-navy-900/50">
           <MapPin className="h-3.5 w-3.5 text-orange-500" />
           Destination
         </span>
-        <span className="relative">
-          <select
-            value={destination}
-            onChange={(e) => setDestination(e.target.value)}
-            className={selectInputClass}
-            aria-label="Destination"
-          >
-            {destinations.map((d) => (
-              <option key={d}>{d}</option>
-            ))}
-          </select>
-          <ChevronDown className="pointer-events-none absolute right-0 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-navy-900/40" />
-        </span>
-      </label>
+        <span className="truncate text-sm font-semibold text-navy-900">Dubai</span>
+      </div>
 
       <button
         ref={datesAnchorRef}
@@ -107,6 +91,7 @@ export default function BookingWidget({
         anchorRef={datesAnchorRef}
         checkIn={checkIn}
         checkOut={checkOut}
+        unavailableDates={unavailableSet}
         onChange={(nextCheckIn, nextCheckOut) => {
           setCheckIn(nextCheckIn);
           setCheckOut(nextCheckOut);

@@ -8,10 +8,10 @@ import { cn } from "@/lib/utils";
 import {
   addMonths,
   daysInMonth,
-  isDateUnavailable,
   isPastDate,
   isSameDay,
   monthLabel,
+  toDateParam,
 } from "@/lib/calendar";
 
 interface DateRangePickerProps {
@@ -19,6 +19,8 @@ interface DateRangePickerProps {
   anchorRef: RefObject<HTMLElement | null>;
   checkIn: Date | null;
   checkOut: Date | null;
+  /** Real per-day unavailable dates (YYYY-MM-DD). Omit for a generic picker with no listing-specific truth (e.g. the homepage search widget). */
+  unavailableDates?: Set<string>;
   onChange: (checkIn: Date | null, checkOut: Date | null) => void;
   onClose: () => void;
 }
@@ -30,6 +32,7 @@ export default function DateRangePicker({
   anchorRef,
   checkIn,
   checkOut,
+  unavailableDates,
   onChange,
   onClose,
 }: DateRangePickerProps) {
@@ -94,8 +97,10 @@ export default function DateRangePicker({
 
   if (!open) return null;
 
+  const isUnavailable = (date: Date) => unavailableDates?.has(toDateParam(date)) ?? false;
+
   const handleDayClick = (date: Date) => {
-    if (isPastDate(date) || isDateUnavailable(date)) return;
+    if (isPastDate(date) || isUnavailable(date)) return;
     if (!checkIn || checkOut) {
       onChange(date, null);
     } else if (date <= checkIn) {
@@ -127,7 +132,9 @@ export default function DateRangePicker({
           {cells.map((date, i) => {
             if (!date) return <span key={`blank-${i}`} />;
 
-            const disabled = isPastDate(date) || isDateUnavailable(date);
+            const past = isPastDate(date);
+            const blocked = !past && isUnavailable(date);
+            const disabled = past || blocked;
             const isSelected = isSameDay(date, checkIn) || isSameDay(date, checkOut);
             const inRange =
               !!checkIn && !!rangeEnd && date > checkIn && date < rangeEnd && !isSelected;
@@ -138,11 +145,13 @@ export default function DateRangePicker({
                 <button
                   type="button"
                   disabled={disabled}
+                  title={blocked ? "Unavailable" : undefined}
                   onClick={() => handleDayClick(date)}
                   onMouseEnter={() => setHoverDate(date)}
                   className={cn(
                     "flex h-6 w-6 items-center justify-center rounded-full text-[11px] transition-colors sm:h-7 sm:w-7 sm:text-xs",
-                    disabled && "cursor-not-allowed text-navy-900/25 line-through",
+                    past && "cursor-not-allowed text-navy-900/25",
+                    blocked && "cursor-not-allowed bg-red-50 text-red-300 line-through",
                     !disabled && !isSelected && !inRange && "text-navy-900 hover:bg-orange-100",
                     !disabled && inRange && "bg-orange-50 text-navy-900",
                     isSelected && "bg-orange-500 font-bold text-white",
@@ -195,6 +204,23 @@ export default function DateRangePicker({
         {renderMonth(baseMonth)}
         <div className="hidden sm:block">{renderMonth(addMonths(baseMonth, 1))}</div>
       </div>
+
+      {unavailableDates && (
+        <div className="mt-2 flex items-center gap-4 border-t border-navy-900/8 pt-2 text-[10px] font-medium text-navy-900/50 sm:text-[11px]">
+          <span className="flex items-center gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full border border-navy-900/15 bg-white" />
+            Available
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-red-50 ring-1 ring-inset ring-red-200" />
+            Unavailable
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="h-2.5 w-2.5 rounded-full bg-orange-500" />
+            Selected
+          </span>
+        </div>
+      )}
 
       <div className="mt-2 flex items-center justify-between gap-3 border-t border-navy-900/8 pt-2">
         <button

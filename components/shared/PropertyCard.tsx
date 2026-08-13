@@ -7,10 +7,13 @@ import Badge from "@/components/shared/Badge";
 export default function PropertyCard({
   property,
   searchQuery,
+  totalForStay,
 }: {
   property: Property;
   /** Optional dates/guests query string to carry forward into the detail page. */
   searchQuery?: string;
+  /** Real total for the searched date range, when one was searched — already reflects any channel discount below. */
+  totalForStay?: { amount: number; nights: number; discount?: { amount: number; percent: number } };
 }) {
   const href = searchQuery
     ? `/properties/${property.slug}?${searchQuery}`
@@ -33,10 +36,12 @@ export default function PropertyCard({
             <Badge tone="white">{property.badge}</Badge>
           </div>
         )}
-        <div className="absolute right-4 top-4 flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-xs font-semibold text-navy-900 shadow-sm">
-          <Star className="h-3.5 w-3.5 fill-orange-500 text-orange-500" />
-          {property.rating}
-        </div>
+        {property.reviewCount > 0 && (
+          <div className="absolute right-4 top-4 flex items-center gap-1 rounded-full bg-white/95 px-2.5 py-1 text-xs font-semibold text-navy-900 shadow-sm">
+            <Star className="h-3.5 w-3.5 fill-orange-500 text-orange-500" />
+            {property.rating}
+          </div>
+        )}
       </div>
 
       <div className="flex flex-1 flex-col gap-4 p-5">
@@ -61,12 +66,35 @@ export default function PropertyCard({
         </div>
 
         <div className="mt-auto flex items-center justify-between border-t border-navy-900/8 pt-4">
-          <p className="text-navy-900">
-            <span className="text-lg font-bold">
-              {property.currency} {property.pricePerNight}
-            </span>
-            <span className="text-sm text-navy-900/50"> / night</span>
-          </p>
+          {totalForStay ? (
+            <div className="text-navy-900">
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs text-navy-900/50">Total for {totalForStay.nights} nights</span>
+                {totalForStay.discount && (
+                  <span className="rounded-full bg-emerald-50 px-1.5 py-0.5 text-[10px] font-bold text-emerald-600">
+                    -{totalForStay.discount.percent}%
+                  </span>
+                )}
+              </div>
+              <div className="flex items-baseline gap-1.5">
+                {totalForStay.discount && (
+                  <span className="text-xs text-navy-900/40 line-through">
+                    {property.currency} {(totalForStay.amount + totalForStay.discount.amount).toFixed(2)}
+                  </span>
+                )}
+                <span className="text-lg font-bold">
+                  {property.currency} {totalForStay.amount.toFixed(2)}
+                </span>
+              </div>
+            </div>
+          ) : (
+            <p className="text-navy-900">
+              <span className="text-lg font-bold">
+                {property.currency} {property.pricePerNight}
+              </span>
+              <span className="text-sm text-navy-900/50"> / night</span>
+            </p>
+          )}
           <span className="text-sm font-semibold text-orange-600 transition-transform group-hover:translate-x-0.5">
             View stay →
           </span>
