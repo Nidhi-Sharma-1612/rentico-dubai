@@ -57,13 +57,27 @@ async function getToken(
   tokenUrl: string,
   clientId: string | undefined,
   clientSecret: string | undefined,
-  scope: string
+  scope: string,
+  seed?: { accessToken: string | undefined; expiresAt: string | undefined }
 ): Promise<string> {
   if (!clientId || !clientSecret) {
     throw new Error(`Missing Guesty credentials for "${cacheKey}" — check .env.local`);
   }
 
-  const cached = tokenCache.get(cacheKey);
+  let cached = tokenCache.get(cacheKey);
+
+  // Seed the in-memory cache from a pre-fetched token in .env.local, if one
+  // is present and still valid. Lets a token survive a dev-server restart
+  // (e.g. to pick up an unrelated env change mid-demo) without spending
+  // another of the 5-tokens/24h budget — see scripts/fetch-guesty-token.mjs.
+  if (!cached && seed?.accessToken && seed.expiresAt) {
+    const expiresAt = Number(seed.expiresAt);
+    if (Number.isFinite(expiresAt) && expiresAt > Date.now()) {
+      cached = { accessToken: seed.accessToken, expiresAt };
+      tokenCache.set(cacheKey, cached);
+    }
+  }
+
   if (cached && cached.expiresAt > Date.now()) {
     return cached.accessToken;
   }
@@ -89,6 +103,10 @@ export function getBookingEngineToken(): Promise<string> {
     "https://booking.guesty.com/oauth2/token",
     process.env.GUESTY_BOOKING_ENGINE_CLIENT_ID,
     process.env.GUESTY_BOOKING_ENGINE_CLIENT_SECRET,
-    "booking_engine:api"
+    "booking_engine:api",
+    {
+      accessToken: process.env.GUESTY_BOOKING_ENGINE_ACCESS_TOKEN,
+      expiresAt: process.env.GUESTY_BOOKING_ENGINE_TOKEN_EXPIRES_AT,
+    }
   );
 }

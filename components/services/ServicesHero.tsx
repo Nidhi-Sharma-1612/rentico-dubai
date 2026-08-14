@@ -1,0 +1,108 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { ArrowRight, MessageCircle, Star, ShieldCheck, Timer, Smartphone } from "lucide-react";
+import Container from "@/components/shared/Container";
+import Button from "@/components/shared/Button";
+
+const WHATSAPP_HREF =
+  "https://wa.me/971521460222?text=Hi%20Rentico%2C%20I%27d%20like%20a%20free%20earnings%20estimate%20for%20my%20property.";
+
+const credibility = [
+  { icon: ShieldCheck, label: "Licensed UAE operator" },
+  { icon: Star, label: "4.97★ Airbnb Superhost" },
+  { icon: Timer, label: "Under 30 min response, 24/7" },
+  { icon: Smartphone, label: "Owner App — live calendar, statements & payouts" },
+];
+
+export default function ServicesHero() {
+  return (
+    <section className="relative overflow-hidden bg-navy-950 pb-16 pt-16 sm:pb-20 sm:pt-20">
+      <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-orange-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-32 -left-16 h-72 w-72 rounded-full bg-orange-500/10 blur-3xl" />
+
+      <Container className="relative flex flex-col items-center text-center">
+        <motion.span
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-orange-300 backdrop-blur"
+        >
+          Short-Term &amp; Mid-Term Rental Management · Dubai &amp; Abu Dhabi
+        </motion.span>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mt-5 max-w-3xl text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl"
+        >
+          Your UAE property, run like an asset — not a hobby.
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-4 max-w-2xl text-base leading-relaxed text-white/65 sm:text-lg"
+        >
+          From furnishing and licensing to daily pricing and round-the-clock guest care, Rentico runs every part of
+          the operation across Dubai and Abu Dhabi. You keep ownership and the returns; we handle everything between
+          check-ins.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mt-8 flex flex-col items-center gap-4 sm:flex-row"
+        >
+          <Button
+            href={WHATSAPP_HREF}
+            target="_blank"
+            rel="noopener noreferrer"
+            size="lg"
+            icon={<MessageCircle className="h-4 w-4" />}
+          >
+            Get my free earnings estimate
+          </Button>
+          <a
+            href="#how-it-works"
+            className="flex items-center gap-1.5 text-sm font-semibold text-white/70 transition-colors hover:text-white"
+          >
+            See how it works
+            <ArrowRight className="h-4 w-4 -rotate-45" />
+          </a>
+        </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-orange-300/80"
+        >
+          Better stays. Better returns.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-12 grid w-full grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4"
+        >
+          {credibility.map((item) => (
+            <div
+              key={item.label}
+              className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-left backdrop-blur-sm"
+            >
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-500/15 text-orange-300">
+                <item.icon className="h-4.5 w-4.5" />
+              </span>
+              <span className="text-sm font-semibold text-white/85">{item.label}</span>
+            </div>
+          ))}
+        </motion.div>
+      </Container>
+    </section>
+  );
+}

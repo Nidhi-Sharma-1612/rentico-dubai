@@ -55,7 +55,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         primaryLabel="Become a Partner"
         primaryHref="/become-a-partner"
         secondaryLabel="Get a Free Revenue Estimate"
-        secondaryHref="/services#estimated-revenue"
+        secondaryHref="/services"
       />
 
       <MoreInsights currentSlug={article.slug} />

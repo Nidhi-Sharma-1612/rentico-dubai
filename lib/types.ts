@@ -22,13 +22,6 @@ export interface Property {
   houseRules: string[];
 }
 
-export interface Service {
-  slug: string;
-  name: string;
-  description: string;
-  icon: string;
-}
-
 export interface Testimonial {
   id: string;
   name: string;

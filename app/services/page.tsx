@@ -1,31 +1,30 @@
 import type { Metadata } from "next";
-import PageHero from "@/components/shared/PageHero";
-import CTABanner from "@/components/shared/CTABanner";
-import ServicesList from "@/components/services/ServicesList";
+import ServicesHero from "@/components/services/ServicesHero";
+import WhyRentico from "@/components/services/WhyRentico";
+import WhatWeHandle from "@/components/services/WhatWeHandle";
+import OnboardingSteps from "@/components/services/OnboardingSteps";
+import PricingAndDesign from "@/components/services/PricingAndDesign";
+import WhereWeOperate from "@/components/services/WhereWeOperate";
+import OwnerAppFAQ from "@/components/services/OwnerAppFAQ";
+import FinalCTA from "@/components/services/FinalCTA";
 
 export const metadata: Metadata = {
-  title: "Services | Rentico Dubai",
+  title: "Manage Your Property | Rentico",
   description:
-    "Full-service property, listing, cleaning, design and revenue management for luxury Dubai short-term rentals.",
+    "Short-term & mid-term rental management across Dubai and Abu Dhabi — dynamic pricing, 24/7 guest care, hotel-grade housekeeping, and transparent monthly reporting for a flat 20% of gross revenue.",
 };
 
 export default function ServicesPage() {
   return (
     <>
-      <PageHero
-        eyebrow="What We Do"
-        title="Full-service management for your Dubai property"
-        description="From listing to guest checkout, Rentico handles every part of running a high-performing short-term rental — so you don't have to."
-      />
-
-      <ServicesList />
-
-      <CTABanner
-        title="Not sure where to start?"
-        description="Tell us about your property and we'll recommend the right services for your goals."
-        primaryLabel="Talk to Our Team"
-        primaryHref="/contact"
-      />
+      <ServicesHero />
+      <WhyRentico />
+      <WhatWeHandle />
+      <OnboardingSteps />
+      <PricingAndDesign />
+      <WhereWeOperate />
+      <OwnerAppFAQ />
+      <FinalCTA />
     </>
   );
 }

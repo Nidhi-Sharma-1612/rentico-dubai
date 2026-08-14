@@ -2,13 +2,10 @@ import { MapPin } from "lucide-react";
 
 interface PropertyLocationProps {
   address: string;
-  lat?: number;
-  lng?: number;
 }
 
-export default function PropertyLocation({ address, lat, lng }: PropertyLocationProps) {
-  const hasCoordinates = lat !== undefined && lng !== undefined;
-  const query = hasCoordinates ? `${lat},${lng}` : address;
+export default function PropertyLocation({ address }: PropertyLocationProps) {
+  const query = address;
 
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
   const embedUrl = `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`;

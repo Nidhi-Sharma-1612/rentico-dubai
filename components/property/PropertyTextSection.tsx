@@ -1,4 +1,9 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import { CircleCheck } from "lucide-react";
+
+const COLLAPSED_HEIGHT = 180;
 
 /**
  * Guesty host descriptions use ad-hoc formatting: blank-line-separated
@@ -68,38 +73,70 @@ export default function PropertyTextSection({
   children: string;
 }) {
   const blocks = parseBlocks(children);
+  const [expanded, setExpanded] = useState(false);
+  const [overflowing, setOverflowing] = useState(false);
+  const [fullHeight, setFullHeight] = useState<number | null>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+    const height = el.scrollHeight;
+    setFullHeight(height);
+    setOverflowing(height > COLLAPSED_HEIGHT + 8);
+  }, [children]);
 
   return (
     <div className="border-b border-navy-900/8 py-8">
       <h2 className="mb-4 text-xl font-bold text-navy-900">{title}</h2>
-      <div className="flex max-w-3xl flex-col gap-4">
-        {blocks.map((block, i) => {
-          if (block.type === "heading") {
+      <div className="relative">
+        <div
+          ref={contentRef}
+          className="flex max-w-3xl flex-col gap-4 overflow-hidden transition-[max-height] duration-300 ease-in-out"
+          style={{
+            maxHeight: expanded ? (fullHeight ?? undefined) : overflowing ? COLLAPSED_HEIGHT : undefined,
+          }}
+        >
+          {blocks.map((block, i) => {
+            if (block.type === "heading") {
+              return (
+                <h3 key={i} className="pt-2 text-base font-bold text-navy-900 first:pt-0">
+                  {block.lines[0]}
+                </h3>
+              );
+            }
+            if (block.type === "list") {
+              return (
+                <ul key={i} className="grid grid-cols-1 gap-x-6 gap-y-2.5 sm:grid-cols-2">
+                  {block.lines.map((item, j) => (
+                    <li key={j} className="flex items-start gap-2.5 text-sm text-navy-900/70 sm:text-base">
+                      <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-orange-500" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              );
+            }
             return (
-              <h3 key={i} className="pt-2 text-base font-bold text-navy-900 first:pt-0">
+              <p key={i} className="text-sm leading-relaxed text-navy-900/70 sm:text-base">
                 {block.lines[0]}
-              </h3>
+              </p>
             );
-          }
-          if (block.type === "list") {
-            return (
-              <ul key={i} className="grid grid-cols-1 gap-x-6 gap-y-2.5 sm:grid-cols-2">
-                {block.lines.map((item, j) => (
-                  <li key={j} className="flex items-start gap-2.5 text-sm text-navy-900/70 sm:text-base">
-                    <CircleCheck className="mt-0.5 h-4 w-4 shrink-0 text-orange-500" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            );
-          }
-          return (
-            <p key={i} className="text-sm leading-relaxed text-navy-900/70 sm:text-base">
-              {block.lines[0]}
-            </p>
-          );
-        })}
+          })}
+        </div>
+        {!expanded && overflowing && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 max-w-3xl bg-linear-to-t from-white to-transparent" />
+        )}
       </div>
+      {overflowing && (
+        <button
+          type="button"
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-4 text-sm font-semibold text-orange-600 hover:underline"
+        >
+          {expanded ? "Show less" : "Show more"}
+        </button>
+      )}
     </div>
   );
 }

@@ -125,7 +125,7 @@ export default async function PropertyDetailPage({
             <PropertyTextSection title="The Space">{property.theSpace}</PropertyTextSection>
             <PropertyAmenities amenities={property.amenities} />
             <PropertyHouseRules rules={property.houseRules} />
-            <PropertyLocation address={property.address} lat={property.lat} lng={property.lng} />
+            <PropertyLocation address={property.address} />
           </div>
 
           <PropertySidebarBooking

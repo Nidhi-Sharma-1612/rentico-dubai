@@ -32,6 +32,48 @@ export const homeFaqs: FAQ[] = [
   },
 ];
 
+export const servicesFaqs: FAQ[] = [
+  {
+    question: "Which areas do you manage in?",
+    answer:
+      "Dubai: Downtown, Business Bay, Marina, Palm Jumeirah, Dubai Hills, MBR City, JVC. Abu Dhabi: Saadiyat, Yas, Al Reem, Al Raha Beach, Corniche. Not sure your building qualifies? Send us the address.",
+  },
+  {
+    question: "What does your fee cover, and what does it cost?",
+    answer:
+      "A flat 20% of gross revenue. Covers guest care, pricing, housekeeping, maintenance, permits, listings, and reporting. No hidden deductions.",
+  },
+  {
+    question: "Can I still use my property myself?",
+    answer:
+      "Of course — it's your home. Block personal-stay dates in seconds on the Owner App and we'll plan around your calendar.",
+  },
+  {
+    question: "How do you handle maintenance and repairs?",
+    answer:
+      "Minor repairs are handled and itemised on your statement. Anything larger gets a quote and your approval first — nothing without your say-so.",
+  },
+  {
+    question: "How quickly can you get my property live?",
+    answer: "Most properties are live and earning within 14 days of your first call.",
+  },
+  {
+    question: "Do you only do short-term rentals?",
+    answer:
+      "No — short-term and mid-term, from a two-night minimum up to around four months. We'll advise which mix earns you the most.",
+  },
+  {
+    question: "Do you operate in Abu Dhabi as well as Dubai?",
+    answer:
+      "Yes — same team, same standard, both emirates. Tell us your Abu Dhabi community and we'll walk you through the DCT process.",
+  },
+  {
+    question: "How and when do I get paid?",
+    answer:
+      "One clear statement and payout on the 15th of every month — occupancy, revenue, fees, and your net.",
+  },
+];
+
 export const partnerFaqs: FAQ[] = [
   {
     question: "What fee does Rentico charge to manage my property?",
