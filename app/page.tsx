@@ -12,7 +12,7 @@ import { mapListingToProperty } from "@/lib/guesty/mappers";
 import { AVAILABILITY_WINDOW_DAYS, toDateParam } from "@/lib/calendar";
 import { Property } from "@/lib/types";
 
-const FEATURED_COUNT = 6;
+const FEATURED_COUNT = 3;
 
 // Without this, `next build`'s static-generation probe still attempts the
 // Guesty fetch below before discovering the route is dynamic — silently

@@ -107,7 +107,10 @@ export default async function PropertyDetailPage({
   const resolvedSearchParams = await searchParams;
   const search = parseBookingSearchParams(resolvedSearchParams);
 
-  const otherProperties = listings.filter((l) => l._id !== listing._id).map(mapListingToProperty);
+  const otherProperties = listings
+    .filter((l) => l._id !== listing._id)
+    .slice(0, 3)
+    .map(mapListingToProperty);
   const forwardQuery = buildBookingQuery({ checkIn: search.checkIn, checkOut: search.checkOut, guests: search.guests });
 
   return (
