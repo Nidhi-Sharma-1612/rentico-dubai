@@ -1,17 +1,21 @@
 import type { Metadata } from "next";
 import { asc, eq } from "drizzle-orm";
-import PageHero from "@/components/shared/PageHero";
-import PartnerBenefits from "@/components/partner/PartnerBenefits";
+import { PartnerAudienceProvider } from "@/components/partner/PartnerAudienceContext";
+import PartnerHero from "@/components/partner/PartnerHero";
+import AudienceToggle from "@/components/partner/AudienceToggle";
+import CommissionCalculator from "@/components/partner/CommissionCalculator";
+import NoConflictSection from "@/components/partner/NoConflictSection";
 import PartnerSteps from "@/components/partner/PartnerSteps";
+import OperatorStats from "@/components/partner/OperatorStats";
 import PartnerFormSection from "@/components/partner/PartnerFormSection";
 import { db } from "@/lib/db";
 import { faqs } from "@/lib/db/schema";
 import { FAQ } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Become a Partner | Rentico Dubai",
+  title: "Broker, Agent & Developer Partnerships | Rentico Dubai",
   description:
-    "Partner with Rentico Dubai — full property management, 24/7 support, a transparent 20% fee, and referral rewards up to AED 20,000.",
+    "Send us a property, keep your client, and get paid. Refer owners to Rentico and earn a commission up to AED 20,000 on every unit that goes live.",
 };
 
 // This page reads admin-editable FAQs from the DB — without this, Next
@@ -28,15 +32,14 @@ export default async function BecomeAPartnerPage() {
   }
 
   return (
-    <>
-      <PageHero
-        eyebrow="Become a Partner"
-        title="Turn your property into a high-performing asset"
-        description="Referral rewards up to AED 20,000. Full management, transparent pricing, and a team that treats your home like our own."
-      />
-      <PartnerBenefits />
+    <PartnerAudienceProvider>
+      <PartnerHero />
+      <AudienceToggle />
+      <CommissionCalculator />
+      <NoConflictSection />
       <PartnerSteps />
+      <OperatorStats />
       <PartnerFormSection faqs={partnerFaqs} />
-    </>
+    </PartnerAudienceProvider>
   );
 }

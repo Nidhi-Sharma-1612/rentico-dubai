@@ -7,11 +7,11 @@ import Container from "@/components/shared/Container";
 
 const quickLinks = [
   { label: "Home", href: "/" },
-  { label: "Experience", href: "/experience" },
   { label: "Manage my property", href: "/manage-my-property" },
   { label: "About Us", href: "/about-us" },
   { label: "Become a Partner", href: "/become-a-partner" },
   { label: "Insights", href: "/insights" },
+  { label: "Experience", href: "/experience" },
   { label: "Contact", href: "/contact" },
 ];
 
