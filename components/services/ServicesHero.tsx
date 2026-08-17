@@ -17,7 +17,7 @@ const credibility = [
 
 export default function ServicesHero() {
   return (
-    <section className="relative overflow-hidden bg-navy-950 pb-16 pt-16 sm:pb-20 sm:pt-20">
+    <section className="relative overflow-hidden bg-navy-950 pb-20 pt-24 sm:pb-28 sm:pt-32">
       <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-orange-500/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-32 -left-16 h-72 w-72 rounded-full bg-orange-500/10 blur-3xl" />
 
@@ -44,7 +44,7 @@ export default function ServicesHero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-4 max-w-2xl text-base leading-relaxed text-white/65 sm:text-lg"
+          className="mt-6 max-w-2xl text-base leading-relaxed text-white/65 sm:text-lg"
         >
           From furnishing and licensing to daily pricing and round-the-clock guest care, Rentico runs every part of
           the operation across Dubai and Abu Dhabi. You keep ownership and the returns; we handle everything between
@@ -55,7 +55,7 @@ export default function ServicesHero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="mt-8 flex flex-col items-center gap-4 sm:flex-row"
+          className="mt-10 flex flex-col items-center gap-4 sm:flex-row"
         >
           <Button
             href={WHATSAPP_HREF}
@@ -79,7 +79,7 @@ export default function ServicesHero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-orange-300/80"
+          className="mt-6 text-xs font-semibold uppercase tracking-[0.2em] text-orange-300/80"
         >
           Better stays. Better returns.
         </motion.p>
@@ -88,12 +88,12 @@ export default function ServicesHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-12 grid w-full grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4"
+          className="mt-16 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
         >
           {credibility.map((item) => (
             <div
               key={item.label}
-              className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-left backdrop-blur-sm"
+              className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-5 text-left backdrop-blur-sm"
             >
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-500/15 text-orange-300">
                 <item.icon className="h-4.5 w-4.5" />

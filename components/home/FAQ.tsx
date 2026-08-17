@@ -5,9 +5,9 @@ import { MessageCircle } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Button from "@/components/shared/Button";
 import FAQAccordion from "@/components/shared/FAQAccordion";
-import { homeFaqs } from "@/lib/data/faqs";
+import { FAQ as FAQType } from "@/lib/types";
 
-export default function FAQ() {
+export default function FAQ({ faqs }: { faqs: FAQType[] }) {
   return (
     <section className="py-20 sm:py-28">
       <Container className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:gap-20">
@@ -46,7 +46,7 @@ export default function FAQ() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          <FAQAccordion faqs={homeFaqs} variant="flat" />
+          <FAQAccordion faqs={faqs} variant="flat" />
         </motion.div>
       </Container>
     </section>

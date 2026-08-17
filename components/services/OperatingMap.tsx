@@ -27,9 +27,14 @@ function pinIcon(number: number, group: "dubai" | "abudhabi") {
   const bg = group === "dubai" ? "#f97316" : "#0a1930";
   return L.divIcon({
     className: "",
-    html: `<div style="display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:9999px;background:${bg};color:#fff;font-size:11px;font-weight:700;font-family:inherit;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.35);">${number}</div>`,
-    iconSize: [26, 26],
-    iconAnchor: [13, 13],
+    html: `<div style="position:relative;width:30px;height:30px;filter:drop-shadow(0 2px 3px rgba(10,25,48,0.35));">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="${bg}" stroke="#ffffff" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/>
+      </svg>
+      <span style="position:absolute;top:3px;left:0;width:100%;text-align:center;color:#fff;font-size:11px;font-weight:700;font-family:inherit;line-height:1;">${number}</span>
+    </div>`,
+    iconSize: [30, 30],
+    iconAnchor: [15, 28],
   });
 }
 
@@ -52,7 +57,7 @@ export default function OperatingMap() {
       <FitBounds />
       {pins.map((p) => (
         <Marker key={`${p.group}-${p.number}`} position={[p.lat, p.lng]} icon={pinIcon(p.number, p.group)}>
-          <Tooltip direction="top" offset={[0, -14]}>
+          <Tooltip direction="top" offset={[0, -26]}>
             {p.name}
           </Tooltip>
         </Marker>

@@ -3,10 +3,9 @@
 import { motion } from "framer-motion";
 import { Quote, Star } from "lucide-react";
 import Container from "@/components/shared/Container";
-import { testimonials } from "@/lib/data/testimonials";
+import { Testimonial } from "@/lib/types";
 
-export default function AboutTestimonial() {
-  const testimonial = testimonials.find((t) => t.id === "3");
+export default function AboutTestimonial({ testimonial }: { testimonial: Testimonial | null }) {
   if (!testimonial) return null;
 
   return (

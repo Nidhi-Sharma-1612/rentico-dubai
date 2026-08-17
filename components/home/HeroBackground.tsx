@@ -54,7 +54,7 @@ export default function HeroBackground() {
           <source src={VIDEO_URL} type="video/mp4" />
         </video>
       )}
-      <div className="absolute inset-0 bg-linear-to-b from-navy-950/85 via-navy-950/75 to-navy-950" />
+      <div className="absolute inset-0 bg-linear-to-b from-navy-950/60 via-navy-950/45 to-navy-950/75" />
     </div>
   );
 }

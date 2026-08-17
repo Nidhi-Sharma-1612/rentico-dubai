@@ -21,7 +21,7 @@ const points = [
 
 export default function Welcome() {
   return (
-    <section className="py-20 sm:py-28">
+    <section className="bg-navy-50/40 py-20 sm:py-28">
       <Container className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2 lg:gap-20">
         <motion.div
           initial={{ opacity: 0, x: -24 }}
@@ -39,7 +39,7 @@ export default function Welcome() {
               className="object-cover"
             />
           </div>
-          <div className="absolute -bottom-6 -right-6 hidden w-56 rounded-2xl bg-navy-900 p-5 text-white shadow-xl sm:block">
+          <div className="absolute -bottom-6 -right-6 hidden w-56 rounded-2xl bg-navy-950 p-5 text-white shadow-xl sm:block">
             <p className="text-3xl font-extrabold text-orange-400">4.9★</p>
             <p className="mt-1 text-sm text-white/70">Average guest rating across all homes</p>
           </div>

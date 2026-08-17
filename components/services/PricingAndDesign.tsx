@@ -10,13 +10,6 @@ import Badge from "@/components/shared/Badge";
 const WHATSAPP_HREF =
   "https://wa.me/971521460222?text=Hi%20Rentico%2C%20I%27d%20like%20to%20ask%20about%20your%20Design%20by%20Rentico%20packages.";
 
-const terms = [
-  { label: "Setup or sign-up fee", value: "One-time, itemized — no markup" },
-  { label: "Hidden deductions", value: "None" },
-  { label: "Statement & payout", value: "15th of every month" },
-  { label: "Contract terms", value: "12-month renewable · 8-week NOC exit" },
-];
-
 const packages = [
   {
     name: "Essential",
@@ -35,36 +28,8 @@ const packages = [
 
 export default function PricingAndDesign() {
   return (
-    <section className="py-20 sm:py-28">
+    <section className="bg-navy-50/40 py-20 sm:py-28">
       <Container className="flex flex-col gap-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="overflow-hidden rounded-3xl bg-navy-900 px-8 py-12 text-center sm:px-14 sm:py-16"
-        >
-          <span className="mx-auto w-fit rounded-full bg-white/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-orange-300">
-            Transparent Pricing
-          </span>
-          <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
-            20% of gross revenue.
-          </h2>
-          <p className="mt-2 text-lg font-semibold text-white/70">That&apos;s the whole conversation.</p>
-
-          <div className="mx-auto mt-10 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2">
-            {terms.map((term) => (
-              <div
-                key={term.label}
-                className="rounded-2xl border border-white/10 bg-white/5 p-5 text-left backdrop-blur-sm"
-              >
-                <p className="text-xs font-semibold uppercase tracking-wider text-white/45">{term.label}</p>
-                <p className="mt-1.5 text-sm font-semibold text-white">{term.value}</p>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
         <div className="flex flex-col gap-10">
           <SectionHeading
             eyebrow="Design by Rentico"

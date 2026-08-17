@@ -10,6 +10,7 @@ interface CTABannerProps {
   description: string;
   primaryLabel: string;
   primaryHref: string;
+  primaryExternal?: boolean;
   secondaryLabel?: string;
   secondaryHref?: string;
 }
@@ -19,6 +20,7 @@ export default function CTABanner({
   description,
   primaryLabel,
   primaryHref,
+  primaryExternal = false,
   secondaryLabel,
   secondaryHref,
 }: CTABannerProps) {
@@ -43,7 +45,14 @@ export default function CTABanner({
               {description}
             </p>
             <div className="mt-2 flex flex-col gap-3 sm:flex-row">
-              <Button href={primaryHref} variant="secondary" size="lg" icon={<ArrowRight className="h-4 w-4" />}>
+              <Button
+                href={primaryHref}
+                target={primaryExternal ? "_blank" : undefined}
+                rel={primaryExternal ? "noopener noreferrer" : undefined}
+                variant="secondary"
+                size="lg"
+                icon={<ArrowRight className="h-4 w-4" />}
+              >
                 {primaryLabel}
               </Button>
               {secondaryLabel && secondaryHref && (

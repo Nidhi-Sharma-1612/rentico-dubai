@@ -5,9 +5,9 @@ import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import ContactForm from "@/components/shared/ContactForm";
 import FAQAccordion from "@/components/shared/FAQAccordion";
-import { partnerFaqs } from "@/lib/data/faqs";
+import { FAQ as FAQType } from "@/lib/types";
 
-export default function PartnerFormSection() {
+export default function PartnerFormSection({ faqs }: { faqs: FAQType[] }) {
   return (
     <section className="py-20 sm:py-28">
       <Container className="grid grid-cols-1 gap-14 lg:grid-cols-2 lg:gap-16">
@@ -34,7 +34,7 @@ export default function PartnerFormSection() {
           className="flex flex-col gap-6"
         >
           <SectionHeading eyebrow="FAQ" title="Common questions from owners" />
-          <FAQAccordion faqs={partnerFaqs} />
+          <FAQAccordion faqs={faqs} />
         </motion.div>
       </Container>
     </section>

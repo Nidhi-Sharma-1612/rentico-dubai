@@ -1,0 +1,25 @@
+import "server-only";
+import { cookies } from "next/headers";
+import { createServerClient } from "@supabase/ssr";
+
+export async function createClient() {
+  const cookieStore = await cookies();
+
+  return createServerClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
+      },
+      setAll(cookiesToSet) {
+        // Called from a Server Component render, where cookies can't be
+        // written — safe to ignore since proxy.ts refreshes the session on
+        // every /admin/* request instead.
+        try {
+          cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
+        } catch {
+          // no-op
+        }
+      },
+    },
+  });
+}

@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
-import { testimonials } from "@/lib/data/testimonials";
+import { Testimonial } from "@/lib/types";
 
 const AUTOPLAY_MS = 5000;
 
@@ -18,7 +18,7 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-export default function Testimonials() {
+export default function Testimonials({ testimonials }: { testimonials: Testimonial[] }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -37,7 +37,7 @@ export default function Testimonials() {
       setIndex((i) => (i + 1) % testimonials.length);
     }, AUTOPLAY_MS);
     return () => clearInterval(id);
-  }, [paused, reducedMotion]);
+  }, [paused, reducedMotion, testimonials.length]);
 
   const visible = Array.from({ length: Math.min(3, testimonials.length) }, (_, i) => {
     const t = testimonials[(index + i) % testimonials.length];
@@ -45,6 +45,8 @@ export default function Testimonials() {
   });
 
   const goTo = (i: number) => setIndex(((i % testimonials.length) + testimonials.length) % testimonials.length);
+
+  if (testimonials.length === 0) return null;
 
   return (
     <section className="bg-navy-50/40 py-20 sm:py-28">
@@ -89,7 +91,7 @@ export default function Testimonials() {
                     <p className="text-sm leading-relaxed text-navy-900/70">&ldquo;{t.quote}&rdquo;</p>
 
                     <div className="mt-auto flex items-center gap-3 border-t border-navy-900/8 pt-4">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-navy-900 text-xs font-bold text-white">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-navy-950 text-xs font-bold text-white">
                         {initials(t.name)}
                       </span>
                       <div>

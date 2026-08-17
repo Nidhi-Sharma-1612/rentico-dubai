@@ -5,7 +5,7 @@ import { AlertCircle, Calendar, Loader2, Minus, Phone, Plus, Users } from "lucid
 import Button from "@/components/shared/Button";
 import DateRangePicker from "@/components/shared/DateRangePicker";
 import BookingCheckoutModal from "@/components/property/BookingCheckoutModal";
-import { getQuoteAction, QuoteSummary } from "@/app/properties/[slug]/actions";
+import { getQuoteAction, QuoteSummary } from "@/app/(marketing)/properties/[slug]/actions";
 import { formatShort, toDateParam } from "@/lib/calendar";
 import { DEFAULT_GUESTS } from "@/lib/booking";
 import { Property } from "@/lib/types";

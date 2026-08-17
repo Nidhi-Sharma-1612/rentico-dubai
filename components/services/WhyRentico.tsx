@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MessageCircle, Users, FileText, Eye, Wallet } from "lucide-react";
+import { MessageCircle, Users, FileText, Eye, Wallet, Percent } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Button from "@/components/shared/Button";
 
@@ -13,6 +13,7 @@ const perks = [
   { icon: FileText, text: "A transparent statement and payout on the 15th of every month" },
   { icon: Eye, text: "Live performance you can check any time, not a black box" },
   { icon: Wallet, text: "A flat, all-inclusive fee with nothing hidden or deducted by surprise" },
+  { icon: Percent, text: "Transparent pricing — 20% of gross revenue" },
 ];
 
 export default function WhyRentico() {
@@ -83,7 +84,7 @@ export default function WhyRentico() {
             </ul>
           </div>
 
-          <div className="rounded-2xl bg-navy-900 p-6">
+          <div className="rounded-2xl bg-navy-950 p-6">
             <p className="text-sm leading-relaxed text-white/80">
               <span className="font-bold text-white">Skin in the game.</span> We own 16 apartments across Dubai
               outright — AED 45M+ — run to the exact same standard as yours.

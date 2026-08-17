@@ -5,7 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Clock } from "lucide-react";
 import { Article } from "@/lib/types";
-import { articleImages } from "@/lib/data/articleImages";
 import Badge from "@/components/shared/Badge";
 
 const dateFormatter = new Intl.DateTimeFormat("en-GB", {
@@ -23,7 +22,7 @@ export default function ArticleCard({
   featured?: boolean;
   delay?: number;
 }) {
-  const image = articleImages[article.slug];
+  const image = article.image;
 
   return (
     <motion.div

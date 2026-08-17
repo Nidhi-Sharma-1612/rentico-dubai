@@ -1,10 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ChevronDown, Star } from "lucide-react";
+import { BadgeDollarSign, ChevronDown, Headset, Lock, ShieldCheck, Star } from "lucide-react";
 import Container from "@/components/shared/Container";
 import BookingWidget from "@/components/shared/BookingWidget";
 import HeroBackground from "@/components/home/HeroBackground";
+
+const trustItems = [
+  { icon: BadgeDollarSign, title: "Best Price Guarantee" },
+  { icon: ShieldCheck, title: "No Hidden Fees" },
+  { icon: Headset, title: "Direct Communication" },
+  { icon: Lock, title: "Flexible & Secure" },
+];
 
 export default function Hero({ unavailableDates }: { unavailableDates: string[] }) {
   return (
@@ -51,6 +58,25 @@ export default function Hero({ unavailableDates }: { unavailableDates: string[] 
         className="relative z-10 mx-auto mt-14 w-full max-w-6xl px-5 sm:px-8 lg:px-10"
       >
         <BookingWidget unavailableDates={unavailableDates} />
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
+        className="relative z-10 mx-auto mt-16 grid w-full max-w-6xl grid-cols-1 gap-3 px-5 sm:grid-cols-2 sm:px-8 lg:grid-cols-4 lg:px-10"
+      >
+        {trustItems.map((item) => (
+          <div
+            key={item.title}
+            className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-left backdrop-blur-sm"
+          >
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange-500/15 text-orange-300">
+              <item.icon className="h-4.5 w-4.5" />
+            </span>
+            <span className="text-sm font-semibold text-white/85">{item.title}</span>
+          </div>
+        ))}
       </motion.div>
 
       <motion.div

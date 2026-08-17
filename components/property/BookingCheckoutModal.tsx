@@ -10,7 +10,7 @@ import {
   createInstantChargeReservationAction,
   getPaymentProviderAction,
   QuoteSummary,
-} from "@/app/properties/[slug]/actions";
+} from "@/app/(marketing)/properties/[slug]/actions";
 import { Property } from "@/lib/types";
 import { formatShort } from "@/lib/calendar";
 
