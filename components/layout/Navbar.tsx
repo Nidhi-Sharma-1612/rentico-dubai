@@ -9,7 +9,7 @@ import Logo from "@/components/layout/Logo";
 import Button from "@/components/shared/Button";
 import { navLinks } from "@/lib/data/nav";
 
-export default function Navbar() {
+export default function Navbar({ logoUrl }: { logoUrl?: string }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -42,7 +42,7 @@ export default function Navbar() {
       }`}
     >
       <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10">
-        <Logo />
+        <Logo src={logoUrl} />
 
         <nav className="hidden items-center gap-8 lg:flex">
           {navLinks.map((link) => (

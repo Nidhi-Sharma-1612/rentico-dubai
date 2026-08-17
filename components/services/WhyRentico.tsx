@@ -5,8 +5,7 @@ import { MessageCircle, Users, FileText, Eye, Wallet, Percent } from "lucide-rea
 import Container from "@/components/shared/Container";
 import Button from "@/components/shared/Button";
 
-const WHATSAPP_HREF =
-  "https://wa.me/971521460222?text=Hi%20Rentico%2C%20I%27d%20like%20a%20free%20earnings%20estimate%20for%20my%20property.";
+const WHATSAPP_TEXT = "Hi%20Rentico%2C%20I%27d%20like%20a%20free%20earnings%20estimate%20for%20my%20property.";
 
 const perks = [
   { icon: Users, text: "Your own Owner Relationship Manager — not a call-centre queue" },
@@ -16,7 +15,7 @@ const perks = [
   { icon: Percent, text: "Transparent pricing — 20% of gross revenue" },
 ];
 
-export default function WhyRentico() {
+export default function WhyRentico({ whatsapp }: { whatsapp: string }) {
   return (
     <section className="py-20 sm:py-28">
       <Container className="grid grid-cols-1 gap-14 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-20">
@@ -49,7 +48,7 @@ export default function WhyRentico() {
             property does is a direct reflection of how we work.
           </p>
           <Button
-            href={WHATSAPP_HREF}
+            href={`https://wa.me/${whatsapp}?text=${WHATSAPP_TEXT}`}
             target="_blank"
             rel="noopener noreferrer"
             size="lg"

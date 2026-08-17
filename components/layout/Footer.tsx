@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 import Logo from "@/components/layout/Logo";
-import { socialLinks } from "@/lib/data/social";
+import { SOCIAL_ICONS } from "@/lib/data/social";
 import Container from "@/components/shared/Container";
+import { SiteSettings } from "@/lib/types";
 
 const quickLinks = [
   { label: "Home", href: "/" },
@@ -20,31 +21,32 @@ const legalLinks = [
   { label: "Terms & Conditions", href: "/terms-conditions" },
 ];
 
-export default function Footer() {
+export default function Footer({ settings }: { settings: SiteSettings }) {
   return (
     <footer className="bg-navy-950 text-white">
       <Container className="grid grid-cols-1 gap-12 py-16 lg:grid-cols-4 lg:py-20">
         <div className="flex flex-col gap-4 lg:col-span-2">
           <div className="w-fit rounded-xl bg-white px-4 py-3">
-            <Logo />
+            <Logo src={settings.logoUrl} />
           </div>
-          <p className="max-w-xs text-sm leading-relaxed text-white/60">
-            Luxury short-term rental management across Dubai&apos;s finest addresses —
-            direct booking, transparent pricing, and a flawless stay every time.
-          </p>
+          <p className="max-w-xs text-sm leading-relaxed text-white/60">{settings.footerTagline}</p>
           <div className="flex gap-3 pt-2">
-            {socialLinks.map((s) => (
-              <Link
-                key={s.label}
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={s.label}
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/80 transition-colors hover:bg-orange-500 hover:text-white"
-              >
-                <s.icon className="h-4 w-4" />
-              </Link>
-            ))}
+            {settings.socialLinks.map((s) => {
+              const Icon = SOCIAL_ICONS[s.label];
+              if (!Icon) return null;
+              return (
+                <Link
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white/80 transition-colors hover:bg-orange-500 hover:text-white"
+                >
+                  <Icon className="h-4 w-4" />
+                </Link>
+              );
+            })}
           </div>
         </div>
 
@@ -70,18 +72,18 @@ export default function Footer() {
           <ul className="flex flex-col gap-3 text-sm text-white/70">
             <li className="flex items-start gap-2.5">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-orange-400" />
-              1604 The One Tower, Dubai, UAE
+              {settings.address}
             </li>
             <li className="flex items-center gap-2.5">
               <Phone className="h-4 w-4 shrink-0 text-orange-400" />
-              <a href="tel:+971521460222" className="hover:text-orange-400">
-                +971-52 146 0222
+              <a href={`tel:+${settings.whatsapp}`} className="hover:text-orange-400">
+                {settings.phone}
               </a>
             </li>
             <li className="flex items-center gap-2.5">
               <Mail className="h-4 w-4 shrink-0 text-orange-400" />
-              <a href="mailto:info@renticodubai.com" className="hover:text-orange-400">
-                info@renticodubai.com
+              <a href={`mailto:${settings.email}`} className="hover:text-orange-400">
+                {settings.email}
               </a>
             </li>
           </ul>

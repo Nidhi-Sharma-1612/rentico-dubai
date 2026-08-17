@@ -7,11 +7,11 @@ import OnboardingSteps from "@/components/services/OnboardingSteps";
 import PricingAndDesign from "@/components/services/PricingAndDesign";
 import OwnerApp from "@/components/services/OwnerApp";
 import WhereWeOperate from "@/components/services/WhereWeOperate";
-import ServicesFAQ from "@/components/services/ServicesFAQ";
-import FinalCTA from "@/components/services/FinalCTA";
+import FinalCTASection from "@/components/services/FinalCTASection";
 import { db } from "@/lib/db";
 import { faqs } from "@/lib/db/schema";
 import { FAQ } from "@/lib/types";
+import { getSiteSettings } from "@/lib/data/siteSettings";
 
 export const metadata: Metadata = {
   title: "Manage Your Property | Rentico",
@@ -31,18 +31,18 @@ export default async function ServicesPage() {
   } catch (err) {
     console.error("Failed to load FAQs:", err);
   }
+  const { whatsapp } = await getSiteSettings();
 
   return (
     <>
-      <ServicesHero />
-      <WhyRentico />
+      <ServicesHero whatsapp={whatsapp} />
+      <WhyRentico whatsapp={whatsapp} />
       <WhatWeHandle />
       <OnboardingSteps />
-      <PricingAndDesign />
+      <PricingAndDesign whatsapp={whatsapp} />
       <OwnerApp />
       <WhereWeOperate />
-      <ServicesFAQ faqs={servicesFaqs} />
-      <FinalCTA />
+      <FinalCTASection faqs={servicesFaqs} whatsapp={whatsapp} />
     </>
   );
 }

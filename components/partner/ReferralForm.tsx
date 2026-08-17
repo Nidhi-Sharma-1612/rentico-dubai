@@ -5,8 +5,7 @@ import { CheckCircle2, MessageCircle, Send } from "lucide-react";
 import Button from "@/components/shared/Button";
 import { RELATIONSHIP_OPTIONS, Relationship, usePartnerAudience } from "@/components/partner/PartnerAudienceContext";
 
-const WHATSAPP_HREF =
-  "https://wa.me/971521460222?text=Hi%20Rentico%2C%20I%27d%20like%20to%20register%20a%20property%20referral.";
+const WHATSAPP_TEXT = "Hi%20Rentico%2C%20I%27d%20like%20to%20register%20a%20property%20referral.";
 
 const unitTypes = ["Studio", "1 bedroom", "2 bedroom", "3 bedroom", "4+ bedroom"];
 const ownerContactOptions = ["Yes, details below", "Not yet"];
@@ -33,7 +32,7 @@ function FieldGroup({ label, children }: { label: string; children: ReactNode })
   );
 }
 
-export default function ReferralForm() {
+export default function ReferralForm({ whatsapp }: { whatsapp: string }) {
   const [submitted, setSubmitted] = useState(false);
   const { relationship, setRelationship } = usePartnerAudience();
 
@@ -165,7 +164,7 @@ export default function ReferralForm() {
           Register this referral
         </Button>
         <a
-          href={WHATSAPP_HREF}
+          href={`https://wa.me/${whatsapp}?text=${WHATSAPP_TEXT}`}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 text-sm font-semibold text-orange-600 transition-colors hover:text-orange-700"

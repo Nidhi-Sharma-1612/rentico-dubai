@@ -5,8 +5,7 @@ import { ArrowRight, MessageCircle, Star, ShieldCheck, Timer, Smartphone } from 
 import Container from "@/components/shared/Container";
 import Button from "@/components/shared/Button";
 
-const WHATSAPP_HREF =
-  "https://wa.me/971521460222?text=Hi%20Rentico%2C%20I%27d%20like%20a%20free%20earnings%20estimate%20for%20my%20property.";
+const WHATSAPP_TEXT = "Hi%20Rentico%2C%20I%27d%20like%20a%20free%20earnings%20estimate%20for%20my%20property.";
 
 const credibility = [
   { icon: ShieldCheck, label: "Licensed UAE operator" },
@@ -15,7 +14,7 @@ const credibility = [
   { icon: Smartphone, label: "Owner App — live calendar, statements & payouts" },
 ];
 
-export default function ServicesHero() {
+export default function ServicesHero({ whatsapp }: { whatsapp: string }) {
   return (
     <section className="relative overflow-hidden bg-navy-950 pb-20 pt-24 sm:pb-28 sm:pt-32">
       <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-orange-500/10 blur-3xl" />
@@ -58,7 +57,7 @@ export default function ServicesHero() {
           className="mt-10 flex flex-col items-center gap-4 sm:flex-row"
         >
           <Button
-            href={WHATSAPP_HREF}
+            href={`https://wa.me/${whatsapp}?text=${WHATSAPP_TEXT}`}
             target="_blank"
             rel="noopener noreferrer"
             size="lg"
@@ -66,13 +65,14 @@ export default function ServicesHero() {
           >
             Get my free earnings estimate
           </Button>
-          <a
+          <Button
             href="#how-it-works"
-            className="flex items-center gap-1.5 text-sm font-semibold text-white/70 transition-colors hover:text-white"
+            variant="outline-light"
+            size="lg"
+            icon={<ArrowRight className="h-4 w-4 -rotate-45" />}
           >
             See how it works
-            <ArrowRight className="h-4 w-4 -rotate-45" />
-          </a>
+          </Button>
         </motion.div>
 
         <motion.p

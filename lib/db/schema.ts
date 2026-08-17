@@ -1,6 +1,6 @@
 import { boolean, check, integer, jsonb, pgTable, smallint, text, timestamp, unique, uuid } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
-import { ArticleBlock } from "@/lib/types";
+import { ArticleBlock, SocialLink } from "@/lib/types";
 
 export const adminUsers = pgTable("admin_users", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -83,7 +83,7 @@ export const siteSettings = pgTable(
     responseTimeNote: text("response_time_note"),
     logoUrl: text("logo_url"),
     footerTagline: text("footer_tagline"),
-    socialLinks: jsonb("social_links").notNull().default([]),
+    socialLinks: jsonb("social_links").$type<SocialLink[]>().notNull().default([]),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [check("site_settings_singleton_check", sql`${table.id} = 1`)]

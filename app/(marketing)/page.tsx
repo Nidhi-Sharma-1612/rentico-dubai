@@ -5,8 +5,7 @@ import Amenities from "@/components/home/Amenities";
 import TheStay from "@/components/home/TheStay";
 import DirectBooking from "@/components/home/DirectBooking";
 import Testimonials from "@/components/home/Testimonials";
-import FAQ from "@/components/home/FAQ";
-import CTASection from "@/components/home/CTASection";
+import FAQSection from "@/components/home/FAQSection";
 import { searchListings, getPortfolioAvailability } from "@/lib/guesty/bookingApi";
 import { mapListingToProperty } from "@/lib/guesty/mappers";
 import { AVAILABILITY_WINDOW_DAYS, toDateParam } from "@/lib/calendar";
@@ -14,6 +13,7 @@ import { Property, Testimonial, FAQ as FAQType } from "@/lib/types";
 import { db } from "@/lib/db";
 import { testimonials, faqs } from "@/lib/db/schema";
 import { asc, eq } from "drizzle-orm";
+import { getSiteSettings } from "@/lib/data/siteSettings";
 
 const FEATURED_COUNT = 3;
 
@@ -60,6 +60,8 @@ export default async function Home() {
     console.error("Failed to load FAQs:", err);
   }
 
+  const { phone, email } = await getSiteSettings();
+
   return (
     <>
       <Hero unavailableDates={unavailableDates} />
@@ -69,8 +71,7 @@ export default async function Home() {
       <TheStay />
       <DirectBooking />
       <Testimonials testimonials={homeTestimonials} />
-      <FAQ faqs={homeFaqs} />
-      <CTASection />
+      <FAQSection faqs={homeFaqs} phone={phone} email={email} />
     </>
   );
 }

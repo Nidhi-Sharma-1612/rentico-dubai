@@ -7,22 +7,10 @@ import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 import Button from "@/components/shared/Button";
 
-const BEDROOM_OPTIONS = ["Studio", "1", "2", "3", "4+"] as const;
-type Bedroom = (typeof BEDROOM_OPTIONS)[number];
-
-function bedroomLabel(b: Bedroom) {
-  return b === "Studio" ? "Studio" : `${b} bedroom`;
-}
-
-// Flat per-unit rate pending Rentico's confirmed commission rate card by
-// bedroom count — update this table once real figures are available.
-const RATE_BY_BEDROOM: Record<Bedroom, number> = {
-  Studio: 2500,
-  "1": 2500,
-  "2": 2500,
-  "3": 2500,
-  "4+": 2500,
-};
+// Client-confirmed rule: a one-time referral commission of 5% of the
+// property's yearly contracted rent, paid once the owner places the
+// property under Rentico's management and accepts the 20% management fee.
+const COMMISSION_RATE = 0.05;
 
 const FREQUENCIES = [
   { label: "Just this batch", multiplier: 1 },
@@ -30,11 +18,11 @@ const FREQUENCIES = [
   { label: "Monthly", multiplier: 12 },
 ] as const;
 
-type Row = { id: string; bedrooms: Bedroom; qty: number };
+type Row = { id: string; yearlyRent: number; qty: number };
 
 let rowSeq = 1;
 function newRow(): Row {
-  return { id: `row-${rowSeq++}`, bedrooms: "1", qty: 1 };
+  return { id: `row-${rowSeq++}`, yearlyRent: 100000, qty: 1 };
 }
 
 export default function CommissionCalculator() {
@@ -44,7 +32,7 @@ export default function CommissionCalculator() {
   const headingId = useId();
 
   const frequency = FREQUENCIES[frequencyIndex];
-  const rowTotals = rows.map((r) => r.qty * RATE_BY_BEDROOM[r.bedrooms]);
+  const rowTotals = rows.map((r) => r.yearlyRent * COMMISSION_RATE * r.qty);
   const batchTotal = rowTotals.reduce((a, b) => a + b, 0);
   const annualised = batchTotal * frequency.multiplier;
 
@@ -57,7 +45,7 @@ export default function CommissionCalculator() {
         <SectionHeading
           eyebrow="Commission Calculator"
           title="What's a referral worth?"
-          description="Add the properties you could send us. Commission is paid per unit once it goes live."
+          description="Add the properties you could send us. You earn 5% of the yearly contracted rent as a one-time referral commission."
           align="center"
         />
 
@@ -76,53 +64,57 @@ export default function CommissionCalculator() {
               </h3>
               <div className="mt-4 flex flex-col gap-3">
                 {rows.map((row) => (
-                  <div
-                    key={row.id}
-                    className="flex items-center gap-3 rounded-xl border border-navy-900/8 bg-navy-50/40 p-3"
-                  >
-                    <select
-                      value={row.bedrooms}
-                      onChange={(e) => updateRow(row.id, { bedrooms: e.target.value as Bedroom })}
-                      aria-label="Bedroom count"
-                      className="flex-1 rounded-lg border border-navy-900/12 bg-white px-3 py-2.5 text-sm font-medium text-navy-900 outline-none focus:border-orange-500"
-                    >
-                      {BEDROOM_OPTIONS.map((b) => (
-                        <option key={b} value={b}>
-                          {bedroomLabel(b)}
-                        </option>
-                      ))}
-                    </select>
+                  <div key={row.id} className="flex flex-col gap-3 rounded-xl border border-navy-900/8 bg-navy-50/40 p-3">
+                    <div className="flex items-center gap-3">
+                      <label className="flex-1">
+                        <span className="mb-1 block text-xs font-medium text-navy-900/50">
+                          Yearly contracted rent (AED)
+                        </span>
+                        <input
+                          type="number"
+                          min={0}
+                          step={1000}
+                          value={row.yearlyRent}
+                          onChange={(e) => updateRow(row.id, { yearlyRent: Math.max(0, Number(e.target.value)) })}
+                          aria-label="Yearly contracted rent"
+                          className="w-full rounded-lg border border-navy-900/12 bg-white px-3 py-2.5 text-sm font-medium text-navy-900 outline-none focus:border-orange-500"
+                        />
+                      </label>
 
-                    <div className="flex items-center gap-2 rounded-lg border border-navy-900/12 bg-white px-2 py-1.5">
-                      <button
-                        type="button"
-                        aria-label="Decrease quantity"
-                        onClick={() => updateRow(row.id, { qty: Math.max(1, row.qty - 1) })}
-                        className="flex h-6 w-6 items-center justify-center rounded-md text-navy-900/60 transition-colors hover:bg-navy-900/8"
-                      >
-                        <Minus className="h-3.5 w-3.5" />
-                      </button>
-                      <span className="w-5 text-center text-sm font-semibold text-navy-900">{row.qty}</span>
-                      <button
-                        type="button"
-                        aria-label="Increase quantity"
-                        onClick={() => updateRow(row.id, { qty: row.qty + 1 })}
-                        className="flex h-6 w-6 items-center justify-center rounded-md text-navy-900/60 transition-colors hover:bg-navy-900/8"
-                      >
-                        <Plus className="h-3.5 w-3.5" />
-                      </button>
+                      {rows.length > 1 && (
+                        <button
+                          type="button"
+                          aria-label="Remove property"
+                          onClick={() => setRows((prev) => prev.filter((r) => r.id !== row.id))}
+                          className="mt-5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-navy-900/35 transition-colors hover:bg-red-50 hover:text-red-500"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      )}
                     </div>
 
-                    {rows.length > 1 && (
-                      <button
-                        type="button"
-                        aria-label="Remove property"
-                        onClick={() => setRows((prev) => prev.filter((r) => r.id !== row.id))}
-                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-navy-900/35 transition-colors hover:bg-red-50 hover:text-red-500"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    )}
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-xs font-medium text-navy-900/50">Units at this rent</span>
+                      <div className="flex items-center gap-2 rounded-lg border border-navy-900/12 bg-white px-2 py-1.5">
+                        <button
+                          type="button"
+                          aria-label="Decrease quantity"
+                          onClick={() => updateRow(row.id, { qty: Math.max(1, row.qty - 1) })}
+                          className="flex h-6 w-6 items-center justify-center rounded-md text-navy-900/60 transition-colors hover:bg-navy-900/8"
+                        >
+                          <Minus className="h-3.5 w-3.5" />
+                        </button>
+                        <span className="w-5 text-center text-sm font-semibold text-navy-900">{row.qty}</span>
+                        <button
+                          type="button"
+                          aria-label="Increase quantity"
+                          onClick={() => updateRow(row.id, { qty: row.qty + 1 })}
+                          className="flex h-6 w-6 items-center justify-center rounded-md text-navy-900/60 transition-colors hover:bg-navy-900/8"
+                        >
+                          <Plus className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -176,13 +168,15 @@ export default function CommissionCalculator() {
                   </motion.p>
                 </AnimatePresence>
               </div>
-              <p className="mt-2 text-sm text-white/50">On this batch, paid when each unit goes live.</p>
+              <p className="mt-2 text-sm text-white/50">
+                One-time commission on this batch, once each owner signs with Rentico.
+              </p>
 
               <div className="mt-6 flex flex-col gap-2 border-t border-white/10 pt-5">
                 {rows.map((row, i) => (
                   <div key={row.id} className="flex items-center justify-between text-sm text-white/70">
                     <span>
-                      {row.qty} × {bedroomLabel(row.bedrooms)}
+                      {row.qty} × AED {row.yearlyRent.toLocaleString()} rent
                     </span>
                     <span className="font-medium text-white">AED {rowTotals[i].toLocaleString()}</span>
                   </div>
@@ -208,9 +202,10 @@ export default function CommissionCalculator() {
                 </button>
                 {showPayoutInfo && (
                   <p className="mt-2 text-xs leading-relaxed text-white/50">
-                    Once the property is live and has taken its first booking, we transfer your commission by bank
-                    within 14 days with a written statement — we don&apos;t pay on signature, since owners
-                    occasionally sign and then stall.
+                    You earn 5% of the property&apos;s yearly contracted rent as a one-time referral fee — as long as
+                    the owner places the property under Rentico&apos;s management and accepts our 20% management
+                    fee. Once the property is live and has taken its first booking, we transfer your commission by
+                    bank within 14 days with a written statement.
                   </p>
                 )}
               </div>

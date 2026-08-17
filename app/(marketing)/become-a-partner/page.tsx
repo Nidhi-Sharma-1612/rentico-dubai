@@ -11,6 +11,7 @@ import PartnerFormSection from "@/components/partner/PartnerFormSection";
 import { db } from "@/lib/db";
 import { faqs } from "@/lib/db/schema";
 import { FAQ } from "@/lib/types";
+import { getSiteSettings } from "@/lib/data/siteSettings";
 
 export const metadata: Metadata = {
   title: "Broker, Agent & Developer Partnerships | Rentico Dubai",
@@ -30,16 +31,17 @@ export default async function BecomeAPartnerPage() {
   } catch (err) {
     console.error("Failed to load FAQs:", err);
   }
+  const { whatsapp } = await getSiteSettings();
 
   return (
     <PartnerAudienceProvider>
-      <PartnerHero />
+      <PartnerHero whatsapp={whatsapp} />
       <AudienceToggle />
       <CommissionCalculator />
       <NoConflictSection />
       <PartnerSteps />
       <OperatorStats />
-      <PartnerFormSection faqs={partnerFaqs} />
+      <PartnerFormSection faqs={partnerFaqs} whatsapp={whatsapp} />
     </PartnerAudienceProvider>
   );
 }

@@ -5,8 +5,7 @@ import { MessageCircle, ShieldOff, Timer, Users, Wallet } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Button from "@/components/shared/Button";
 
-const WHATSAPP_HREF =
-  "https://wa.me/971521460222?text=Hi%20Rentico%2C%20I%27d%20like%20to%20refer%20a%20property%20owner.";
+const WHATSAPP_TEXT = "Hi%20Rentico%2C%20I%27d%20like%20to%20refer%20a%20property%20owner.";
 
 // Placeholder — swap for the real partner count once available.
 const stats = [
@@ -16,7 +15,7 @@ const stats = [
   { icon: ShieldOff, value: "Zero conflict", label: "We never list or sell your client's unit" },
 ];
 
-export default function PartnerHero() {
+export default function PartnerHero({ whatsapp }: { whatsapp: string }) {
   return (
     <section className="relative overflow-hidden bg-navy-950 pb-28 pt-16 sm:pb-32 sm:pt-20">
       <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-orange-500/10 blur-3xl" />
@@ -61,7 +60,7 @@ export default function PartnerHero() {
             See what I&apos;d earn
           </Button>
           <Button
-            href={WHATSAPP_HREF}
+            href={`https://wa.me/${whatsapp}?text=${WHATSAPP_TEXT}`}
             target="_blank"
             rel="noopener noreferrer"
             variant="outline-light"

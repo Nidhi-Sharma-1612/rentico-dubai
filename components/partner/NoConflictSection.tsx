@@ -30,7 +30,7 @@ const points = [
 
 export default function NoConflictSection() {
   return (
-    <section className="bg-orange-50/40 py-20 sm:py-28">
+    <section className="bg-navy-50/40 py-20 sm:py-28">
       <Container className="flex flex-col gap-12">
         <SectionHeading
           eyebrow="The Part Brokers Actually Worry About"

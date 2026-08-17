@@ -52,3 +52,19 @@ export interface Article {
   image: string | null;
   content: ArticleBlock[];
 }
+
+export interface SocialLink {
+  label: string;
+  href: string;
+}
+
+export interface SiteSettings {
+  phone: string;
+  whatsapp: string;
+  email: string;
+  address: string;
+  responseTimeNote: string;
+  logoUrl: string;
+  footerTagline: string;
+  socialLinks: SocialLink[];
+}
