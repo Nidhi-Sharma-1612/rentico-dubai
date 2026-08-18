@@ -15,6 +15,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
     "https://static.wixstatic.com/media/b008a0_a30f9f33808d4e72b681d89f13c5c321~mv2.png/v1/fill/w_852,h_366,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Untitled%20design.png",
   footerTagline:
     "Luxury short-term rental management across Dubai's finest addresses — direct booking, transparent pricing, and a flawless stay every time.",
+  copyrightName: "Rentico Vacation Homes Rental L.L.C.",
   socialLinks: [
     { label: "WhatsApp", href: "https://wa.me/971521460222" },
     { label: "Instagram", href: "https://www.instagram.com/renticodubai/" },
@@ -36,6 +37,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       responseTimeNote: row.responseTimeNote ?? DEFAULT_SITE_SETTINGS.responseTimeNote,
       logoUrl: row.logoUrl ?? DEFAULT_SITE_SETTINGS.logoUrl,
       footerTagline: row.footerTagline ?? DEFAULT_SITE_SETTINGS.footerTagline,
+      copyrightName: row.copyrightName ?? DEFAULT_SITE_SETTINGS.copyrightName,
       socialLinks: row.socialLinks.length ? row.socialLinks : DEFAULT_SITE_SETTINGS.socialLinks,
     };
   } catch (err) {

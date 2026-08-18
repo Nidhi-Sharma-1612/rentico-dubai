@@ -5,15 +5,23 @@ import { ArrowRight, BadgeCheck, CheckCircle2, Quote } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Button from "@/components/shared/Button";
 
-const comparisonRows = [
-  { label: "Nightly rate", direct: "15% less", other: "Platform rate" },
-  { label: "Service fee", direct: "None", other: "Added at checkout" },
-  { label: "Cancellation", direct: "Free up to 7 days before", other: "Varies, often stricter" },
-  { label: "Who you speak to", direct: "Our Dubai team, on WhatsApp", other: "Platform messaging" },
-  { label: "Early arrival, late departure", direct: "On request", other: "Rarely offered" },
-];
+interface DirectBookingContent {
+  badgeLabel: string;
+  heading: string;
+  comparisonRows: { label: string; direct: string; other: string }[];
+  quote: string;
+  buttonLabel: string;
+  buttonHref: string;
+}
 
-export default function DirectBooking() {
+export default function DirectBooking({
+  badgeLabel,
+  heading,
+  comparisonRows,
+  quote,
+  buttonLabel,
+  buttonHref,
+}: DirectBookingContent) {
   return (
     <section className="relative isolate overflow-hidden bg-navy-950 py-20 sm:py-28">
       <div className="pointer-events-none absolute -left-24 top-0 h-72 w-72 rounded-full bg-orange-500/10 blur-3xl" />
@@ -29,10 +37,10 @@ export default function DirectBooking() {
         >
           <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-orange-300">
             <BadgeCheck className="h-3.5 w-3.5" />
-            Booked direct
+            {badgeLabel}
           </span>
           <h2 className="max-w-2xl text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-[2.75rem]">
-            The same home, without the middleman.
+            {heading}
           </h2>
         </motion.div>
 
@@ -76,10 +84,10 @@ export default function DirectBooking() {
         >
           <p className="flex items-start gap-2 italic text-white/70">
             <Quote className="mt-0.5 h-5 w-5 shrink-0 text-orange-400" fill="currentColor" strokeWidth={0} />
-            Same apartments. Same team. Same standard. Fewer fees.
+            {quote}
           </p>
-          <Button href="/book-your-stay" variant="outline-light" icon={<ArrowRight className="h-4 w-4" />}>
-            See all homes
+          <Button href={buttonHref} variant="outline-light" icon={<ArrowRight className="h-4 w-4" />}>
+            {buttonLabel}
           </Button>
         </motion.div>
       </Container>

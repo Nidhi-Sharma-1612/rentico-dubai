@@ -123,6 +123,10 @@ export default function SettingsForm({ initial }: { initial: SiteSettings }) {
         <textarea name="footerTagline" defaultValue={initial.footerTagline} rows={3} required className={inputClass} />
       </Field>
 
+      <Field label="Copyright name" hint={`Shown in the footer as "© ${new Date().getFullYear()} [this name]. All rights reserved." — the year updates automatically.`}>
+        <input name="copyrightName" defaultValue={initial.copyrightName} required className={inputClass} />
+      </Field>
+
       <div className="flex flex-col gap-3 rounded-xl border border-navy-900/8 bg-navy-50/40 p-5">
         <h3 className="text-xs font-bold uppercase tracking-wider text-navy-900/40">Social links</h3>
         {socialLinks.map((s) => (

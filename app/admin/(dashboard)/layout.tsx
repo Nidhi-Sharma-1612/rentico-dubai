@@ -11,7 +11,7 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
   }
 
   return (
-    <div className="flex min-h-full">
+    <div className="flex min-h-screen">
       <aside className="flex w-64 shrink-0 flex-col border-r border-navy-900/8 bg-white p-5">
         <div className="px-2 pb-6">
           <Logo />

@@ -8,23 +8,34 @@ import Button from "@/components/shared/Button";
 import PropertyCard from "@/components/shared/PropertyCard";
 import { Property } from "@/lib/types";
 
-export default function Properties({ properties }: { properties: Property[] }) {
+interface FeaturedHomesContent {
+  eyebrow: string;
+  title: string;
+  description: string;
+  buttonLabel: string;
+  buttonHref: string;
+}
+
+export default function Properties({
+  properties,
+  eyebrow,
+  title,
+  description,
+  buttonLabel,
+  buttonHref,
+}: FeaturedHomesContent & { properties: Property[] }) {
   return (
     <section className="py-20 sm:py-28">
       <Container>
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
-          <SectionHeading
-            eyebrow="Featured Homes"
-            title="Handpicked properties, ready to book"
-            description="A glimpse of our current portfolio — every home professionally managed, cleaned and styled to a 5-star standard."
-          />
+          <SectionHeading eyebrow={eyebrow} title={title} description={description} />
           <Button
-            href="/book-your-stay"
+            href={buttonHref}
             variant="outline"
             icon={<ArrowRight className="h-4 w-4" />}
             className="hidden sm:inline-flex"
           >
-            View All Properties
+            {buttonLabel}
           </Button>
         </div>
 
@@ -64,12 +75,12 @@ export default function Properties({ properties }: { properties: Property[] }) {
         )}
 
         <Button
-          href="/book-your-stay"
+          href={buttonHref}
           variant="outline"
           icon={<ArrowRight className="h-4 w-4" />}
           className="mt-10 flex w-full justify-center sm:hidden"
         >
-          View All Properties
+          {buttonLabel}
         </Button>
       </Container>
     </section>

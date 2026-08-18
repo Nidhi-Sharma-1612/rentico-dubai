@@ -6,22 +6,20 @@ import { SOCIAL_ICONS } from "@/lib/data/social";
 import Container from "@/components/shared/Container";
 import { SiteSettings } from "@/lib/types";
 
-const quickLinks = [
-  { label: "Home", href: "/" },
-  { label: "Manage my property", href: "/manage-my-property" },
-  { label: "About Us", href: "/about-us" },
-  { label: "Become a Partner", href: "/become-a-partner" },
-  { label: "Insights", href: "/insights" },
-  { label: "Experience", href: "/experience" },
-  { label: "Contact", href: "/contact" },
-];
+interface FooterLink {
+  label: string;
+  href: string;
+}
 
-const legalLinks = [
-  { label: "Privacy Policy", href: "/privacy-policy" },
-  { label: "Terms & Conditions", href: "/terms-conditions" },
-];
-
-export default function Footer({ settings }: { settings: SiteSettings }) {
+export default function Footer({
+  settings,
+  quickLinks,
+  legalLinks,
+}: {
+  settings: SiteSettings;
+  quickLinks: FooterLink[];
+  legalLinks: FooterLink[];
+}) {
   return (
     <footer className="bg-navy-950 text-white">
       <Container className="grid grid-cols-1 gap-12 py-16 lg:grid-cols-4 lg:py-20">
@@ -93,7 +91,7 @@ export default function Footer({ settings }: { settings: SiteSettings }) {
       <div className="border-t border-white/10">
         <Container className="flex flex-col items-center justify-between gap-4 py-6 sm:flex-row">
           <p className="text-xs text-white/50">
-            © {new Date().getFullYear()} Rentico Vacation Homes Rental L.L.C. All rights reserved.
+            © {new Date().getFullYear()} {settings.copyrightName}. All rights reserved.
           </p>
           <div className="flex items-center gap-2 text-xs text-white/50">
             <span>Design and developed by</span>

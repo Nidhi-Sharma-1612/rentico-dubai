@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Newspaper, HelpCircle, Quote, FileStack, Settings } from "lucide-react";
+import { LayoutDashboard, Newspaper, HelpCircle, Quote, FileStack, Settings, UserCog } from "lucide-react";
 
 const navItems = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
@@ -11,6 +11,7 @@ const navItems = [
   { href: "/admin/testimonials", label: "Testimonials", icon: Quote },
   { href: "/admin/pages", label: "Pages", icon: FileStack },
   { href: "/admin/settings", label: "Settings", icon: Settings },
+  { href: "/admin/account", label: "Account", icon: UserCog },
 ];
 
 export default function AdminSidebar() {
