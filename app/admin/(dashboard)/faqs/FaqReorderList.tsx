@@ -40,7 +40,7 @@ function SortableRow({ faq, onDelete }: { faq: FaqRow; onDelete: (id: string) =>
       >
         <GripVertical className="h-4 w-4" />
       </button>
-      <div className="flex-1">
+      <div className="min-w-0 flex-1">
         <p className="text-sm font-bold text-navy-900">{faq.question}</p>
         <p className="mt-1 text-sm text-navy-900/55">{faq.answer}</p>
       </div>

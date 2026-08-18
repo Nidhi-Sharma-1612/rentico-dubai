@@ -205,7 +205,7 @@ function ListObjectField({
 
               {itemFieldRows.map((row, ri) =>
                 row.length === 2 ? (
-                  <div key={ri} className="grid grid-cols-2 gap-3">
+                  <div key={ri} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     {row.map((sub) => (
                       <div key={sub.key} className="flex flex-col gap-1.5">
                         <label className="text-xs font-medium text-navy-900/50">{sub.label}</label>
