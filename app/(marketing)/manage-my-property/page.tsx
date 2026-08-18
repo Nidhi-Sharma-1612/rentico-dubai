@@ -12,6 +12,7 @@ import { db } from "@/lib/db";
 import { faqs } from "@/lib/db/schema";
 import { FAQ } from "@/lib/types";
 import { getSiteSettings } from "@/lib/data/siteSettings";
+import { getServicesSections } from "@/lib/data/pageSections";
 
 export const metadata: Metadata = {
   title: "Manage Your Property | Rentico",
@@ -32,17 +33,19 @@ export default async function ServicesPage() {
     console.error("Failed to load FAQs:", err);
   }
   const { whatsapp } = await getSiteSettings();
+  const { hero, whyRentico, whatWeHandle, onboardingSteps, pricingDesign, ownerApp, whereWeOperate, cta } =
+    await getServicesSections();
 
   return (
     <>
-      <ServicesHero whatsapp={whatsapp} />
-      <WhyRentico whatsapp={whatsapp} />
-      <WhatWeHandle />
-      <OnboardingSteps />
-      <PricingAndDesign whatsapp={whatsapp} />
-      <OwnerApp />
-      <WhereWeOperate />
-      <FinalCTASection faqs={servicesFaqs} whatsapp={whatsapp} />
+      <ServicesHero whatsapp={whatsapp} {...hero} />
+      <WhyRentico whatsapp={whatsapp} {...whyRentico} />
+      <WhatWeHandle {...whatWeHandle} />
+      <OnboardingSteps {...onboardingSteps} />
+      <PricingAndDesign whatsapp={whatsapp} {...pricingDesign} />
+      <OwnerApp {...ownerApp} />
+      <WhereWeOperate {...whereWeOperate} />
+      <FinalCTASection faqs={servicesFaqs} whatsapp={whatsapp} {...cta} />
     </>
   );
 }

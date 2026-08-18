@@ -9,9 +9,10 @@ import SectionHeading from "@/components/shared/SectionHeading";
 interface WelcomeContent {
   stats: { value: string; label: string }[];
   points: string[];
+  image: string;
 }
 
-export default function Welcome({ stats, points }: WelcomeContent) {
+export default function Welcome({ stats, points, image }: WelcomeContent) {
   return (
     <section className="bg-navy-50/40 py-20 sm:py-28">
       <Container className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2 lg:gap-20">
@@ -24,7 +25,7 @@ export default function Welcome({ stats, points }: WelcomeContent) {
         >
           <div className="relative aspect-4/5 w-full overflow-hidden rounded-3xl">
             <Image
-              src="https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?q=80&w=1400&auto=format&fit=crop"
+              src={image}
               alt="Luxury Dubai living room"
               fill
               sizes="(min-width: 1024px) 45vw, 100vw"

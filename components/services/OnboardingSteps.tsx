@@ -4,39 +4,17 @@ import { motion } from "framer-motion";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 
-const steps = [
-  {
-    title: "Discovery call",
-    description:
-      "Your Owner Relationship Manager walks the property with you — condition, potential, and an honest, data-backed number on what it can realistically earn.",
-  },
-  {
-    title: "Onboarding & setup",
-    description:
-      "Professional photography, staging and furnishing recommendations, tourism-permit registration, and full multi-platform listing setup.",
-  },
-  {
-    title: "Go live and start earning",
-    description:
-      "Your property launches across every major platform, fully optimised and priced to perform from day one.",
-  },
-  {
-    title: "Ongoing partnership",
-    description:
-      "Daily pricing, 24/7 guest care, regular inspections, monthly reporting, and your dedicated contact on call.",
-  },
-];
+interface OnboardingStepsContent {
+  eyebrow: string;
+  title: string;
+  steps: { title: string; description: string }[];
+}
 
-export default function OnboardingSteps() {
+export default function OnboardingSteps({ eyebrow, title, steps }: OnboardingStepsContent) {
   return (
     <section id="how-it-works" className="scroll-mt-24 bg-navy-950 py-20 sm:py-28">
       <Container className="flex flex-col gap-14">
-        <SectionHeading
-          eyebrow="How Onboarding Works"
-          title="From first call to first payout"
-          align="center"
-          light
-        />
+        <SectionHeading eyebrow={eyebrow} title={title} align="center" light />
 
         <div className="relative grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <div className="pointer-events-none absolute top-9 left-0 right-0 hidden border-t border-dashed border-white/15 lg:block" />

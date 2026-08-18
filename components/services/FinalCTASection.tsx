@@ -90,7 +90,25 @@ function DetailsForm() {
   );
 }
 
-export default function FinalCTASection({ faqs, whatsapp }: { faqs: FAQType[]; whatsapp: string }) {
+interface ServicesCtaContent {
+  heading: string;
+  description: string;
+  whatsappButtonLabel: string;
+  sendDetailsLabel: string;
+  faqEyebrow: string;
+  faqTitle: string;
+}
+
+export default function FinalCTASection({
+  faqs,
+  whatsapp,
+  heading,
+  description,
+  whatsappButtonLabel,
+  sendDetailsLabel,
+  faqEyebrow,
+  faqTitle,
+}: ServicesCtaContent & { faqs: FAQType[]; whatsapp: string }) {
   const [showForm, setShowForm] = useState(false);
 
   return (
@@ -108,13 +126,8 @@ export default function FinalCTASection({ faqs, whatsapp }: { faqs: FAQType[]; w
             <div className="absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-white/10" />
 
             <div className="relative flex flex-col items-center gap-6">
-              <h2 className="max-w-sm text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-                Find out what your property could earn.
-              </h2>
-              <p className="max-w-sm text-base leading-relaxed text-white/85">
-                Get a free, honest estimate. Message us directly and we&apos;ll come back with a data-backed
-                estimate — and whether Rentico is the right fit.
-              </p>
+              <h2 className="max-w-sm text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{heading}</h2>
+              <p className="max-w-sm text-base leading-relaxed text-white/85">{description}</p>
 
               {!showForm && (
                 <div className="mt-2 flex flex-col items-center gap-4">
@@ -126,14 +139,14 @@ export default function FinalCTASection({ faqs, whatsapp }: { faqs: FAQType[]; w
                     size="lg"
                     icon={<MessageCircle className="h-4 w-4" />}
                   >
-                    Chat with us on WhatsApp
+                    {whatsappButtonLabel}
                   </Button>
                   <button
                     type="button"
                     onClick={() => setShowForm(true)}
                     className="text-sm font-semibold text-white/85 underline decoration-white/40 underline-offset-4 transition-colors hover:text-white"
                   >
-                    Send details instead
+                    {sendDetailsLabel}
                   </button>
                 </div>
               )}
@@ -171,9 +184,9 @@ export default function FinalCTASection({ faqs, whatsapp }: { faqs: FAQType[]; w
         >
           <div className="flex flex-col gap-3">
             <span className="w-fit rounded-full bg-orange-50 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-orange-600">
-              FAQ
+              {faqEyebrow}
             </span>
-            <h3 className="text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl">Questions owners ask us</h3>
+            <h3 className="text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl">{faqTitle}</h3>
           </div>
 
           <FAQAccordion faqs={faqs} variant="flat" initialCount={5} />

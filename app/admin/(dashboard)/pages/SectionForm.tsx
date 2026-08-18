@@ -2,8 +2,9 @@
 
 import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { ChevronDown, GripVertical, Plus, Trash2 } from "lucide-react";
+import { ChevronDown, GripVertical, Loader2, Plus, Trash2, Upload } from "lucide-react";
 import { updateSection, ActionResult } from "./actions";
+import { uploadImage } from "../upload-actions";
 import { FieldConfig, ItemFieldConfig } from "./sectionSchemas";
 import { ICONS } from "@/lib/icons";
 
@@ -88,6 +89,63 @@ function IconSelect({ value, onChange }: { value: string; onChange: (v: string) 
   );
 }
 
+function ImageField({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleUpload = async (file: File) => {
+    setUploading(true);
+    setError(null);
+    const formData = new FormData();
+    formData.append("file", file);
+    const result = await uploadImage(formData);
+    setUploading(false);
+    if (result.error) {
+      setError(result.error);
+      return;
+    }
+    if (result.url) onChange(result.url);
+  };
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-start gap-3">
+        {/* A plain <img>, not next/image — this preview needs to render
+            arbitrary pasted URLs, including domains outside next.config.ts's
+            remotePatterns, without crashing the edit form. */}
+        <div className="relative h-16 w-24 shrink-0 overflow-hidden rounded-lg border border-navy-900/8 bg-navy-900/5">
+          {value && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={value} alt="" className="h-full w-full object-cover" />
+          )}
+        </div>
+        <div className="flex flex-1 flex-col gap-2">
+          <input
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="Paste an image URL…"
+            className={inputClass}
+          />
+          <label className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-navy-900/15 bg-white px-3 py-2 text-xs font-semibold text-navy-900 transition-colors hover:border-orange-300 hover:text-orange-600">
+            {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
+            {uploading ? "Uploading..." : "Upload from device"}
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleUpload(file);
+              }}
+            />
+          </label>
+        </div>
+      </div>
+      {error && <p className="text-xs font-medium text-red-600">{error}</p>}
+    </div>
+  );
+}
+
 function ItemFieldInput({
   field,
   value,
@@ -104,6 +162,9 @@ function ItemFieldInput({
   }
   if (field.type === "icon") {
     return <IconSelect value={value} onChange={onChange} />;
+  }
+  if (field.type === "image") {
+    return <ImageField value={value} onChange={onChange} />;
   }
   return <input value={value} onChange={(e) => onChange(e.target.value)} className={inputClass} />;
 }
@@ -268,6 +329,10 @@ function TopField({
 
       {field.type === "icon" && (
         <IconSelect value={(content[field.key] as string) ?? ""} onChange={(v) => setField(field.key, v)} />
+      )}
+
+      {field.type === "image" && (
+        <ImageField value={(content[field.key] as string) ?? ""} onChange={(v) => setField(field.key, v)} />
       )}
 
       {field.type === "list-text" && (

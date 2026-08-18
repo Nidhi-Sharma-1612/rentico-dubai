@@ -25,7 +25,19 @@ function newRow(): Row {
   return { id: `row-${rowSeq++}`, yearlyRent: 100000, qty: 1 };
 }
 
-export default function CommissionCalculator() {
+interface CommissionCalculatorContent {
+  eyebrow: string;
+  title: string;
+  description: string;
+  disclosureText: string;
+}
+
+export default function CommissionCalculator({
+  eyebrow,
+  title,
+  description,
+  disclosureText,
+}: CommissionCalculatorContent) {
   const [rows, setRows] = useState<Row[]>([newRow()]);
   const [frequencyIndex, setFrequencyIndex] = useState(1);
   const [showPayoutInfo, setShowPayoutInfo] = useState(false);
@@ -42,12 +54,7 @@ export default function CommissionCalculator() {
   return (
     <section id="calculator" className="py-20 sm:py-28">
       <Container className="flex flex-col gap-14">
-        <SectionHeading
-          eyebrow="Commission Calculator"
-          title="What's a referral worth?"
-          description="Add the properties you could send us. You earn 5% of the yearly contracted rent as a one-time referral commission."
-          align="center"
-        />
+        <SectionHeading eyebrow={eyebrow} title={title} description={description} align="center" />
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -200,14 +207,7 @@ export default function CommissionCalculator() {
                   <Info className="h-3.5 w-3.5" />
                   How and when this gets paid
                 </button>
-                {showPayoutInfo && (
-                  <p className="mt-2 text-xs leading-relaxed text-white/50">
-                    You earn 5% of the property&apos;s yearly contracted rent as a one-time referral fee — as long as
-                    the owner places the property under Rentico&apos;s management and accepts our 20% management
-                    fee. Once the property is live and has taken its first booking, we transfer your commission by
-                    bank within 14 days with a written statement.
-                  </p>
-                )}
+                {showPayoutInfo && <p className="mt-2 text-xs leading-relaxed text-white/50">{disclosureText}</p>}
               </div>
             </div>
 

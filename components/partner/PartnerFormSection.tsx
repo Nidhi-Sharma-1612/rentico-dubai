@@ -7,7 +7,23 @@ import ReferralForm from "@/components/partner/ReferralForm";
 import FAQAccordion from "@/components/shared/FAQAccordion";
 import { FAQ as FAQType } from "@/lib/types";
 
-export default function PartnerFormSection({ faqs, whatsapp }: { faqs: FAQType[]; whatsapp: string }) {
+interface PartnerFormSectionContent {
+  registerEyebrow: string;
+  registerTitle: string;
+  registerDescription: string;
+  faqEyebrow: string;
+  faqTitle: string;
+}
+
+export default function PartnerFormSection({
+  faqs,
+  whatsapp,
+  registerEyebrow,
+  registerTitle,
+  registerDescription,
+  faqEyebrow,
+  faqTitle,
+}: PartnerFormSectionContent & { faqs: FAQType[]; whatsapp: string }) {
   return (
     <section id="register" className="scroll-mt-24 py-20 sm:py-28">
       <Container className="grid grid-cols-1 gap-14 lg:grid-cols-2 lg:gap-16">
@@ -18,11 +34,7 @@ export default function PartnerFormSection({ faqs, whatsapp }: { faqs: FAQType[]
           transition={{ duration: 0.5 }}
           className="flex flex-col gap-6"
         >
-          <SectionHeading
-            eyebrow="Register a Referral"
-            title="Send it over"
-            description="Two minutes. Registering protects your referral for 90 days, even if the owner takes their time."
-          />
+          <SectionHeading eyebrow={registerEyebrow} title={registerTitle} description={registerDescription} />
           <ReferralForm whatsapp={whatsapp} />
         </motion.div>
 
@@ -33,7 +45,7 @@ export default function PartnerFormSection({ faqs, whatsapp }: { faqs: FAQType[]
           transition={{ duration: 0.5, delay: 0.1 }}
           className="flex flex-col gap-6"
         >
-          <SectionHeading eyebrow="Partner FAQ" title="Before you send us anything" />
+          <SectionHeading eyebrow={faqEyebrow} title={faqTitle} />
           <FAQAccordion faqs={faqs} />
         </motion.div>
       </Container>

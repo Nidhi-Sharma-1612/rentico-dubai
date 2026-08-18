@@ -5,42 +5,17 @@ import { MapPin } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 
-const areas = [
-  {
-    name: "Downtown Dubai",
-    description: "Home to Burj Khalifa and Dubai Mall — the city's most iconic address.",
-  },
-  {
-    name: "Business Bay",
-    description: "Dubai's central business district, minutes from Downtown.",
-  },
-  {
-    name: "Palm Jumeirah",
-    description: "Iconic waterfront living with private beach access.",
-  },
-  {
-    name: "Dubai Marina",
-    description: "A vibrant waterfront community with skyline and marina views.",
-  },
-  {
-    name: "Dubai Hills",
-    description: "A modern master-planned community with golf-course views.",
-  },
-  {
-    name: "Sobha Hartland",
-    description: "A fast-growing waterfront community by Meydan, close to Downtown Dubai.",
-  },
-];
+interface AreasServedContent {
+  eyebrow: string;
+  title: string;
+  areas: { name: string; description: string }[];
+}
 
-export default function AreasServed() {
+export default function AreasServed({ eyebrow, title, areas }: AreasServedContent) {
   return (
     <section className="py-20 sm:py-28">
       <Container className="flex flex-col gap-14">
-        <SectionHeading
-          eyebrow="Where We Operate"
-          title="Present across Dubai's most sought-after districts"
-          align="center"
-        />
+        <SectionHeading eyebrow={eyebrow} title={title} align="center" />
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {areas.map((area, i) => (

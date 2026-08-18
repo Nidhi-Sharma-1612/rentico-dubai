@@ -18,28 +18,16 @@ const OperatingMap = dynamic(() => import("./OperatingMap"), {
 const dubaiAreas = ["Downtown", "Business Bay", "Marina", "Palm Jumeirah", "Dubai Hills", "MBR City", "JVC"];
 const abuDhabiAreas = ["Saadiyat", "Yas", "Al Reem", "Al Raha Beach", "Corniche"];
 
-const stats = [
-  { label: "Portfolio size", value: "Curated", caption: "Quality-gated on entry" },
-  { label: "Occupancy", value: "80–90%", caption: "Sustained, portfolio-wide" },
-  { label: "Channel coverage", value: "5+ major OTAs", caption: "Optimised per platform" },
-  { label: "Design & furnishing", value: "In-house", caption: "Three package tiers" },
-  { label: "Reporting", value: "Monthly", caption: "Aligned to your targets" },
-];
-
-const results = [
-  {
-    quote:
-      "Rentico has exceeded my expectations with their professionalism and attention to detail. They take care of every aspect of managing my property, allowing me to enjoy consistent returns without any hassle.",
-    name: "Firas",
-    role: "Property owner, 1BR Dubai Hills",
-  },
-  {
-    quote:
-      "Since partnering with Rentico, managing my property has become completely stress-free. Their transparent communication, reliable service, and commitment to quality have made them a partner I can truly trust.",
-    name: "Linda",
-    role: "Property owner, 2BR Burj Royale",
-  },
-];
+interface WhereWeOperateContent {
+  eyebrow: string;
+  title: string;
+  description: string;
+  portfolioHeading: string;
+  portfolioDescription: string;
+  stats: { label: string; value: string; caption: string }[];
+  resultsHeading: string;
+  results: { quote: string; name: string; role: string }[];
+}
 
 function AreaList({ title, areas }: { title: string; areas: string[] }) {
   return (
@@ -65,17 +53,21 @@ function AreaList({ title, areas }: { title: string; areas: string[] }) {
   );
 }
 
-export default function WhereWeOperate() {
+export default function WhereWeOperate({
+  eyebrow,
+  title,
+  description,
+  portfolioHeading,
+  portfolioDescription,
+  stats,
+  resultsHeading,
+  results,
+}: WhereWeOperateContent) {
   return (
     <section className="bg-navy-50/40 py-20 sm:py-28">
       <Container className="flex flex-col gap-16">
         <div className="flex flex-col gap-10">
-          <SectionHeading
-            eyebrow="Where We Operate"
-            title="Dubai & Abu Dhabi, and nowhere we can't do it well"
-            description="Rentico operates where guests actually search and pay a premium to stay. We say no more often than we say yes — a smaller, consistent portfolio outperforms a large, uneven one."
-            align="center"
-          />
+          <SectionHeading eyebrow={eyebrow} title={title} description={description} align="center" />
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -103,13 +95,8 @@ export default function WhereWeOperate() {
           className="flex flex-col gap-8"
         >
           <div className="mx-auto max-w-2xl text-center">
-            <h3 className="text-xl font-bold text-navy-900 sm:text-2xl">Our portfolio standard</h3>
-            <p className="mt-3 text-base leading-relaxed text-navy-900/60">
-              Every home we manage is professionally shot, accurately listed, furnished to one consistent standard,
-              and walked through before each guest arrives. Dubai is a crowded market — the listings that
-              consistently perform aren&apos;t the cheapest, they&apos;re the ones that read right and deliver
-              exactly what they promised, stay after stay.
-            </p>
+            <h3 className="text-xl font-bold text-navy-900 sm:text-2xl">{portfolioHeading}</h3>
+            <p className="mt-3 text-base leading-relaxed text-navy-900/60">{portfolioDescription}</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-5">
@@ -124,7 +111,7 @@ export default function WhereWeOperate() {
         </motion.div>
 
         <div className="flex flex-col gap-8">
-          <h3 className="text-center text-xl font-bold text-navy-900 sm:text-2xl">Owner results</h3>
+          <h3 className="text-center text-xl font-bold text-navy-900 sm:text-2xl">{resultsHeading}</h3>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             {results.map((r, i) => (
               <motion.div

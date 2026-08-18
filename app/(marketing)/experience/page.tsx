@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { faqs } from "@/lib/db/schema";
 import { FAQ } from "@/lib/types";
 import { getSiteSettings } from "@/lib/data/siteSettings";
+import { getExperienceSections } from "@/lib/data/pageSections";
 
 export const metadata: Metadata = {
   title: "Experience | Rentico",
@@ -27,16 +28,13 @@ export default async function ExperiencePage() {
     console.error("Failed to load FAQs:", err);
   }
   const { whatsapp } = await getSiteSettings();
+  const { hero, categories, cta } = await getExperienceSections();
 
   return (
     <>
-      <PageHero
-        eyebrow="The Experience"
-        title="Everything Dubai has to offer, already arranged"
-        description="From the moment you land to the last night out, our concierge team turns your stay into an itinerary — transport, celebrations, adventure, dining, and the access that usually takes connections."
-      />
-      <ExperienceCategories />
-      <ExperienceFAQSection faqs={experienceFaqs} whatsapp={whatsapp} />
+      <PageHero eyebrow={hero.eyebrow} title={hero.title} description={hero.description} />
+      <ExperienceCategories items={categories.items} />
+      <ExperienceFAQSection faqs={experienceFaqs} whatsapp={whatsapp} {...cta} />
     </>
   );
 }
