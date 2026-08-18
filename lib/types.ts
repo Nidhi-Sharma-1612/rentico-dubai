@@ -66,5 +66,6 @@ export interface SiteSettings {
   responseTimeNote: string;
   logoUrl: string;
   footerTagline: string;
+  copyrightName: string;
   socialLinks: SocialLink[];
 }

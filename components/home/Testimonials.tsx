@@ -18,7 +18,18 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-export default function Testimonials({ testimonials }: { testimonials: Testimonial[] }) {
+interface WhatPeopleSayContent {
+  eyebrow: string;
+  title: string;
+  description: string;
+}
+
+export default function Testimonials({
+  testimonials,
+  eyebrow,
+  title,
+  description,
+}: WhatPeopleSayContent & { testimonials: Testimonial[] }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -51,12 +62,7 @@ export default function Testimonials({ testimonials }: { testimonials: Testimoni
   return (
     <section className="bg-navy-50/40 py-20 sm:py-28">
       <Container className="flex flex-col gap-14">
-        <SectionHeading
-          eyebrow="What People Say"
-          title="Loved by guests and owners alike"
-          description="Real feedback from the people who stay in — and own — our managed homes."
-          align="center"
-        />
+        <SectionHeading eyebrow={eyebrow} title={title} description={description} align="center" />
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -6,20 +6,12 @@ import { CheckCircle2 } from "lucide-react";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 
-const stats = [
-  { value: "2025", label: "Founded" },
-  { value: "20+", label: "Managed Properties" },
-  { value: "6", label: "Prime Districts" },
-  { value: "4.9★", label: "Average Rating" },
-];
+interface WelcomeContent {
+  stats: { value: string; label: string }[];
+  points: string[];
+}
 
-const points = [
-  "Every home professionally cleaned, styled and maintained to a 5-star standard",
-  "Homes across Downtown, Business Bay, Palm Jumeirah, Dubai Marina, Dubai Hills & Sobha Hartland",
-  "A dedicated local team available around the clock",
-];
-
-export default function Welcome() {
+export default function Welcome({ stats, points }: WelcomeContent) {
   return (
     <section className="bg-navy-50/40 py-20 sm:py-28">
       <Container className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2 lg:gap-20">

@@ -7,7 +7,32 @@ import Button from "@/components/shared/Button";
 import FAQAccordion from "@/components/shared/FAQAccordion";
 import { FAQ as FAQType } from "@/lib/types";
 
-export default function FAQSection({ faqs, phone, email }: { faqs: FAQType[]; phone: string; email: string }) {
+interface CtaContent {
+  heading: string;
+  description: string;
+  primaryButtonLabel: string;
+  primaryButtonHref: string;
+  secondaryButtonLabel: string;
+  secondaryButtonHref: string;
+  faqEyebrow: string;
+  faqHeadingLine1: string;
+  faqHeadingLine2: string;
+}
+
+export default function FAQSection({
+  faqs,
+  phone,
+  email,
+  heading,
+  description,
+  primaryButtonLabel,
+  primaryButtonHref,
+  secondaryButtonLabel,
+  secondaryButtonHref,
+  faqEyebrow,
+  faqHeadingLine1,
+  faqHeadingLine2,
+}: CtaContent & { faqs: FAQType[]; phone: string; email: string }) {
   const telHref = `tel:+${phone.replace(/\D/g, "")}`;
 
   return (
@@ -25,20 +50,15 @@ export default function FAQSection({ faqs, phone, email }: { faqs: FAQType[]; ph
             <div className="absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-white/10" />
 
             <div className="relative flex flex-col items-center gap-6">
-              <h2 className="max-w-sm text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-                Your next level stay starts here
-              </h2>
-              <p className="max-w-sm text-base leading-relaxed text-white/85">
-                Whether you&apos;re booking a stay or listing a property, the Rentico team is ready to help — speak
-                to us today.
-              </p>
+              <h2 className="max-w-sm text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{heading}</h2>
+              <p className="max-w-sm text-base leading-relaxed text-white/85">{description}</p>
 
               <div className="mt-2 flex flex-col items-center gap-3">
-                <Button href="/book-your-stay" variant="secondary" size="lg" icon={<ArrowRight className="h-4 w-4" />}>
-                  Book Your Stay
+                <Button href={primaryButtonHref} variant="secondary" size="lg" icon={<ArrowRight className="h-4 w-4" />}>
+                  {primaryButtonLabel}
                 </Button>
-                <Button href="/become-a-partner" variant="white" size="lg">
-                  List Your Property
+                <Button href={secondaryButtonHref} variant="white" size="lg">
+                  {secondaryButtonLabel}
                 </Button>
               </div>
 
@@ -65,11 +85,11 @@ export default function FAQSection({ faqs, phone, email }: { faqs: FAQType[]; ph
         >
           <div className="flex flex-col gap-3">
             <span className="w-fit rounded-full bg-orange-50 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-orange-600">
-              FAQ
+              {faqEyebrow}
             </span>
             <h3 className="text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl">
-              Common questions,
-              <span className="block italic text-navy-900/55">answered clearly</span>
+              {faqHeadingLine1}
+              <span className="block italic text-navy-900/55">{faqHeadingLine2}</span>
             </h3>
           </div>
 

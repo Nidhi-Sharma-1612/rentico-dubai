@@ -83,6 +83,7 @@ export const siteSettings = pgTable(
     responseTimeNote: text("response_time_note"),
     logoUrl: text("logo_url"),
     footerTagline: text("footer_tagline"),
+    copyrightName: text("copyright_name"),
     socialLinks: jsonb("social_links").$type<SocialLink[]>().notNull().default([]),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },

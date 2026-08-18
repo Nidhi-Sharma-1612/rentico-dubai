@@ -7,9 +7,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { CalendarCheck, Menu, User, X } from "lucide-react";
 import Logo from "@/components/layout/Logo";
 import Button from "@/components/shared/Button";
-import { navLinks } from "@/lib/data/nav";
 
-export default function Navbar({ logoUrl }: { logoUrl?: string }) {
+interface NavLink {
+  label: string;
+  href: string;
+}
+
+export default function Navbar({ logoUrl, links }: { logoUrl?: string; links: NavLink[] }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -45,7 +49,7 @@ export default function Navbar({ logoUrl }: { logoUrl?: string }) {
         <Logo src={logoUrl} />
 
         <nav className="hidden items-center gap-8 lg:flex">
-          {navLinks.map((link) => (
+          {links.map((link) => (
             <Link key={link.href} href={link.href} className={linkClass(isActive(link.href))}>
               {link.label}
             </Link>
@@ -80,7 +84,7 @@ export default function Navbar({ logoUrl }: { logoUrl?: string }) {
             className="overflow-hidden border-t border-navy-900/8 bg-white lg:hidden"
           >
             <div className="flex flex-col gap-1 px-5 py-4">
-              {navLinks.map((link) => (
+              {links.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}

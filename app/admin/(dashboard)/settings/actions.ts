@@ -19,6 +19,7 @@ const settingsSchema = z.object({
   responseTimeNote: z.string().min(1, "Response time note is required."),
   logoUrl: z.string().url("Enter a valid logo URL."),
   footerTagline: z.string().min(1, "Footer tagline is required."),
+  copyrightName: z.string().min(1, "Copyright name is required."),
   socialLinks: z.array(socialLinkSchema),
 });
 
@@ -46,6 +47,7 @@ export async function updateSiteSettings(_prevState: ActionResult, formData: For
     responseTimeNote: formData.get("responseTimeNote"),
     logoUrl: formData.get("logoUrl"),
     footerTagline: formData.get("footerTagline"),
+    copyrightName: formData.get("copyrightName"),
     socialLinks,
   });
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Invalid input." };

@@ -14,6 +14,7 @@ import { db } from "@/lib/db";
 import { testimonials, faqs } from "@/lib/db/schema";
 import { asc, eq } from "drizzle-orm";
 import { getSiteSettings } from "@/lib/data/siteSettings";
+import { getHomeSections } from "@/lib/data/pageSections";
 
 const FEATURED_COUNT = 3;
 
@@ -61,17 +62,19 @@ export default async function Home() {
   }
 
   const { phone, email } = await getSiteSettings();
+  const { hero, featuredHomes, welcome, amenities, theStay, directBooking, whatPeopleSay, cta } =
+    await getHomeSections();
 
   return (
     <>
-      <Hero unavailableDates={unavailableDates} />
-      <Welcome />
-      <Properties properties={featuredProperties} />
-      <Amenities />
-      <TheStay />
-      <DirectBooking />
-      <Testimonials testimonials={homeTestimonials} />
-      <FAQSection faqs={homeFaqs} phone={phone} email={email} />
+      <Hero unavailableDates={unavailableDates} {...hero} />
+      <Welcome stats={welcome.stats} points={welcome.points} />
+      <Properties properties={featuredProperties} {...featuredHomes} />
+      <Amenities {...amenities} />
+      <TheStay {...theStay} />
+      <DirectBooking {...directBooking} />
+      <Testimonials testimonials={homeTestimonials} {...whatPeopleSay} />
+      <FAQSection faqs={homeFaqs} phone={phone} email={email} {...cta} />
     </>
   );
 }
