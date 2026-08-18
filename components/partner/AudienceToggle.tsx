@@ -3,13 +3,25 @@
 import Container from "@/components/shared/Container";
 import { usePartnerAudience } from "@/components/partner/PartnerAudienceContext";
 
-const audiences = [
-  { title: "Brokers & agents", description: "Refer owners, earn per unit", value: "Broker or agent" },
-  { title: "Developers & portfolios", description: "Bulk units, handover to revenue", value: "Developer" },
-] as const;
+interface AudienceToggleContent {
+  brokerTitle: string;
+  brokerDescription: string;
+  developerTitle: string;
+  developerDescription: string;
+}
 
-export default function AudienceToggle() {
+export default function AudienceToggle({
+  brokerTitle,
+  brokerDescription,
+  developerTitle,
+  developerDescription,
+}: AudienceToggleContent) {
   const { relationship, setRelationship } = usePartnerAudience();
+
+  const audiences = [
+    { title: brokerTitle, description: brokerDescription, value: "Broker or agent" },
+    { title: developerTitle, description: developerDescription, value: "Developer" },
+  ] as const;
 
   return (
     <div className="relative z-10 -mt-10 sm:-mt-12">

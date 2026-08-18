@@ -68,7 +68,7 @@ export default async function Home() {
   return (
     <>
       <Hero unavailableDates={unavailableDates} {...hero} />
-      <Welcome stats={welcome.stats} points={welcome.points} />
+      <Welcome stats={welcome.stats} points={welcome.points} image={welcome.image} />
       <Properties properties={featuredProperties} {...featuredHomes} />
       <Amenities {...amenities} />
       <TheStay {...theStay} />

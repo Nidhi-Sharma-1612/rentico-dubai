@@ -17,6 +17,14 @@ export interface ActionResult {
 // actually renders on, not just the admin editor route.
 const REVALIDATE_PATHS: Record<string, string[]> = {
   home: ["/"],
+  experience: ["/experience"],
+  "become-a-partner": ["/become-a-partner"],
+  "manage-my-property": ["/manage-my-property"],
+  "about-us": ["/about-us"],
+  contact: ["/contact"],
+  insights: ["/insights"],
+  "owner-login": ["/owner-login"],
+  "book-your-stay": ["/book-your-stay"],
 };
 
 export async function updateSection(

@@ -10,6 +10,7 @@ import CTABanner from "@/components/shared/CTABanner";
 import { db } from "@/lib/db";
 import { testimonials } from "@/lib/db/schema";
 import { Testimonial } from "@/lib/types";
+import { getAboutSections } from "@/lib/data/pageSections";
 
 export const metadata: Metadata = {
   title: "About Us | Rentico Dubai",
@@ -31,26 +32,17 @@ export default async function AboutUsPage() {
     console.error("Failed to load the featured testimonial:", err);
   }
 
+  const { hero, story, stats, values, areasServed, cta } = await getAboutSections();
+
   return (
     <>
-      <PageHero
-        eyebrow="About Rentico"
-        title="A new standard for short-term stays in Dubai"
-        description="We manage luxury homes the way we'd want our own managed — with care, transparency and hospitality-grade service."
-      />
-      <Story />
-      <StatsBand />
-      <Values />
-      <AreasServed />
+      <PageHero eyebrow={hero.eyebrow} title={hero.title} description={hero.description} />
+      <Story {...story} />
+      <StatsBand {...stats} />
+      <Values {...values} />
+      <AreasServed {...areasServed} />
       <AboutTestimonial testimonial={featuredTestimonial} />
-      <CTABanner
-        title="Ready to work with us?"
-        description="Whether you're booking a stay or listing a property, we'd love to hear from you."
-        primaryLabel="Book Your Stay"
-        primaryHref="/book-your-stay"
-        secondaryLabel="Become a Partner"
-        secondaryHref="/become-a-partner"
-      />
+      <CTABanner {...cta} />
     </>
   );
 }

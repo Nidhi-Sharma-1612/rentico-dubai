@@ -7,6 +7,7 @@ import CTABanner from "@/components/shared/CTABanner";
 import { db } from "@/lib/db";
 import { articles as articlesTable } from "@/lib/db/schema";
 import { Article } from "@/lib/types";
+import { getInsightsSections } from "@/lib/data/pageSections";
 
 export const metadata: Metadata = {
   title: "Insights | Rentico Dubai",
@@ -28,14 +29,11 @@ export default async function InsightsPage() {
   }
 
   const [featuredArticle, ...restArticles] = articles;
+  const { hero, cta } = await getInsightsSections();
 
   return (
     <>
-      <PageHero
-        eyebrow="Insights"
-        title="Guides, market data and tips for Dubai property owners"
-        description="Everything you need to know about running a successful short-term rental in Dubai — from regulation to returns."
-      />
+      <PageHero eyebrow={hero.eyebrow} title={hero.title} description={hero.description} />
 
       <section className="py-20 sm:py-28">
         <Container>
@@ -54,12 +52,7 @@ export default async function InsightsPage() {
         </Container>
       </section>
 
-      <CTABanner
-        title="Have a property in mind?"
-        description="Get a free, no-obligation revenue estimate from our team."
-        primaryLabel="Become a Partner"
-        primaryHref="/become-a-partner"
-      />
+      <CTABanner {...cta} />
     </>
   );
 }

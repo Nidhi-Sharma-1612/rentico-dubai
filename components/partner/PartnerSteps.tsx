@@ -4,38 +4,18 @@ import { motion } from "framer-motion";
 import Container from "@/components/shared/Container";
 import SectionHeading from "@/components/shared/SectionHeading";
 
-const steps = [
-  {
-    title: "Send us the property",
-    description:
-      "Use the form below, WhatsApp, or your partner dashboard. Building, size and the owner's contact — that's all we need. Registering first protects the referral for 90 days.",
-  },
-  {
-    title: "We quote the owner",
-    description:
-      "We build a data-backed earnings projection from comparable units in that exact building and present it to the owner — with you named as the introducer.",
-  },
-  {
-    title: "We onboard and launch",
-    description:
-      "Permits, furnishing, photography, listings across every channel. You do nothing. You get a note when the unit goes live.",
-  },
-  {
-    title: "You get paid",
-    description: "Bank transfer with a written commission statement. No chasing, no invoicing games, no “next month.”",
-  },
-];
+interface PartnerStepsContent {
+  eyebrow: string;
+  title: string;
+  description: string;
+  steps: { title: string; description: string }[];
+}
 
-export default function PartnerSteps() {
+export default function PartnerSteps({ eyebrow, title, description, steps }: PartnerStepsContent) {
   return (
     <section className="py-20 sm:py-28">
       <Container className="flex flex-col gap-14">
-        <SectionHeading
-          eyebrow="How It Works"
-          title="Four steps, most of them ours"
-          description="Your work ends at step one."
-          align="center"
-        />
+        <SectionHeading eyebrow={eyebrow} title={title} description={description} align="center" />
 
         <div className="relative grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <div className="pointer-events-none absolute top-9 left-0 right-0 hidden border-t border-dashed border-navy-900/12 lg:block" />

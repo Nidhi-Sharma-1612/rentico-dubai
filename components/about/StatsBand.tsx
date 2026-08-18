@@ -3,14 +3,11 @@
 import { motion } from "framer-motion";
 import Container from "@/components/shared/Container";
 
-const stats = [
-  { value: "2025", label: "Founded in Dubai" },
-  { value: "20+", label: "Managed Properties" },
-  { value: "6", label: "Prime Districts" },
-  { value: "4.9★", label: "Average Guest Rating" },
-];
+interface StatsBandContent {
+  stats: { value: string; label: string }[];
+}
 
-export default function StatsBand() {
+export default function StatsBand({ stats }: StatsBandContent) {
   return (
     <section className="bg-navy-950 py-16 sm:py-20">
       <Container>

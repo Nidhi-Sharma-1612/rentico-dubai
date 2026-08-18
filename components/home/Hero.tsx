@@ -12,6 +12,7 @@ interface HeroContent {
   headingPrefix: string;
   headingHighlight: string;
   description: string;
+  backgroundImage: string;
   trustItems: { icon: string; title: string }[];
 }
 
@@ -21,11 +22,12 @@ export default function Hero({
   headingPrefix,
   headingHighlight,
   description,
+  backgroundImage,
   trustItems,
 }: HeroContent & { unavailableDates: string[] }) {
   return (
     <section className="relative isolate flex min-h-[calc(100vh-5rem)] flex-col justify-start overflow-hidden bg-navy-950 pt-36 pb-20 sm:pt-44 sm:pb-24 lg:pt-52 lg:pb-28">
-      <HeroBackground />
+      <HeroBackground posterUrl={backgroundImage} />
 
       <Container className="flex flex-col items-center text-center">
         <motion.div

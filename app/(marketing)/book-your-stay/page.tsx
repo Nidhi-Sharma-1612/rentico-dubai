@@ -11,6 +11,7 @@ import { mapListingToProperty } from "@/lib/guesty/mappers";
 import { buildBookingQuery, hasActiveSearch, parseBookingSearchParams } from "@/lib/booking";
 import { AVAILABILITY_WINDOW_DAYS, toDateParam } from "@/lib/calendar";
 import { Property } from "@/lib/types";
+import { getBookYourStayHero } from "@/lib/data/pageSections";
 
 export const metadata: Metadata = {
   title: "Book Your Stay | Rentico Dubai",
@@ -96,6 +97,7 @@ export default async function BookYourStayPage({
 
   // Carry the dates/guests forward into whichever property a guest opens next.
   const forwardQuery = buildBookingQuery({ checkIn: search.checkIn, checkOut: search.checkOut, guests: search.guests });
+  const hero = await getBookYourStayHero();
 
   const heading = loadError
     ? "Live availability is temporarily unavailable"
@@ -115,11 +117,7 @@ export default async function BookYourStayPage({
 
   return (
     <>
-      <PageHero
-        eyebrow="Book Your Stay"
-        title="Find your next luxury stay in Dubai"
-        description="Search live availability across our managed portfolio and book directly — no third-party fees."
-      >
+      <PageHero eyebrow={hero.eyebrow} title={hero.title} description={hero.description}>
         <div className="mt-10 w-full max-w-5xl">
           <BookingWidget
             unavailableDates={unavailableDates}

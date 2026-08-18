@@ -7,7 +7,27 @@ import Button from "@/components/shared/Button";
 import FAQAccordion from "@/components/shared/FAQAccordion";
 import { FAQ as FAQType } from "@/lib/types";
 
-export default function ExperienceFAQSection({ faqs, whatsapp }: { faqs: FAQType[]; whatsapp: string }) {
+interface CtaContent {
+  heading: string;
+  description: string;
+  whatsappButtonLabel: string;
+  secondaryButtonLabel: string;
+  secondaryButtonHref: string;
+  faqEyebrow: string;
+  faqHeading: string;
+}
+
+export default function ExperienceFAQSection({
+  faqs,
+  whatsapp,
+  heading,
+  description,
+  whatsappButtonLabel,
+  secondaryButtonLabel,
+  secondaryButtonHref,
+  faqEyebrow,
+  faqHeading,
+}: CtaContent & { faqs: FAQType[]; whatsapp: string }) {
   return (
     <section className="py-20 sm:py-28">
       <Container className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16">
@@ -23,13 +43,8 @@ export default function ExperienceFAQSection({ faqs, whatsapp }: { faqs: FAQType
             <div className="absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-white/10" />
 
             <div className="relative flex flex-col items-center gap-6">
-              <h2 className="max-w-sm text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-                Tell us the occasion, we&apos;ll handle the rest.
-              </h2>
-              <p className="max-w-sm text-base leading-relaxed text-white/85">
-                Message our concierge team with your dates and what you&apos;re after — we&apos;ll come back with
-                options, same day.
-              </p>
+              <h2 className="max-w-sm text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{heading}</h2>
+              <p className="max-w-sm text-base leading-relaxed text-white/85">{description}</p>
 
               <div className="mt-2 flex flex-col items-center gap-3">
                 <Button
@@ -40,10 +55,10 @@ export default function ExperienceFAQSection({ faqs, whatsapp }: { faqs: FAQType
                   size="lg"
                   icon={<MessageCircle className="h-4 w-4" />}
                 >
-                  Chat with us on WhatsApp
+                  {whatsappButtonLabel}
                 </Button>
-                <Button href="/book-your-stay" variant="white" size="lg" icon={<ArrowRight className="h-4 w-4" />}>
-                  Book Your Stay
+                <Button href={secondaryButtonHref} variant="white" size="lg" icon={<ArrowRight className="h-4 w-4" />}>
+                  {secondaryButtonLabel}
                 </Button>
               </div>
             </div>
@@ -59,9 +74,9 @@ export default function ExperienceFAQSection({ faqs, whatsapp }: { faqs: FAQType
         >
           <div className="flex flex-col gap-3">
             <span className="w-fit rounded-full bg-orange-50 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-orange-600">
-              FAQ
+              {faqEyebrow}
             </span>
-            <h3 className="text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl">Questions guests ask us</h3>
+            <h3 className="text-3xl font-bold tracking-tight text-navy-900 sm:text-4xl">{faqHeading}</h3>
           </div>
 
           <FAQAccordion faqs={faqs} variant="flat" />

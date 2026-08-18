@@ -7,6 +7,7 @@ import SectionHeading from "@/components/shared/SectionHeading";
 import ContactForm from "@/components/shared/ContactForm";
 import { SOCIAL_ICONS } from "@/lib/data/social";
 import { getSiteSettings } from "@/lib/data/siteSettings";
+import { getContactSections } from "@/lib/data/pageSections";
 
 export const metadata: Metadata = {
   title: "Contact Us | Rentico Dubai",
@@ -21,6 +22,7 @@ export const revalidate = 60;
 
 export default async function ContactPage() {
   const settings = await getSiteSettings();
+  const { hero, details: detailsHeading } = await getContactSections();
 
   const details = [
     { icon: MapPin, label: settings.address },
@@ -31,19 +33,15 @@ export default async function ContactPage() {
 
   return (
     <>
-      <PageHero
-        eyebrow="Get in Touch"
-        title="We're here to help"
-        description="Questions about booking a stay, listing your property, or anything else? Send us a message and our team will get back to you shortly."
-      />
+      <PageHero eyebrow={hero.eyebrow} title={hero.title} description={hero.description} />
 
       <section className="py-20 sm:py-28">
         <Container className="grid grid-cols-1 gap-14 lg:grid-cols-2 lg:gap-16">
           <div className="flex flex-col gap-8">
             <SectionHeading
-              eyebrow="Contact Details"
-              title="Speak to the Rentico team"
-              description="Whether you're a guest or a property owner, reach out directly and we'll point you in the right direction."
+              eyebrow={detailsHeading.eyebrow}
+              title={detailsHeading.title}
+              description={detailsHeading.description}
             />
 
             <ul className="flex flex-col gap-4">
