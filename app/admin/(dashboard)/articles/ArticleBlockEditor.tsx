@@ -92,7 +92,7 @@ function SortableBlock({
       >
         <GripVertical className="h-4 w-4" />
       </button>
-      <div className="flex-1">
+      <div className="min-w-0 flex-1">
         <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-navy-900/40">
           {blockLabels[block.type]}
         </p>

@@ -67,7 +67,7 @@ export default function SettingsForm({ initial }: { initial: SiteSettings }) {
 
       <div className="flex flex-col gap-3 rounded-xl border border-navy-900/8 bg-navy-50/40 p-5">
         <h3 className="text-xs font-bold uppercase tracking-wider text-navy-900/40">Logo</h3>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           <div className="flex h-16 w-40 items-center justify-center overflow-hidden rounded-lg border border-navy-900/8 bg-white p-2">
             {logoUrl && (
               <Image src={logoUrl} alt="Logo preview" width={160} height={64} className="h-full w-full object-contain" />

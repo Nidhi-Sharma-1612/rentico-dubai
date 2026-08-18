@@ -109,7 +109,7 @@ export default function ArticleForm({ initial }: ArticleFormProps) {
         <p className="text-xs text-navy-900/40">Used in the URL — lowercase letters, numbers, and hyphens only.</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">
           <label htmlFor="category" className="text-sm font-semibold text-navy-900">
             Category
