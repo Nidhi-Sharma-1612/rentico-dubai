@@ -1,10 +1,12 @@
 "use server";
 
 import { z } from "zod";
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
 import { siteSettings, activityLog } from "@/lib/db/schema";
 import { getCurrentAdmin } from "@/lib/admin/getCurrentAdmin";
+import { cleanupUnreferencedMedia } from "../upload-actions";
 
 const socialLinkSchema = z.object({
   label: z.string().min(1),
@@ -52,10 +54,16 @@ export async function updateSiteSettings(_prevState: ActionResult, formData: For
   });
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Invalid input." };
 
+  const [existing] = await db.select({ logoUrl: siteSettings.logoUrl }).from(siteSettings).where(eq(siteSettings.id, 1)).limit(1);
+
   await db
     .insert(siteSettings)
     .values({ id: 1, ...parsed.data })
     .onConflictDoUpdate({ target: siteSettings.id, set: parsed.data });
+
+  if (existing?.logoUrl && existing.logoUrl !== parsed.data.logoUrl) {
+    await cleanupUnreferencedMedia(existing.logoUrl);
+  }
 
   await db.insert(activityLog).values({
     adminUserId: admin.id,
