@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { desc } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import PageHero from "@/components/shared/PageHero";
 import Container from "@/components/shared/Container";
 import ArticleCard from "@/components/insights/ArticleCard";
@@ -7,13 +7,15 @@ import CTABanner from "@/components/shared/CTABanner";
 import { db } from "@/lib/db";
 import { articles as articlesTable } from "@/lib/db/schema";
 import { Article } from "@/lib/types";
-import { getInsightsSections } from "@/lib/data/pageSections";
+import { getInsightsSections, getPageSeo } from "@/lib/data/pageSections";
 
-export const metadata: Metadata = {
-  title: "Insights | Rentico Dubai",
-  description:
-    "Market insights, owner guides and hosting tips for short-term rental properties in Dubai.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getPageSeo("insights", {
+    metaTitle: "Insights | Rentico Dubai",
+    metaDescription: "Market insights, owner guides and hosting tips for short-term rental properties in Dubai.",
+  });
+  return { title: seo.metaTitle, description: seo.metaDescription };
+}
 
 // Reads admin-editable articles from the DB — without this, Next would
 // statically bake this list at build time and new/edited articles would
@@ -23,7 +25,11 @@ export const revalidate = 60;
 export default async function InsightsPage() {
   let articles: Article[] = [];
   try {
-    articles = await db.select().from(articlesTable).orderBy(desc(articlesTable.date));
+    articles = await db
+      .select()
+      .from(articlesTable)
+      .where(eq(articlesTable.status, "published"))
+      .orderBy(desc(articlesTable.date));
   } catch (err) {
     console.error("Failed to load articles:", err);
   }

@@ -27,6 +27,7 @@ const articleSchema = z.object({
   date: z.string().min(1, "Date is required."),
   image: z.string().optional().nullable(),
   content: z.array(blockSchema).min(1, "Add at least one content block."),
+  status: z.enum(["draft", "published"]),
 });
 
 export interface ActionResult {
@@ -56,6 +57,7 @@ function parseInput(formData: FormData) {
     date: formData.get("date"),
     image: formData.get("image") || null,
     content,
+    status: formData.get("status"),
   });
 }
 
@@ -108,5 +110,17 @@ export async function deleteArticle(id: string, slug: string): Promise<void> {
   const admin = await requireAdmin();
   await db.delete(articles).where(eq(articles.id, id));
   await db.insert(activityLog).values({ adminUserId: admin.id, action: "delete", entityType: "article", entityId: id });
+  revalidatePublicPages(slug);
+}
+
+export async function setArticleStatus(id: string, slug: string, status: "draft" | "published"): Promise<void> {
+  const admin = await requireAdmin();
+  await db.update(articles).set({ status, updatedAt: new Date() }).where(eq(articles.id, id));
+  await db.insert(activityLog).values({
+    adminUserId: admin.id,
+    action: "update",
+    entityType: "article",
+    entityId: id,
+  });
   revalidatePublicPages(slug);
 }

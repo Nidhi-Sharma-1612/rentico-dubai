@@ -7,13 +7,16 @@ import SectionHeading from "@/components/shared/SectionHeading";
 import ContactForm from "@/components/shared/ContactForm";
 import { SOCIAL_ICONS } from "@/lib/data/social";
 import { getSiteSettings } from "@/lib/data/siteSettings";
-import { getContactSections } from "@/lib/data/pageSections";
+import { getContactSections, getPageSeo } from "@/lib/data/pageSections";
 
-export const metadata: Metadata = {
-  title: "Contact Us | Rentico Dubai",
-  description:
-    "Get in touch with Rentico Dubai — questions about booking a stay, listing your property, or anything else. We typically respond within 24 hours.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getPageSeo("contact", {
+    metaTitle: "Contact Us | Rentico Dubai",
+    metaDescription:
+      "Get in touch with Rentico Dubai — questions about booking a stay, listing your property, or anything else. We typically respond within 24 hours.",
+  });
+  return { title: seo.metaTitle, description: seo.metaDescription };
+}
 
 // This page reads admin-editable site settings from the DB — without this,
 // Next would statically bake it at build time and admin edits would never

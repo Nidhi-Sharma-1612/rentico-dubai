@@ -1,4 +1,38 @@
 import { z } from "zod";
+import {
+  ArrowRight,
+  BedDouble,
+  Building2,
+  Calendar,
+  ClipboardList,
+  Compass,
+  FileStack,
+  FileText,
+  Globe,
+  Handshake,
+  Heart,
+  Home,
+  Layers,
+  Link2,
+  LineChart,
+  LockKeyhole,
+  MapPinned,
+  Palette,
+  Percent,
+  Phone,
+  Quote,
+  ScrollText,
+  Search,
+  Shield,
+  ShieldCheck,
+  Smartphone,
+  Sofa,
+  Sparkles,
+  Star,
+  Users,
+  Wrench,
+  type LucideIcon,
+} from "lucide-react";
 
 export type ItemFieldConfig =
   | { type: "text"; key: string; label: string }
@@ -9,7 +43,8 @@ export type ItemFieldConfig =
 export type FieldConfig =
   | ItemFieldConfig
   | { type: "list-text"; key: string; label: string; itemLabel: string }
-  | { type: "list-object"; key: string; label: string; itemLabel: string; itemFields: ItemFieldConfig[] };
+  | { type: "list-object"; key: string; label: string; itemLabel: string; itemFields: ItemFieldConfig[] }
+  | { type: "blocks"; key: string; label: string };
 
 export interface SectionSchema {
   name: string;
@@ -400,6 +435,65 @@ const ownerLoginContentSchema = z.object({
   footerLinkLabel: z.string().min(1),
   footerLinkHref: z.string().min(1),
 });
+
+// Shared by every page's "seo" section — the browser-tab title and search
+// snippet, editable independently from the page's on-page hero copy.
+const seoContentSchema = z.object({
+  metaTitle: z.string().min(1),
+  metaDescription: z.string().min(1),
+});
+
+const SEO_FIELDS = [
+  { type: "text" as const, key: "metaTitle", label: "Meta title (browser tab / search result title)" },
+  { type: "textarea" as const, key: "metaDescription", label: "Meta description (search result snippet)" },
+];
+
+const SEO_PAGE_SLUGS = [
+  "home",
+  "experience",
+  "become-a-partner",
+  "manage-my-property",
+  "about-us",
+  "contact",
+  "insights",
+  "owner-login",
+  "book-your-stay",
+  "privacy-policy",
+  "terms-conditions",
+];
+
+// Matches ArticleBlock in lib/types.ts — kept in sync manually since this
+// file can't import the "use server" articles/actions.ts schema.
+const legalBlockSchema = z.discriminatedUnion("type", [
+  z.object({ type: z.literal("paragraph"), text: z.string().min(1) }),
+  z.object({ type: z.literal("heading"), text: z.string().min(1) }),
+  z.object({ type: z.literal("list"), items: z.array(z.string().min(1)).min(1) }),
+  z.object({ type: z.literal("quote"), text: z.string().min(1) }),
+]);
+
+const legalContentSchema = z.object({
+  heroEyebrow: z.string().min(1),
+  heroTitle: z.string().min(1),
+  heroDescription: z.string().min(1),
+  lastUpdated: z.string().min(1),
+  blocks: z.array(legalBlockSchema).min(1),
+  ctaHeading: z.string().min(1),
+  ctaDescription: z.string().min(1),
+  ctaButtonLabel: z.string().min(1),
+  ctaButtonHref: z.string().min(1),
+});
+
+const LEGAL_FIELDS: FieldConfig[] = [
+  { type: "text", key: "heroEyebrow", label: "Hero eyebrow" },
+  { type: "text", key: "heroTitle", label: "Hero title" },
+  { type: "textarea", key: "heroDescription", label: "Hero description" },
+  { type: "text", key: "lastUpdated", label: "Last updated (e.g. 10 August 2026)" },
+  { type: "blocks", key: "blocks", label: "Policy content" },
+  { type: "text", key: "ctaHeading", label: "CTA heading" },
+  { type: "textarea", key: "ctaDescription", label: "CTA description" },
+  { type: "text", key: "ctaButtonLabel", label: "CTA button label" },
+  { type: "text", key: "ctaButtonHref", label: "CTA button link" },
+];
 
 // Registry key is `${page.slug}:${section.key}`. Pages/sections not listed
 // here aren't editable through the admin yet — extend page by page.
@@ -1088,6 +1182,25 @@ export const SECTION_SCHEMAS: Record<string, SectionSchema> = {
       { type: "textarea", key: "description", label: "Description" },
     ],
   },
+  "privacy-policy:content": {
+    name: "Content",
+    zod: legalContentSchema,
+    fields: LEGAL_FIELDS,
+  },
+  "terms-conditions:content": {
+    name: "Content",
+    zod: legalContentSchema,
+    fields: LEGAL_FIELDS,
+  },
+  // A "seo" section is added for every real page below, via SEO_PAGE_SLUGS —
+  // same meta title/description fields on each, so it's generated rather
+  // than repeated by hand nine times.
+  ...Object.fromEntries(
+    SEO_PAGE_SLUGS.map((slug) => [
+      `${slug}:seo`,
+      { name: "SEO", zod: seoContentSchema, fields: SEO_FIELDS } satisfies SectionSchema,
+    ])
+  ),
 };
 
 export const PAGE_TITLES: Record<string, string> = {
@@ -1100,8 +1213,64 @@ export const PAGE_TITLES: Record<string, string> = {
   insights: "Insights",
   "owner-login": "Owner Login",
   "book-your-stay": "Book Your Stay",
+  "privacy-policy": "Privacy Policy",
+  "terms-conditions": "Terms & Conditions",
   global: "Global (Navbar & Footer)",
 };
+
+export const PAGE_ICONS: Record<string, LucideIcon> = {
+  home: Home,
+  experience: Compass,
+  "become-a-partner": Handshake,
+  "manage-my-property": Building2,
+  "about-us": Users,
+  contact: Phone,
+  insights: FileText,
+  "privacy-policy": Shield,
+  "terms-conditions": ScrollText,
+  "owner-login": LockKeyhole,
+  "book-your-stay": Calendar,
+  global: Globe,
+};
+
+// Keyed by section key — shared across pages since keys like "hero" and
+// "cta" repeat. Falls back to FileStack for anything unlisted.
+const SECTION_ICONS: Record<string, LucideIcon> = {
+  hero: Sparkles,
+  welcome: Home,
+  "featured-homes": Building2,
+  amenities: Sofa,
+  "the-stay": BedDouble,
+  "direct-booking": Calendar,
+  "what-people-say": Quote,
+  cta: ArrowRight,
+  categories: Layers,
+  "audience-toggle": Users,
+  "commission-calculator": Percent,
+  "no-conflict": ShieldCheck,
+  steps: ClipboardList,
+  "operator-stats": LineChart,
+  "form-section": FileText,
+  "why-rentico": Star,
+  "what-we-handle": Wrench,
+  "onboarding-steps": ClipboardList,
+  "pricing-design": Palette,
+  "owner-app": Smartphone,
+  "where-we-operate": MapPinned,
+  story: FileText,
+  stats: LineChart,
+  values: Heart,
+  "areas-served": MapPinned,
+  details: Phone,
+  "nav-links": Link2,
+  "footer-links": Link2,
+  content: FileText,
+  seo: Search,
+};
+
+export function sectionIcon(key: string): LucideIcon {
+  return SECTION_ICONS[key] ?? FileStack;
+}
 
 // Matches the actual on-page section order (see app/(marketing)/page.tsx) so
 // the admin list reads top-to-bottom the same way the live page does.
@@ -1132,13 +1301,22 @@ const SECTION_ORDER: Record<string, string[]> = {
   insights: ["hero", "cta"],
   "owner-login": ["hero"],
   "book-your-stay": ["hero"],
+  "privacy-policy": ["content"],
+  "terms-conditions": ["content"],
   global: ["nav-links", "footer-links"],
 };
 
 export function sectionsForPage(pageSlug: string): { key: string; schema: SectionSchema }[] {
   const order = SECTION_ORDER[pageSlug] ?? [];
+  // Keys not listed in SECTION_ORDER (currently just "seo", generated for
+  // every page) sort after everything that is — meta settings belong at
+  // the bottom of the list, not wherever indexOf(-1) would otherwise put them.
+  const rank = (key: string) => {
+    const i = order.indexOf(key);
+    return i === -1 ? Infinity : i;
+  };
   return Object.entries(SECTION_SCHEMAS)
     .filter(([id]) => id.startsWith(`${pageSlug}:`))
     .map(([id, schema]) => ({ key: id.split(":")[1], schema }))
-    .sort((a, b) => order.indexOf(a.key) - order.indexOf(b.key));
+    .sort((a, b) => rank(a.key) - rank(b.key));
 }

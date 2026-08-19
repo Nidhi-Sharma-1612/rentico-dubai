@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
+import { UserCog } from "lucide-react";
 import { getCurrentAdmin } from "@/lib/admin/getCurrentAdmin";
 import AccountForm from "./AccountForm";
+import PageIcon from "../PageIcon";
 
 export default async function AdminAccountPage() {
   const admin = await getCurrentAdmin();
@@ -8,9 +10,12 @@ export default async function AdminAccountPage() {
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <h1 className="text-2xl font-bold text-navy-900">Account</h1>
-        <p className="mt-1 text-sm text-navy-900/55">Manage your own login credentials.</p>
+      <div className="flex items-center gap-3">
+        <PageIcon icon={UserCog} />
+        <div>
+          <h1 className="text-2xl font-bold text-navy-900">Account</h1>
+          <p className="mt-1 text-sm text-navy-900/55">Manage your own login credentials.</p>
+        </div>
       </div>
 
       <AccountForm email={admin.email} />

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Hero from "@/components/home/Hero";
 import Welcome from "@/components/home/Welcome";
 import Properties from "@/components/home/Properties";
@@ -14,7 +15,7 @@ import { db } from "@/lib/db";
 import { testimonials, faqs } from "@/lib/db/schema";
 import { asc, eq } from "drizzle-orm";
 import { getSiteSettings } from "@/lib/data/siteSettings";
-import { getHomeSections } from "@/lib/data/pageSections";
+import { getHomeSections, getPageSeo } from "@/lib/data/pageSections";
 
 const FEATURED_COUNT = 3;
 
@@ -22,6 +23,15 @@ const FEATURED_COUNT = 3;
 // Guesty fetch below before discovering the route is dynamic — silently
 // spending a token from the account's 5-tokens/24h budget on every build.
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getPageSeo("home", {
+    metaTitle: "Rentico Dubai | Luxury Vacation Home Management",
+    metaDescription:
+      "Rentico Dubai manages luxury short-term rental homes across Dubai — Downtown, Business Bay, Palm Jumeirah, Dubai Marina, Dubai Hills and Sobha Hartland. Best price guarantee, no hidden fees, direct communication.",
+  });
+  return { title: seo.metaTitle, description: seo.metaDescription };
+}
 
 export default async function Home() {
   let featuredProperties: Property[] = [];

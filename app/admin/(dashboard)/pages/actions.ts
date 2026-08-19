@@ -25,6 +25,8 @@ const REVALIDATE_PATHS: Record<string, string[]> = {
   insights: ["/insights"],
   "owner-login": ["/owner-login"],
   "book-your-stay": ["/book-your-stay"],
+  "privacy-policy": ["/privacy-policy"],
+  "terms-conditions": ["/terms-conditions"],
 };
 
 export async function updateSection(

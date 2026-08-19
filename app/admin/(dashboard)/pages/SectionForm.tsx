@@ -1,12 +1,14 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { ChevronDown, GripVertical, Loader2, Plus, Trash2, Upload } from "lucide-react";
+import { ChevronDown, GripVertical, Images, Loader2, Plus, Trash2, Upload, X } from "lucide-react";
 import { updateSection, ActionResult } from "./actions";
-import { uploadImage } from "../upload-actions";
+import { listMedia, uploadImage, type MediaItem } from "../upload-actions";
 import { FieldConfig, ItemFieldConfig } from "./sectionSchemas";
 import { ICONS } from "@/lib/icons";
+import ArticleBlockEditor from "../articles/ArticleBlockEditor";
+import type { ArticleBlock } from "@/lib/types";
 
 const inputClass =
   "w-full rounded-lg border border-navy-900/12 bg-white px-3 py-2.5 text-sm text-navy-900 outline-none transition-colors placeholder:text-navy-900/35 focus:border-orange-500";
@@ -89,9 +91,60 @@ function IconSelect({ value, onChange }: { value: string; onChange: (v: string) 
   );
 }
 
+function LibraryPickerModal({ onSelect, onClose }: { onSelect: (url: string) => void; onClose: () => void }) {
+  const [items, setItems] = useState<MediaItem[] | null>(null);
+
+  useEffect(() => {
+    listMedia().then(setItems);
+  }, []);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy-950/50 p-4" onClick={onClose}>
+      <div
+        className="flex max-h-[80vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between border-b border-navy-900/8 px-5 py-4">
+          <h3 className="text-sm font-bold text-navy-900">Choose from media library</h3>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="flex h-8 w-8 items-center justify-center rounded-lg text-navy-900/40 hover:bg-navy-900/5"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="overflow-y-auto p-5">
+          {items === null ? (
+            <p className="py-10 text-center text-sm text-navy-900/40">Loading…</p>
+          ) : items.length === 0 ? (
+            <p className="py-10 text-center text-sm text-navy-900/40">No images uploaded yet.</p>
+          ) : (
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+              {items.map((item) => (
+                <button
+                  key={item.name}
+                  type="button"
+                  onClick={() => onSelect(item.url)}
+                  className="aspect-4/3 overflow-hidden rounded-lg border border-navy-900/8 transition-colors hover:border-orange-400"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={item.url} alt="" className="h-full w-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ImageField({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   const handleUpload = async (file: File) => {
     setUploading(true);
@@ -126,22 +179,41 @@ function ImageField({ value, onChange }: { value: string; onChange: (v: string) 
             placeholder="Paste an image URL…"
             className={inputClass}
           />
-          <label className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-navy-900/15 bg-white px-3 py-2 text-xs font-semibold text-navy-900 transition-colors hover:border-orange-300 hover:text-orange-600">
-            {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
-            {uploading ? "Uploading..." : "Upload from device"}
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) handleUpload(file);
-              }}
-            />
-          </label>
+          <div className="flex flex-wrap gap-2">
+            <label className="flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-navy-900/15 bg-white px-3 py-2 text-xs font-semibold text-navy-900 transition-colors hover:border-orange-300 hover:text-orange-600">
+              {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
+              {uploading ? "Uploading..." : "Upload from device"}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleUpload(file);
+                }}
+              />
+            </label>
+            <button
+              type="button"
+              onClick={() => setPickerOpen(true)}
+              className="flex w-fit items-center gap-2 rounded-lg border border-navy-900/15 bg-white px-3 py-2 text-xs font-semibold text-navy-900 transition-colors hover:border-orange-300 hover:text-orange-600"
+            >
+              <Images className="h-3.5 w-3.5" />
+              Choose from library
+            </button>
+          </div>
         </div>
       </div>
       {error && <p className="text-xs font-medium text-red-600">{error}</p>}
+      {pickerOpen && (
+        <LibraryPickerModal
+          onSelect={(url) => {
+            onChange(url);
+            setPickerOpen(false);
+          }}
+          onClose={() => setPickerOpen(false)}
+        />
+      )}
     </div>
   );
 }
@@ -348,6 +420,13 @@ function TopField({
           field={field}
           items={(content[field.key] as Record<string, string>[]) ?? []}
           onChange={(items) => setField(field.key, items)}
+        />
+      )}
+
+      {field.type === "blocks" && (
+        <ArticleBlockEditor
+          value={(content[field.key] as ArticleBlock[]) ?? []}
+          onChange={(blocks) => setField(field.key, blocks)}
         />
       )}
     </div>

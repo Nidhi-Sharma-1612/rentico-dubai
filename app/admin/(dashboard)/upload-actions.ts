@@ -43,3 +43,44 @@ export async function uploadImage(formData: FormData): Promise<UploadResult> {
 
   return { url: publicUrl };
 }
+
+export interface MediaItem {
+  name: string;
+  url: string;
+  size: number;
+  createdAt: string | null;
+}
+
+export async function listMedia(): Promise<MediaItem[]> {
+  const admin = await getCurrentAdmin();
+  if (!admin) return [];
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.storage.from("media").list("", {
+    sortBy: { column: "created_at", order: "desc" },
+  });
+  if (error || !data) return [];
+
+  return data
+    .filter((f) => f.id)
+    .map((f) => {
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("media").getPublicUrl(f.name);
+      return { name: f.name, url: publicUrl, size: f.metadata?.size ?? 0, createdAt: f.created_at ?? null };
+    });
+}
+
+export interface DeleteMediaResult {
+  error?: string;
+}
+
+export async function deleteMedia(name: string): Promise<DeleteMediaResult> {
+  const admin = await getCurrentAdmin();
+  if (!admin) return { error: "Not authenticated." };
+
+  const supabase = await createClient();
+  const { error } = await supabase.storage.from("media").remove([name]);
+  if (error) return { error: error.message };
+  return {};
+}

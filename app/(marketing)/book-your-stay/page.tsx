@@ -11,12 +11,15 @@ import { mapListingToProperty } from "@/lib/guesty/mappers";
 import { buildBookingQuery, hasActiveSearch, parseBookingSearchParams } from "@/lib/booking";
 import { AVAILABILITY_WINDOW_DAYS, toDateParam } from "@/lib/calendar";
 import { Property } from "@/lib/types";
-import { getBookYourStayHero } from "@/lib/data/pageSections";
+import { getBookYourStayHero, getPageSeo } from "@/lib/data/pageSections";
 
-export const metadata: Metadata = {
-  title: "Book Your Stay | Rentico Dubai",
-  description: "Search and book Rentico's luxury short-term rental homes across Dubai.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getPageSeo("book-your-stay", {
+    metaTitle: "Book Your Stay | Rentico Dubai",
+    metaDescription: "Search and book Rentico's luxury short-term rental homes across Dubai.",
+  });
+  return { title: seo.metaTitle, description: seo.metaDescription };
+}
 
 export default async function BookYourStayPage({
   searchParams,

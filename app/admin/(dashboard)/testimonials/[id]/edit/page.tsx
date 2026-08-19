@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { testimonials } from "@/lib/db/schema";
 import TestimonialForm from "../../TestimonialForm";
+import BackLink from "../../../BackLink";
 
 export default async function EditTestimonialPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -12,7 +13,10 @@ export default async function EditTestimonialPage({ params }: { params: Promise<
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold text-navy-900">Edit Testimonial</h1>
+      <div>
+        <BackLink href="/admin/testimonials" label="All testimonials" />
+        <h1 className="mt-2 text-2xl font-bold text-navy-900">Edit Testimonial</h1>
+      </div>
       <TestimonialForm initial={row} />
     </div>
   );

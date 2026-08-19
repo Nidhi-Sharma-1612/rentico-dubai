@@ -12,13 +12,16 @@ import { db } from "@/lib/db";
 import { faqs } from "@/lib/db/schema";
 import { FAQ } from "@/lib/types";
 import { getSiteSettings } from "@/lib/data/siteSettings";
-import { getPartnerSections } from "@/lib/data/pageSections";
+import { getPartnerSections, getPageSeo } from "@/lib/data/pageSections";
 
-export const metadata: Metadata = {
-  title: "Broker, Agent & Developer Partnerships | Rentico Dubai",
-  description:
-    "Send us a property, keep your client, and get paid. Refer owners to Rentico and earn a commission up to AED 20,000 on every unit that goes live.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getPageSeo("become-a-partner", {
+    metaTitle: "Broker, Agent & Developer Partnerships | Rentico Dubai",
+    metaDescription:
+      "Send us a property, keep your client, and get paid. Refer owners to Rentico and earn a commission up to AED 20,000 on every unit that goes live.",
+  });
+  return { title: seo.metaTitle, description: seo.metaDescription };
+}
 
 // This page reads admin-editable FAQs from the DB — without this, Next
 // would statically bake it at build time and admin edits would never show

@@ -7,13 +7,16 @@ import { db } from "@/lib/db";
 import { faqs } from "@/lib/db/schema";
 import { FAQ } from "@/lib/types";
 import { getSiteSettings } from "@/lib/data/siteSettings";
-import { getExperienceSections } from "@/lib/data/pageSections";
+import { getExperienceSections, getPageSeo } from "@/lib/data/pageSections";
 
-export const metadata: Metadata = {
-  title: "Experience | Rentico",
-  description:
-    "Transportation, signature experiences, celebrations, adventure, dining, wellness, custom itineraries and VIP event access — arranged by the Rentico concierge team for every stay.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getPageSeo("experience", {
+    metaTitle: "Experience | Rentico",
+    metaDescription:
+      "Transportation, signature experiences, celebrations, adventure, dining, wellness, custom itineraries and VIP event access — arranged by the Rentico concierge team for every stay.",
+  });
+  return { title: seo.metaTitle, description: seo.metaDescription };
+}
 
 // This page reads admin-editable FAQs from the DB — without this, Next
 // would statically bake it at build time and admin edits would never show
