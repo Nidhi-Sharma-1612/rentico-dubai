@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { articles, activityLog } from "@/lib/db/schema";
 import { getCurrentAdmin } from "@/lib/admin/getCurrentAdmin";
+import { cleanupUnreferencedMedia } from "../upload-actions";
 
 const blockSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("paragraph"), text: z.string().min(1) }),
@@ -92,6 +93,8 @@ export async function updateArticle(id: string, _prevState: ActionResult, formDa
   const parsed = parseInput(formData);
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Invalid input." };
 
+  const [existing] = await db.select({ image: articles.image }).from(articles).where(eq(articles.id, id)).limit(1);
+
   try {
     await db.update(articles).set({ ...parsed.data, updatedAt: new Date() }).where(eq(articles.id, id));
   } catch (err) {
@@ -101,6 +104,10 @@ export async function updateArticle(id: string, _prevState: ActionResult, formDa
     throw err;
   }
 
+  if (existing?.image && existing.image !== parsed.data.image) {
+    await cleanupUnreferencedMedia(existing.image);
+  }
+
   await db.insert(activityLog).values({ adminUserId: admin.id, action: "update", entityType: "article", entityId: id });
   revalidatePublicPages(parsed.data.slug);
   redirect("/admin/articles");
@@ -108,8 +115,9 @@ export async function updateArticle(id: string, _prevState: ActionResult, formDa
 
 export async function deleteArticle(id: string, slug: string): Promise<void> {
   const admin = await requireAdmin();
-  await db.delete(articles).where(eq(articles.id, id));
+  const [deleted] = await db.delete(articles).where(eq(articles.id, id)).returning({ image: articles.image });
   await db.insert(activityLog).values({ adminUserId: admin.id, action: "delete", entityType: "article", entityId: id });
+  await cleanupUnreferencedMedia(deleted?.image);
   revalidatePublicPages(slug);
 }
 
