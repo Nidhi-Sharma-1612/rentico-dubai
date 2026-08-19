@@ -1,15 +1,16 @@
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Compass, Handshake, HelpCircle, Home, Plus, Wrench } from "lucide-react";
 import { asc } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { faqs } from "@/lib/db/schema";
 import FaqReorderList from "./FaqReorderList";
+import PageIcon from "../PageIcon";
 
 const groups = [
-  { value: "home", label: "Home" },
-  { value: "services", label: "Services" },
-  { value: "partner", label: "Become a Partner" },
-  { value: "experience", label: "Experience" },
+  { value: "home", label: "Home", icon: Home },
+  { value: "services", label: "Services", icon: Wrench },
+  { value: "partner", label: "Become a Partner", icon: Handshake },
+  { value: "experience", label: "Experience", icon: Compass },
 ] as const;
 
 export default async function AdminFaqsListPage() {
@@ -18,9 +19,12 @@ export default async function AdminFaqsListPage() {
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-bold text-navy-900">FAQs</h1>
-          <p className="text-sm text-navy-900/55">{rows.length} total · drag to reorder within a page</p>
+        <div className="flex items-center gap-3">
+          <PageIcon icon={HelpCircle} />
+          <div>
+            <h1 className="text-2xl font-bold text-navy-900">FAQs</h1>
+            <p className="text-sm text-navy-900/55">{rows.length} total · drag to reorder within a page</p>
+          </div>
         </div>
         <Link
           href="/admin/faqs/new"
@@ -33,7 +37,10 @@ export default async function AdminFaqsListPage() {
 
       {groups.map((g) => (
         <div key={g.value} className="flex flex-col gap-3">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-navy-900/50">{g.label}</h2>
+          <h2 className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-navy-900/50">
+            <g.icon className="h-4 w-4 text-navy-900/35" />
+            {g.label}
+          </h2>
           <FaqReorderList group={g.value} initialItems={rows.filter((r) => r.group === g.value)} />
         </div>
       ))}

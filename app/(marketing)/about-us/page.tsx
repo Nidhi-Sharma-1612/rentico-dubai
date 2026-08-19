@@ -10,13 +10,16 @@ import CTABanner from "@/components/shared/CTABanner";
 import { db } from "@/lib/db";
 import { testimonials } from "@/lib/db/schema";
 import { Testimonial } from "@/lib/types";
-import { getAboutSections } from "@/lib/data/pageSections";
+import { getAboutSections, getPageSeo } from "@/lib/data/pageSections";
 
-export const metadata: Metadata = {
-  title: "About Us | Rentico Dubai",
-  description:
-    "Rentico Dubai manages luxury short-term rental homes across Dubai's finest districts — founded 2025, 4.9-star rated.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getPageSeo("about-us", {
+    metaTitle: "About Us | Rentico Dubai",
+    metaDescription:
+      "Rentico Dubai manages luxury short-term rental homes across Dubai's finest districts — founded 2025, 4.9-star rated.",
+  });
+  return { title: seo.metaTitle, description: seo.metaDescription };
+}
 
 // This page now reads admin-editable content from the DB — without this,
 // Next would statically bake it at build time and admin edits would never

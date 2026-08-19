@@ -33,19 +33,24 @@ export const sections = pgTable(
   (table) => [unique("sections_page_id_key_unique").on(table.pageId, table.key)]
 );
 
-export const articles = pgTable("articles", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  slug: text("slug").notNull().unique(),
-  title: text("title").notNull(),
-  category: text("category").notNull(),
-  excerpt: text("excerpt").notNull(),
-  readTime: text("read_time").notNull(),
-  date: text("date").notNull(),
-  image: text("image"),
-  content: jsonb("content").$type<ArticleBlock[]>().notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
-});
+export const articles = pgTable(
+  "articles",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    slug: text("slug").notNull().unique(),
+    title: text("title").notNull(),
+    category: text("category").notNull(),
+    excerpt: text("excerpt").notNull(),
+    readTime: text("read_time").notNull(),
+    date: text("date").notNull(),
+    image: text("image"),
+    content: jsonb("content").$type<ArticleBlock[]>().notNull(),
+    status: text("status").notNull().default("published"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [check("articles_status_check", sql`${table.status} IN ('draft','published')`)]
+);
 
 export const faqs = pgTable(
   "faqs",

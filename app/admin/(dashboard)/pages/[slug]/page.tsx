@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronRight, ArrowLeft } from "lucide-react";
-import { PAGE_TITLES, sectionsForPage } from "../sectionSchemas";
+import { ChevronRight, FileStack } from "lucide-react";
+import { PAGE_ICONS, PAGE_TITLES, sectionIcon, sectionsForPage } from "../sectionSchemas";
+import PageIcon from "../../PageIcon";
+import BackLink from "../../BackLink";
 
 export default async function AdminPageSectionsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -13,28 +15,36 @@ export default async function AdminPageSectionsPage({ params }: { params: Promis
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <Link href="/admin/pages" className="inline-flex items-center gap-1.5 text-sm font-medium text-navy-900/50 hover:text-navy-900">
-          <ArrowLeft className="h-3.5 w-3.5" />
-          All pages
-        </Link>
-        <h1 className="mt-2 text-2xl font-bold text-navy-900">{title}</h1>
-        <p className="mt-1 text-sm text-navy-900/55">Choose a section to edit its content.</p>
+        <BackLink href="/admin/pages" label="All pages" />
+        <div className="mt-2 flex items-center gap-3">
+          <PageIcon icon={PAGE_ICONS[slug] ?? FileStack} />
+          <div>
+            <h1 className="text-2xl font-bold text-navy-900">{title}</h1>
+            <p className="mt-1 text-sm text-navy-900/55">Choose a section to edit its content.</p>
+          </div>
+        </div>
       </div>
 
-      <div className="flex flex-col gap-2.5">
-        {sections.map(({ key, schema }) => (
-          <Link
-            key={key}
-            href={`/admin/pages/${slug}/${key}`}
-            className="flex items-center gap-4 rounded-xl border border-navy-900/8 bg-white p-5 transition-colors hover:border-orange-200 hover:bg-orange-50/30"
-          >
-            <div className="flex-1">
-              <p className="text-sm font-bold text-navy-900">{schema.name}</p>
-              <p className="text-xs text-navy-900/50">{schema.fields.length} field{schema.fields.length === 1 ? "" : "s"}</p>
-            </div>
-            <ChevronRight className="h-4 w-4 text-navy-900/30" />
-          </Link>
-        ))}
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+        {sections.map(({ key, schema }) => {
+          const Icon = sectionIcon(key);
+          return (
+            <Link
+              key={key}
+              href={`/admin/pages/${slug}/${key}`}
+              className="flex items-center gap-4 rounded-xl border border-navy-900/8 bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-orange-200 hover:bg-orange-50/30 hover:shadow-md hover:shadow-navy-900/5"
+            >
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-orange-50 text-orange-600">
+                <Icon className="h-5 w-5" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-bold text-navy-900">{schema.name}</p>
+                <p className="text-xs text-navy-900/50">{schema.fields.length} field{schema.fields.length === 1 ? "" : "s"}</p>
+              </div>
+              <ChevronRight className="h-4 w-4 shrink-0 text-navy-900/30" />
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

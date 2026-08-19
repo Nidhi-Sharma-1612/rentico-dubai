@@ -1,7 +1,63 @@
 import "server-only";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { pages, sections } from "@/lib/db/schema";
+import type { ArticleBlock } from "@/lib/types";
+
+export interface PageSeo {
+  metaTitle: string;
+  metaDescription: string;
+}
+
+export interface LegalPageContent {
+  heroEyebrow: string;
+  heroTitle: string;
+  heroDescription: string;
+  lastUpdated: string;
+  blocks: ArticleBlock[];
+  ctaHeading: string;
+  ctaDescription: string;
+  ctaButtonLabel: string;
+  ctaButtonHref: string;
+}
+
+// Shared by the Privacy Policy and Terms & Conditions pages — both use the
+// same "content" section key and shape (hero + block-based body + CTA), so
+// one generic fetch covers both instead of a per-page function.
+export async function getLegalPageContent(pageSlug: string, fallback: LegalPageContent): Promise<LegalPageContent> {
+  try {
+    const [row] = await db
+      .select({ content: sections.content })
+      .from(sections)
+      .innerJoin(pages, eq(sections.pageId, pages.id))
+      .where(and(eq(pages.slug, pageSlug), eq(sections.key, "content")))
+      .limit(1);
+
+    return (row?.content as LegalPageContent) ?? fallback;
+  } catch (err) {
+    console.error(`Failed to load legal page content for ${pageSlug}:`, err);
+    return fallback;
+  }
+}
+
+// Shared by every page's generateMetadata() — the "seo" section key is the
+// same across all pages (see SEO_PAGE_SLUGS in the admin's sectionSchemas.ts),
+// so one generic fetch covers all of them instead of a per-page function.
+export async function getPageSeo(pageSlug: string, fallback: PageSeo): Promise<PageSeo> {
+  try {
+    const [row] = await db
+      .select({ content: sections.content })
+      .from(sections)
+      .innerJoin(pages, eq(sections.pageId, pages.id))
+      .where(and(eq(pages.slug, pageSlug), eq(sections.key, "seo")))
+      .limit(1);
+
+    return (row?.content as PageSeo) ?? fallback;
+  } catch (err) {
+    console.error(`Failed to load SEO for ${pageSlug}:`, err);
+    return fallback;
+  }
+}
 
 interface HeroContent {
   badgeText: string;

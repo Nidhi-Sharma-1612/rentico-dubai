@@ -6,16 +6,23 @@ import ArticleTOC from "@/components/insights/ArticleTOC";
 import ReadingProgress from "@/components/insights/ReadingProgress";
 import CTABanner from "@/components/shared/CTABanner";
 import { ArticleBlock } from "@/lib/types";
+import { getLegalPageContent, getPageSeo, LegalPageContent } from "@/lib/data/pageSections";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy | Rentico Dubai",
-  description:
-    "How Rentico Vacation Homes Rental L.L.C. collects, uses and protects your personal information.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getPageSeo("privacy-policy", {
+    metaTitle: "Privacy Policy | Rentico Dubai",
+    metaDescription:
+      "How Rentico Vacation Homes Rental L.L.C. collects, uses and protects your personal information.",
+  });
+  return { title: seo.metaTitle, description: seo.metaDescription };
+}
 
-const lastUpdated = "10 August 2026";
+// Reads admin-editable content from the DB — without this, Next would
+// statically bake this page at build time and admin edits would never show
+// up without a redeploy.
+export const revalidate = 60;
 
-const content: ArticleBlock[] = [
+const DEFAULT_BLOCKS: ArticleBlock[] = [
   {
     type: "paragraph",
     text: "This Privacy Policy explains how Rentico Vacation Homes Rental L.L.C. (“Rentico”, “we”, “us”, “our”) collects, uses and protects your personal information when you visit renticodubai.com, book a stay with us, or enquire about listing your property for management. By using our website or services, you agree to the practices described in this policy.",
@@ -101,34 +108,40 @@ const content: ArticleBlock[] = [
   },
 ];
 
-export default function PrivacyPolicyPage() {
+const DEFAULT_CONTENT: LegalPageContent = {
+  heroEyebrow: "Legal",
+  heroTitle: "Privacy Policy",
+  heroDescription: "How we collect, use and protect your personal information.",
+  lastUpdated: "10 August 2026",
+  blocks: DEFAULT_BLOCKS,
+  ctaHeading: "Questions about your data?",
+  ctaDescription: "Reach out to our team any time — we're happy to walk you through how your information is handled.",
+  ctaButtonLabel: "Contact Us",
+  ctaButtonHref: "/contact",
+};
+
+export default async function PrivacyPolicyPage() {
+  const { heroEyebrow, heroTitle, heroDescription, lastUpdated, blocks, ctaHeading, ctaDescription, ctaButtonLabel, ctaButtonHref } =
+    await getLegalPageContent("privacy-policy", DEFAULT_CONTENT);
+
   return (
     <>
       <ReadingProgress />
-      <PageHero
-        eyebrow="Legal"
-        title="Privacy Policy"
-        description="How we collect, use and protect your personal information."
-      />
+      <PageHero eyebrow={heroEyebrow} title={heroTitle} description={heroDescription} />
 
       <section className="py-12 sm:py-16">
         <Container>
           <div className="mx-auto flex max-w-6xl justify-center gap-12">
-            <ArticleTOC content={content} />
+            <ArticleTOC content={blocks} />
             <div className="min-w-0 max-w-3xl flex-1">
               <p className="mb-8 text-sm text-navy-900/45">Last updated: {lastUpdated}</p>
-              <ArticleBody content={content} />
+              <ArticleBody content={blocks} />
             </div>
           </div>
         </Container>
       </section>
 
-      <CTABanner
-        title="Questions about your data?"
-        description="Reach out to our team any time — we're happy to walk you through how your information is handled."
-        primaryLabel="Contact Us"
-        primaryHref="/contact"
-      />
+      <CTABanner title={ctaHeading} description={ctaDescription} primaryLabel={ctaButtonLabel} primaryHref={ctaButtonHref} />
     </>
   );
 }

@@ -6,16 +6,23 @@ import ArticleTOC from "@/components/insights/ArticleTOC";
 import ReadingProgress from "@/components/insights/ReadingProgress";
 import CTABanner from "@/components/shared/CTABanner";
 import { ArticleBlock } from "@/lib/types";
+import { getLegalPageContent, getPageSeo, LegalPageContent } from "@/lib/data/pageSections";
 
-export const metadata: Metadata = {
-  title: "Terms & Conditions | Rentico Dubai",
-  description:
-    "The terms governing your use of renticodubai.com and Rentico's short-term rental booking and property management services.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getPageSeo("terms-conditions", {
+    metaTitle: "Terms & Conditions | Rentico Dubai",
+    metaDescription:
+      "The terms governing your use of renticodubai.com and Rentico's short-term rental booking and property management services.",
+  });
+  return { title: seo.metaTitle, description: seo.metaDescription };
+}
 
-const lastUpdated = "10 August 2026";
+// Reads admin-editable content from the DB — without this, Next would
+// statically bake this page at build time and admin edits would never show
+// up without a redeploy.
+export const revalidate = 60;
 
-const content: ArticleBlock[] = [
+const DEFAULT_BLOCKS: ArticleBlock[] = [
   {
     type: "paragraph",
     text: "These Terms & Conditions (“Terms”) govern your use of renticodubai.com and the short-term rental booking and property management services provided by Rentico Vacation Homes Rental L.L.C. (“Rentico”, “we”, “us”, “our”). By accessing this website or booking a stay with us, you agree to be bound by these Terms.",
@@ -92,34 +99,40 @@ const content: ArticleBlock[] = [
   },
 ];
 
-export default function TermsConditionsPage() {
+const DEFAULT_CONTENT: LegalPageContent = {
+  heroEyebrow: "Legal",
+  heroTitle: "Terms & Conditions",
+  heroDescription: "The terms governing your use of this website and our services.",
+  lastUpdated: "10 August 2026",
+  blocks: DEFAULT_BLOCKS,
+  ctaHeading: "Have a question about these terms?",
+  ctaDescription: "Reach out to our team any time — we're happy to help.",
+  ctaButtonLabel: "Contact Us",
+  ctaButtonHref: "/contact",
+};
+
+export default async function TermsConditionsPage() {
+  const { heroEyebrow, heroTitle, heroDescription, lastUpdated, blocks, ctaHeading, ctaDescription, ctaButtonLabel, ctaButtonHref } =
+    await getLegalPageContent("terms-conditions", DEFAULT_CONTENT);
+
   return (
     <>
       <ReadingProgress />
-      <PageHero
-        eyebrow="Legal"
-        title="Terms & Conditions"
-        description="The terms governing your use of this website and our services."
-      />
+      <PageHero eyebrow={heroEyebrow} title={heroTitle} description={heroDescription} />
 
       <section className="py-12 sm:py-16">
         <Container>
           <div className="mx-auto flex max-w-6xl justify-center gap-12">
-            <ArticleTOC content={content} />
+            <ArticleTOC content={blocks} />
             <div className="min-w-0 max-w-3xl flex-1">
               <p className="mb-8 text-sm text-navy-900/45">Last updated: {lastUpdated}</p>
-              <ArticleBody content={content} />
+              <ArticleBody content={blocks} />
             </div>
           </div>
         </Container>
       </section>
 
-      <CTABanner
-        title="Have a question about these terms?"
-        description="Reach out to our team any time — we're happy to help."
-        primaryLabel="Contact Us"
-        primaryHref="/contact"
-      />
+      <CTABanner title={ctaHeading} description={ctaDescription} primaryLabel={ctaButtonLabel} primaryHref={ctaButtonHref} />
     </>
   );
 }

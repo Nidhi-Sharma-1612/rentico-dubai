@@ -2,8 +2,9 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
-import { GripVertical, Trash2 } from "lucide-react";
+import { GripVertical, HelpCircle, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import EmptyState from "../EmptyState";
 import {
   DndContext,
   closestCenter,
@@ -67,7 +68,7 @@ export default function FaqReorderList({ group, initialItems }: { group: string;
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
 
   if (items.length === 0) {
-    return <p className="rounded-xl border border-navy-900/8 bg-white p-6 text-center text-sm text-navy-900/50">No FAQs yet.</p>;
+    return <EmptyState icon={HelpCircle} label="No FAQs yet." />;
   }
 
   const handleDragEnd = (event: DragEndEvent) => {

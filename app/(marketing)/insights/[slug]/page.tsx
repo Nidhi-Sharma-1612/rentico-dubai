@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { eq, ne, desc } from "drizzle-orm";
+import { draftMode } from "next/headers";
+import { and, eq, ne, desc } from "drizzle-orm";
 import Container from "@/components/shared/Container";
 import CTABanner from "@/components/shared/CTABanner";
 import ArticleHeader from "@/components/insights/ArticleHeader";
@@ -19,7 +20,10 @@ export const revalidate = 60;
 
 export async function generateStaticParams() {
   try {
-    const rows = await db.select({ slug: articlesTable.slug }).from(articlesTable);
+    const rows = await db
+      .select({ slug: articlesTable.slug })
+      .from(articlesTable)
+      .where(eq(articlesTable.status, "published"));
     return rows.map((a) => ({ slug: a.slug }));
   } catch (err) {
     console.error("Failed to load article slugs:", err);
@@ -46,10 +50,18 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const [article] = await db.select().from(articlesTable).where(eq(articlesTable.slug, slug)).limit(1);
   if (!article) notFound();
 
+  // Draft articles only render for an admin previewing via Draft Mode
+  // (enabled through /api/draft) — everyone else gets a 404, same as if
+  // the article didn't exist yet.
+  if (article.status === "draft") {
+    const { isEnabled } = await draftMode();
+    if (!isEnabled) notFound();
+  }
+
   const related = await db
     .select()
     .from(articlesTable)
-    .where(ne(articlesTable.slug, slug))
+    .where(and(ne(articlesTable.slug, slug), eq(articlesTable.status, "published")))
     .orderBy(desc(articlesTable.date))
     .limit(3);
 

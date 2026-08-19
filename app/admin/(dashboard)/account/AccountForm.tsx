@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { Eye, EyeOff, Lock } from "lucide-react";
+import { Eye, EyeOff, Lock, ShieldCheck, User } from "lucide-react";
 import { changePassword, ActionResult } from "./actions";
 
 const inputClass =
@@ -57,18 +57,16 @@ export default function AccountForm({ email }: { email: string }) {
   const [state, formAction] = useActionState<ActionResult, FormData>(changePassword, {});
 
   return (
-    <div className="flex max-w-xl flex-col gap-8">
-      <div className="flex flex-col gap-3 rounded-xl border border-navy-900/8 bg-navy-50/40 p-5">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-navy-900/40">Signed in as</h3>
-        <p className="text-sm font-medium text-navy-900">{email}</p>
-      </div>
+    <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-[1fr_380px]">
+      <form action={formAction} className="flex flex-col gap-4 rounded-2xl border border-navy-900/8 bg-white p-6">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-navy-900/40">Change password</h2>
 
-      <form action={formAction} className="flex flex-col gap-4">
-        <h3 className="text-sm font-bold uppercase tracking-wider text-navy-900/50">Change password</h3>
-
-        <PasswordField name="currentPassword" label="Current password" autoComplete="current-password" />
-        <PasswordField name="newPassword" label="New password" autoComplete="new-password" />
-        <PasswordField name="confirmPassword" label="Confirm new password" autoComplete="new-password" />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <PasswordField name="currentPassword" label="Current password" autoComplete="current-password" />
+          <div className="hidden sm:block" />
+          <PasswordField name="newPassword" label="New password" autoComplete="new-password" />
+          <PasswordField name="confirmPassword" label="Confirm new password" autoComplete="new-password" />
+        </div>
 
         {state.error && (
           <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-600">
@@ -81,10 +79,34 @@ export default function AccountForm({ email }: { email: string }) {
           </p>
         )}
 
-        <div className="mt-2">
+        <div className="mt-1">
           <SubmitButton />
         </div>
       </form>
+
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-3 rounded-2xl border border-navy-900/8 bg-white p-6">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-navy-900/40">Signed in as</h3>
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-orange-50 text-orange-600">
+              <User className="h-4.5 w-4.5" />
+            </span>
+            <p className="truncate text-sm font-semibold text-navy-900">{email}</p>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-3 rounded-2xl border border-navy-900/8 bg-navy-50/40 p-6">
+          <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-navy-900/40">
+            <ShieldCheck className="h-4 w-4 text-orange-500" />
+            Password tips
+          </h3>
+          <ul className="flex flex-col gap-2 text-sm text-navy-900/60">
+            <li>• At least 8 characters — longer is stronger.</li>
+            <li>• Don&apos;t reuse a password from another site.</li>
+            <li>• You&apos;ll need your current password to confirm this change.</li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }

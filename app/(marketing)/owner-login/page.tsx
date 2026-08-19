@@ -2,13 +2,16 @@ import type { Metadata } from "next";
 import { ArrowUpRight, LockKeyhole } from "lucide-react";
 import Container from "@/components/shared/Container";
 import Button from "@/components/shared/Button";
-import { getOwnerLoginContent } from "@/lib/data/pageSections";
+import { getOwnerLoginContent, getPageSeo } from "@/lib/data/pageSections";
 import { resolveIcon } from "@/lib/icons";
 
-export const metadata: Metadata = {
-  title: "Owner Login | Rentico Dubai",
-  description: "Access your Rentico owner portal to track bookings, revenue and property performance.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await getPageSeo("owner-login", {
+    metaTitle: "Owner Login | Rentico Dubai",
+    metaDescription: "Access your Rentico owner portal to track bookings, revenue and property performance.",
+  });
+  return { title: seo.metaTitle, description: seo.metaDescription };
+}
 
 // This page now reads admin-editable content from the DB — without this,
 // Next would statically bake it at build time and admin edits would never

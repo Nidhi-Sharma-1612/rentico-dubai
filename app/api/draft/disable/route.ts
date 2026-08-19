@@ -1,0 +1,10 @@
+import { draftMode } from "next/headers";
+import { redirect } from "next/navigation";
+
+export async function POST(request: Request) {
+  const draft = await draftMode();
+  draft.disable();
+
+  const { searchParams } = new URL(request.url);
+  redirect(searchParams.get("redirect") || "/insights");
+}

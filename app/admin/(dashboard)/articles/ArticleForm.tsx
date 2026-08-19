@@ -3,7 +3,7 @@
 import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import Image from "next/image";
-import { Loader2, Upload, X } from "lucide-react";
+import { FileEdit, Globe, Loader2, Upload, X } from "lucide-react";
 import { createArticle, updateArticle, ActionResult } from "./actions";
 import { uploadImage } from "../upload-actions";
 import ArticleBlockEditor from "./ArticleBlockEditor";
@@ -24,6 +24,7 @@ interface ArticleFormProps {
     date: string;
     image: string | null;
     content: ArticleBlock[];
+    status: string;
   };
 }
 
@@ -88,6 +89,29 @@ export default function ArticleForm({ initial }: ArticleFormProps) {
           required
           className={inputClass}
         />
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-semibold text-navy-900">Status</label>
+        <div className="flex gap-2">
+          <label className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl border border-navy-900/12 px-4 py-3 text-sm font-semibold text-navy-900/60 transition-colors has-checked:border-orange-500 has-checked:bg-orange-50 has-checked:text-orange-600">
+            <input
+              type="radio"
+              name="status"
+              value="draft"
+              defaultChecked={(initial?.status ?? "draft") === "draft"}
+              className="sr-only"
+            />
+            <FileEdit className="h-4 w-4" />
+            Draft
+          </label>
+          <label className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl border border-navy-900/12 px-4 py-3 text-sm font-semibold text-navy-900/60 transition-colors has-checked:border-orange-500 has-checked:bg-orange-50 has-checked:text-orange-600">
+            <input type="radio" name="status" value="published" defaultChecked={initial?.status === "published"} className="sr-only" />
+            <Globe className="h-4 w-4" />
+            Published
+          </label>
+        </div>
+        <p className="text-xs text-navy-900/40">Draft articles are hidden from the public Insights page until published.</p>
       </div>
 
       <div className="flex flex-col gap-1.5">
