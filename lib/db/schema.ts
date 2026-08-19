@@ -1,4 +1,4 @@
-import { boolean, check, integer, jsonb, pgTable, smallint, text, timestamp, unique, uuid } from "drizzle-orm/pg-core";
+import { bigint, boolean, check, integer, jsonb, pgTable, smallint, text, timestamp, unique, uuid } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 import { ArticleBlock, SocialLink } from "@/lib/types";
 
@@ -102,4 +102,17 @@ export const activityLog = pgTable("activity_log", {
   entityType: text("entity_type").notNull(),
   entityId: text("entity_id").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+// Persists Guesty OAuth tokens across server restarts. Guesty caps token
+// generation at 5 per 24h per client ID — an in-memory-only cache gets wiped
+// on every process restart, and some hosts (Hostinger's Node runtime, in
+// practice) restart far more often than that budget can absorb. The DB
+// survives restarts, so this is the durable layer behind the in-memory cache
+// in lib/guesty/auth.ts.
+export const guestyTokens = pgTable("guesty_tokens", {
+  cacheKey: text("cache_key").primaryKey(),
+  accessToken: text("access_token").notNull(),
+  expiresAt: bigint("expires_at", { mode: "number" }).notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });

@@ -17,6 +17,7 @@ const TABLES = [
   "testimonials",
   "site_settings",
   "activity_log",
+  "guesty_tokens",
 ];
 
 async function main() {
