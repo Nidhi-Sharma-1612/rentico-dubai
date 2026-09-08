@@ -1,10 +1,9 @@
-import type { NextConfig } from "next";
-
 const supabaseHostname = process.env.NEXT_PUBLIC_SUPABASE_URL
   ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname
   : undefined;
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   experimental: {
     serverActions: {
       // The admin uploadImage action already caps files at 5MB — this just
@@ -39,7 +38,7 @@ const nextConfig: NextConfig = {
       ...(supabaseHostname
         ? [
             {
-              protocol: "https" as const,
+              protocol: "https",
               hostname: supabaseHostname,
             },
           ]
