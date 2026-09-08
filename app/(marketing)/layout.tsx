@@ -3,6 +3,7 @@ import Footer from "@/components/layout/Footer";
 import PreviewBanner from "@/components/layout/PreviewBanner";
 import { getSiteSettings } from "@/lib/data/siteSettings";
 import { getGlobalSections } from "@/lib/data/pageSections";
+import { buildOrganizationSchema } from "@/lib/structuredData";
 
 export default async function MarketingLayout({ children }: { children: React.ReactNode }) {
   const settings = await getSiteSettings();
@@ -10,6 +11,10 @@ export default async function MarketingLayout({ children }: { children: React.Re
 
   return (
     <div className="flex min-h-full flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(buildOrganizationSchema(settings)) }}
+      />
       <PreviewBanner />
       <Navbar logoUrl={settings.logoUrl} links={navLinks} />
       <main className="flex-1">{children}</main>

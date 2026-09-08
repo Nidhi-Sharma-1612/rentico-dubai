@@ -51,6 +51,7 @@ export default function OperatingMap() {
   return (
     <MapContainer center={[24.85, 54.85]} zoom={9} scrollWheelZoom={false} className="h-full w-full">
       <TileLayer
+        className="map-tiles-muted"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />

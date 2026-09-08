@@ -54,6 +54,7 @@ export default function PropertiesMap({
   return (
     <MapContainer center={DUBAI_CENTER} zoom={11} scrollWheelZoom className="h-full w-full">
       <TileLayer
+        className="map-tiles-muted"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
