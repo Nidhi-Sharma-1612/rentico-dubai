@@ -146,6 +146,13 @@ function CheckoutBody({ property, checkIn, checkOut, quote, onClose }: BookingCh
         mode: "payment",
         amount: Math.round(quote.total * 100),
         currency: quote.currency.toLowerCase(),
+        // Guesty creates its PaymentIntent with setup_future_usage=off_session
+        // (it keeps the card on file for later charges). Stripe rejects a
+        // ConfirmationToken whose setup_future_usage doesn't match the intent
+        // it's confirmed against, so the token must be created with the same
+        // value: "The provided setup_future_usage (off_session) does not match
+        // the setup_future_usage from the provided confirmation_token (null)".
+        setupFutureUsage: "off_session",
       }}
     >
       <CheckoutForm property={property} checkIn={checkIn} checkOut={checkOut} quote={quote} onClose={onClose} />

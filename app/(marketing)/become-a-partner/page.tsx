@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metaDescription:
       "Send us a property, keep your client, and get paid. Refer owners to Rentico and earn a commission up to AED 20,000 on every unit that goes live.",
   });
-  return { title: seo.metaTitle, description: seo.metaDescription };
+  return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "/become-a-partner" } };
 }
 
 // This page reads admin-editable FAQs from the DB — without this, Next

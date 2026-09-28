@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metaTitle: "Insights | Rentico Dubai",
     metaDescription: "Market insights, owner guides and hosting tips for short-term rental properties in Dubai.",
   });
-  return { title: seo.metaTitle, description: seo.metaDescription };
+  return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "/insights" } };
 }
 
 // Reads admin-editable articles from the DB — without this, Next would

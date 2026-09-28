@@ -65,16 +65,6 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
-/* Muted basemap — plain OpenStreetMap tiles are free and keyless (unlike
-   CARTO/Stadia's hosted basemaps, which now require an API key), but their
-   default styling is busy: saturated road colors, dense icons, local-script
-   labels. Desaturating + flattening contrast via CSS keeps the map free of
-   any external dependency while making the orange property pins the only
-   strong color on the map, which is what actually reads as "clear". */
-.map-tiles-muted {
-  filter: grayscale(55%) brightness(1.08) contrast(0.92) saturate(0.9);
-}
-
 /* Leaflet map controls — restyled to match the site's rounded, shadowed UI
    instead of Leaflet's boxy default. */
 .leaflet-control-zoom {

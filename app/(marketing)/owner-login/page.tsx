@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metaTitle: "Owner Login | Rentico Dubai",
     metaDescription: "Access your Rentico owner portal to track bookings, revenue and property performance.",
   });
-  return { title: seo.metaTitle, description: seo.metaDescription };
+  return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "/owner-login" } };
 }
 
 // This page now reads admin-editable content from the DB — without this,

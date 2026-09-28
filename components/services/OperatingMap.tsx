@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Tooltip, useMap } from "react-leaflet";
+import { MapContainer, Marker, Tooltip, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import VectorBasemap from "@/components/shared/VectorBasemap";
 
 type Pin = { name: string; lat: number; lng: number; number: number; group: "dubai" | "abudhabi" };
 
@@ -50,11 +51,7 @@ function FitBounds() {
 export default function OperatingMap() {
   return (
     <MapContainer center={[24.85, 54.85]} zoom={9} scrollWheelZoom={false} className="h-full w-full">
-      <TileLayer
-        className="map-tiles-muted"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+      <VectorBasemap />
       <FitBounds />
       {pins.map((p) => (
         <Marker key={`${p.group}-${p.number}`} position={[p.lat, p.lng]} icon={pinIcon(p.number, p.group)}>

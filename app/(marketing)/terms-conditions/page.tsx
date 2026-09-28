@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metaDescription:
       "The terms governing your use of renticodubai.com and Rentico's short-term rental booking and property management services.",
   });
-  return { title: seo.metaTitle, description: seo.metaDescription };
+  return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "/terms-conditions" } };
 }
 
 // Reads admin-editable content from the DB — without this, Next would

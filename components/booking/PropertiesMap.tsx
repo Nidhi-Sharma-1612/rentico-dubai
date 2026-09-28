@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import { MapContainer, TileLayer, Marker, Tooltip, useMap } from "react-leaflet";
+import { MapContainer, Marker, Tooltip, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import VectorBasemap from "@/components/shared/VectorBasemap";
 import { Property } from "@/lib/types";
 
 const DUBAI_CENTER: [number, number] = [25.2048, 55.2708];
@@ -53,11 +54,7 @@ export default function PropertiesMap({
 
   return (
     <MapContainer center={DUBAI_CENTER} zoom={11} scrollWheelZoom className="h-full w-full">
-      <TileLayer
-        className="map-tiles-muted"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+      <VectorBasemap />
       <FitBounds points={points} />
       {pinned.map((p) => (
         <Marker

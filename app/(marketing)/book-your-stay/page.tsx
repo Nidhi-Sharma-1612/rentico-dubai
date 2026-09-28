@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metaTitle: "Book Your Stay | Rentico Dubai",
     metaDescription: "Search and book Rentico's luxury short-term rental homes across Dubai.",
   });
-  return { title: seo.metaTitle, description: seo.metaDescription };
+  return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "/book-your-stay" } };
 }
 
 export default async function BookYourStayPage({

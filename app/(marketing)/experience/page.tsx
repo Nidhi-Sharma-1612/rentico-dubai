@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metaDescription:
       "Transportation, signature experiences, celebrations, adventure, dining, wellness, custom itineraries and VIP event access — arranged by the Rentico concierge team for every stay.",
   });
-  return { title: seo.metaTitle, description: seo.metaDescription };
+  return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "/experience" } };
 }
 
 // This page reads admin-editable FAQs from the DB — without this, Next

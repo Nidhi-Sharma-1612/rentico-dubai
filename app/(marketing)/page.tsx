@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metaDescription:
       "Rentico Dubai manages luxury short-term rental homes across Dubai — Downtown, Business Bay, Palm Jumeirah, Dubai Marina, Dubai Hills and Sobha Hartland. Best price guarantee, no hidden fees, direct communication.",
   });
-  return { title: seo.metaTitle, description: seo.metaDescription };
+  return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "/" } };
 }
 
 export default async function Home() {

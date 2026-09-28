@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metaDescription:
       "Short-term & mid-term rental management across Dubai and Abu Dhabi — dynamic pricing, 24/7 guest care, hotel-grade housekeeping, and transparent monthly reporting for a flat 20% of gross revenue.",
   });
-  return { title: seo.metaTitle, description: seo.metaDescription };
+  return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "/manage-my-property" } };
 }
 
 // This page reads admin-editable FAQs from the DB — without this, Next

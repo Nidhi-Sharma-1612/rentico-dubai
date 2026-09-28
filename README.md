@@ -12,7 +12,7 @@ The site is fully live-data: listings, availability, pricing and guest reviews a
 - [lucide-react](https://lucide.dev) for icons
 - [Guesty Open API](https://developers.guesty.com/) + [Guesty Booking Engine API](https://developers.guesty.com/) for listings, availability, quotes and reservations
 - [Stripe](https://stripe.com) (`@stripe/stripe-js`, `@stripe/react-stripe-js`) for card capture at checkout
-- [Leaflet](https://leafletjs.com) / [react-leaflet](https://react-leaflet.js.org) for the coverage-area map on the Manage My Property page (free OpenStreetMap tiles, no API key)
+- [Leaflet](https://leafletjs.com) / [react-leaflet](https://react-leaflet.js.org) for the three maps (search results, property detail, Manage My Property coverage), with [MapLibre GL](https://maplibre.org) rendering [OpenFreeMap](https://openfreemap.org) vector tiles underneath (free, no API key; labels forced to Latin script). See `components/shared/VectorBasemap.tsx`.
 - [Supabase](https://supabase.com) — Postgres database, Auth (admin login), and Storage (uploaded images)
 - [Drizzle ORM](https://orm.drizzle.team) + [drizzle-kit](https://orm.drizzle.team/kit-docs/overview) for the database layer
 - [react-hook-form](https://react-hook-form.com) + [zod](https://zod.dev), [@dnd-kit](https://dndkit.com) (drag-to-reorder), [sonner](https://sonner.emilkowal.ski) (toasts) — admin panel forms/UX
@@ -135,6 +135,9 @@ lib/
 
 scripts/
   enable-rls.ts             Enables Row Level Security on every public table (npm run db:secure)
+  copy-maplibre-worker.mjs  postinstall: copies MapLibre's web-worker files into public/ (the bundled
+                            worker fails to load under Next). Files in public/maplibre-gl-*.mjs are committed;
+                            refresh them (npm install) and commit if maplibre-gl is upgraded
   fetch-guesty-token.mjs    Legacy manual token bootstrap — superseded by the DB-cached token flow
                             in lib/guesty/auth.ts; only useful for forcing an out-of-band token fetch
 ```

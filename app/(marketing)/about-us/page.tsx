@@ -18,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metaDescription:
       "Rentico Dubai manages luxury short-term rental homes across Dubai's finest districts — founded 2025, 4.9-star rated.",
   });
-  return { title: seo.metaTitle, description: seo.metaDescription };
+  return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "/about-us" } };
 }
 
 // This page now reads admin-editable content from the DB — without this,

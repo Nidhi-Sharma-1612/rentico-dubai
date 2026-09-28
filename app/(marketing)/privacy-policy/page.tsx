@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metaDescription:
       "How Rentico Vacation Homes Rental L.L.C. collects, uses and protects your personal information.",
   });
-  return { title: seo.metaTitle, description: seo.metaDescription };
+  return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "/privacy-policy" } };
 }
 
 // Reads admin-editable content from the DB — without this, Next would

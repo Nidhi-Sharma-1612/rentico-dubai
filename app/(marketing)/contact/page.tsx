@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metaDescription:
       "Get in touch with Rentico Dubai — questions about booking a stay, listing your property, or anything else. We typically respond within 24 hours.",
   });
-  return { title: seo.metaTitle, description: seo.metaDescription };
+  return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "/contact" } };
 }
 
 // This page reads admin-editable site settings from the DB — without this,

@@ -43,7 +43,10 @@ export function buildBookingQuery(search: Partial<BookingSearch>): string {
   const params = new URLSearchParams();
   if (search.checkIn) params.set("checkIn", toDateParam(search.checkIn));
   if (search.checkOut) params.set("checkOut", toDateParam(search.checkOut));
-  if (search.guests) params.set("guests", String(search.guests));
+  // The default is implied by parseBookingSearchParams, so leaving it out keeps
+  // links to the same listing from producing a second, duplicate URL
+  // (/properties/x?guests=2 vs /properties/x) for search engines to index.
+  if (search.guests && search.guests !== DEFAULT_GUESTS) params.set("guests", String(search.guests));
   return params.toString();
 }
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { SITE_URL } from "@/lib/structuredData";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -9,6 +10,9 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  // Lets every page use a relative path for alternates.canonical and resolves
+  // it to a full https://staywithrentico.com/... URL.
+  metadataBase: new URL(SITE_URL),
   title: "Rentico Dubai | Luxury Vacation Home Management",
   description:
     "Rentico Dubai manages luxury short-term rental homes across Dubai — Downtown, Business Bay, Palm Jumeirah, Dubai Marina, Dubai Hills and Sobha Hartland. Best price guarantee, no hidden fees, direct communication.",

@@ -41,6 +41,9 @@ export async function generateMetadata({
     return {
       title: `${property.name} | Rentico Dubai`,
       description: property.description,
+      // Search params (?guests=…, ?checkIn=…) render the same listing — point
+      // every variant at the one clean URL so Google indexes a single copy.
+      alternates: { canonical: `/properties/${property.slug}` },
     };
   } catch (err) {
     console.error("generateMetadata failed to load listing:", err);

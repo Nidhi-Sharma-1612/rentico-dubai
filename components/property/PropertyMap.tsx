@@ -1,8 +1,9 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { MapContainer, Marker } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import VectorBasemap from "@/components/shared/VectorBasemap";
 
 function pinIcon() {
   return L.divIcon({
@@ -21,11 +22,7 @@ function pinIcon() {
 export default function PropertyMap({ lat, lng }: { lat: number; lng: number }) {
   return (
     <MapContainer center={[lat, lng]} zoom={14} scrollWheelZoom={false} className="h-full w-full">
-      <TileLayer
-        className="map-tiles-muted"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+      <VectorBasemap />
       <Marker position={[lat, lng]} icon={pinIcon()} />
     </MapContainer>
   );
