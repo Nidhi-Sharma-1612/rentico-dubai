@@ -11,6 +11,16 @@ const nextConfig = {
       // the request itself doesn't get rejected before that check runs.
       bodySizeLimit: "8mb",
     },
+    // Defaults to os.cpus().length - 1, which on Hostinger's shared build
+    // host reports ~40 cores — but the hosting plan itself is capped at 200
+    // total processes shared across 5 websites. The build tries to spawn 40
+    // worker processes for "Collecting page data", blows through the
+    // account's actual process ceiling, and a worker that fails to spawn
+    // leaves .next/server/pages-manifest.json missing (ENOENT) even though
+    // webpack itself reported success. Capping this to a small fixed number
+    // keeps the build inside what the account can actually support,
+    // regardless of the host machine's real (irrelevant) core count.
+    cpus: 2,
   },
   async redirects() {
     return [
