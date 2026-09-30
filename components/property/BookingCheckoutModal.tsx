@@ -171,6 +171,22 @@ function CheckoutBody({ property, checkIn, checkOut, quote, onClose }: BookingCh
 const inputClass =
   "w-full rounded-xl border border-navy-900/12 bg-white px-4 py-3 text-sm text-navy-900 outline-none transition-colors placeholder:text-navy-900/35 focus:border-orange-500";
 
+// Dial codes for the guest's likely countries — UAE first since that's where
+// every stay is located, then the other markets Rentico's guests most often
+// book from.
+const COUNTRY_CODES = [
+  { code: "+971", label: "UAE +971" },
+  { code: "+966", label: "Saudi Arabia +966" },
+  { code: "+974", label: "Qatar +974" },
+  { code: "+965", label: "Kuwait +965" },
+  { code: "+973", label: "Bahrain +973" },
+  { code: "+968", label: "Oman +968" },
+  { code: "+91", label: "India +91" },
+  { code: "+44", label: "UK +44" },
+  { code: "+1", label: "USA/Canada +1" },
+  { code: "+7", label: "Russia +7" },
+];
+
 function CheckoutForm({
   property,
   checkIn,
@@ -190,6 +206,7 @@ function CheckoutForm({
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [countryCode, setCountryCode] = useState(COUNTRY_CODES[0].code);
   const [phone, setPhone] = useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
@@ -230,7 +247,7 @@ function CheckoutForm({
     const result = await createInstantChargeReservationAction({
       quoteId: quote.quoteId,
       ratePlanId: quote.ratePlanId,
-      guest: { firstName, lastName, email, phone: phone || undefined },
+      guest: { firstName, lastName, email, phone: phone ? `${countryCode} ${phone}` : undefined },
       confirmationToken: confirmationToken.id,
       acceptedTerms,
       acceptedPrivacy,
@@ -329,13 +346,27 @@ function CheckoutForm({
           onChange={(e) => setEmail(e.target.value)}
           className={inputClass}
         />
-        <input
-          type="tel"
-          placeholder="Phone (optional)"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          className={inputClass}
-        />
+        <div className="flex gap-2">
+          <select
+            value={countryCode}
+            onChange={(e) => setCountryCode(e.target.value)}
+            aria-label="Country code"
+            className="w-18 shrink-0 rounded-xl border border-navy-900/12 bg-white px-2 py-3 text-center text-sm text-navy-900 outline-none transition-colors focus:border-orange-500"
+          >
+            {COUNTRY_CODES.map(({ code, label }) => (
+              <option key={code} value={code} title={label}>
+                {code}
+              </option>
+            ))}
+          </select>
+          <input
+            type="tel"
+            placeholder="Phone (optional)"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className={`${inputClass} min-w-0 flex-1`}
+          />
+        </div>
       </div>
 
       <div className="rounded-xl border border-navy-900/12 px-4 py-3.5">
