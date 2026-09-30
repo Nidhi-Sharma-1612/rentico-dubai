@@ -153,6 +153,14 @@ function CheckoutBody({ property, checkIn, checkOut, quote, onClose }: BookingCh
         // value: "The provided setup_future_usage (off_session) does not match
         // the setup_future_usage from the provided confirmation_token (null)".
         setupFutureUsage: "off_session",
+        // Leaving this unset puts Elements into "automatic payment methods"
+        // mode, which builds a ConfirmationToken that isn't confirmable
+        // against a PaymentIntent created with an explicit payment_method_types
+        // list — which is how Guesty creates theirs (card only, per their
+        // documented Stripe Tokenization Flow): "Payment details were collected
+        // through Stripe Elements using automatic payment methods and cannot be
+        // confirmed through the API configured with payment_method_types...".
+        paymentMethodTypes: ["card"],
       }}
     >
       <CheckoutForm property={property} checkIn={checkIn} checkOut={checkOut} quote={quote} onClose={onClose} />
