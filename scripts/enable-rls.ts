@@ -18,6 +18,7 @@ const TABLES = [
   "site_settings",
   "activity_log",
   "guesty_tokens",
+  "checkout_failures",
 ];
 
 async function main() {

@@ -8,6 +8,8 @@ import {
   getRatePlanId,
   GuestyQuoteError,
 } from "@/lib/guesty/bookingApi";
+import { db } from "@/lib/db";
+import { checkoutFailures } from "@/lib/db/schema";
 
 type ActionResult<T> = { success: true; data: T } | { success: false; error: string };
 
@@ -92,6 +94,24 @@ export async function getQuoteAction(params: {
   }
 }
 
+async function recordCheckoutFailure(params: {
+  quoteId: string;
+  ratePlanId: string;
+  stage: string;
+  errorMessage: string;
+}) {
+  try {
+    await db.insert(checkoutFailures).values({
+      quoteId: params.quoteId,
+      ratePlanId: params.ratePlanId,
+      stage: params.stage,
+      errorMessage: params.errorMessage,
+    });
+  } catch (err) {
+    console.error("Failed to record checkout failure:", err);
+  }
+}
+
 export async function createInstantChargeReservationAction(params: {
   quoteId: string;
   ratePlanId: string;
@@ -117,6 +137,12 @@ export async function createInstantChargeReservationAction(params: {
     });
 
     if (result.payment?.status === "PENDING_AUTH") {
+      await recordCheckoutFailure({
+        quoteId: params.quoteId,
+        ratePlanId: params.ratePlanId,
+        stage: "pending-auth",
+        errorMessage: "Card requires additional verification (PENDING_AUTH)",
+      });
       // 3D Secure follow-up isn't implemented — see the note on
       // createInstantChargeReservation for why. No reservation is
       // confirmed at this point (the charge hasn't completed), so it's
@@ -129,6 +155,12 @@ export async function createInstantChargeReservationAction(params: {
     }
 
     if (result.payment?.error) {
+      await recordCheckoutFailure({
+        quoteId: params.quoteId,
+        ratePlanId: params.ratePlanId,
+        stage: "payment-error",
+        errorMessage: JSON.stringify(result.payment.processorError ?? result.payment.error),
+      });
       return {
         success: false,
         error: result.payment.processorError?.message ?? "Your card was declined. Please check your details or try a different card.",
@@ -138,6 +170,12 @@ export async function createInstantChargeReservationAction(params: {
     return { success: true, data: { reservationId: result.reservation._id } };
   } catch (err) {
     console.error("createInstantChargeReservationAction failed:", err);
+    await recordCheckoutFailure({
+      quoteId: params.quoteId,
+      ratePlanId: params.ratePlanId,
+      stage: "instant-charge-exception",
+      errorMessage: err instanceof Error ? err.message : String(err),
+    });
     return {
       success: false,
       error: "We couldn't process your payment. Please check your card details and try again, or contact us for help.",

@@ -116,3 +116,12 @@ export const guestyTokens = pgTable("guesty_tokens", {
   expiresAt: bigint("expires_at", { mode: "number" }).notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
+
+export const checkoutFailures = pgTable("checkout_failures", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  quoteId: text("quote_id").notNull(),
+  ratePlanId: text("rate_plan_id").notNull(),
+  stage: text("stage").notNull(),
+  errorMessage: text("error_message").notNull(),
+});
