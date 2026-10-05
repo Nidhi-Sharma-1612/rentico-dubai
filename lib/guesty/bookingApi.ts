@@ -465,3 +465,36 @@ export async function createInstantChargeReservation(params: CreateInstantCharge
   });
 }
 
+
+interface GuestyBEReview {
+  _id: string;
+  createdAtGuesty: string;
+  rawReview: {
+    submitted: boolean;
+    hidden: boolean;
+    overall_rating: number;
+    public_review?: string;
+  };
+}
+
+export interface ListingReview {
+  id: string;
+  rating: number;
+  text: string;
+  date: string;
+}
+
+export async function getListingReviews(listingId: string): Promise<ListingReview[]> {
+  const data = await request<{ data: GuestyBEReview[] }>(`/reviews?listingId=${listingId}&limit=50`, {
+    revalidate: LISTINGS_REVALIDATE_SECONDS,
+  });
+  return data.data
+    .filter((r) => r.rawReview.submitted && !r.rawReview.hidden && r.rawReview.public_review)
+    .map((r) => ({
+      id: r._id,
+      rating: r.rawReview.overall_rating,
+      text: r.rawReview.public_review as string,
+      date: r.createdAtGuesty,
+    }))
+    .sort((a, b) => b.date.localeCompare(a.date));
+}

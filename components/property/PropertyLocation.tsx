@@ -40,7 +40,7 @@ export default function PropertyLocation({ address, lat, lng }: PropertyLocation
           {address}
         </span>
 
-        <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-navy-900/8">
+        <div className="relative isolate aspect-video w-full overflow-hidden rounded-2xl border border-navy-900/8">
           {hasCoords ? (
             <PropertyMap lat={lat} lng={lng} />
           ) : (

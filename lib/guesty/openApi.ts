@@ -127,33 +127,6 @@ export async function getListingCalendar(
   return data.data.days;
 }
 
-/**
- * Review field names beyond the basics aren't fully documented — verified
- * empirically against a real account; adjust here if Guesty's actual
- * response shape differs once inspected.
- */
-export interface GuestyReview {
-  _id: string;
-  listingId?: string;
-  rating?: { overall?: number } | number;
-  content?: string;
-  publicReview?: string;
-  reviewerName?: string;
-  guestName?: string;
-  createdAt?: string;
-}
-
-interface ReviewsResponse {
-  data: GuestyReview[];
-  skip: number;
-  limit: number;
-}
-
-export async function getListingReviews(listingId: string): Promise<GuestyReview[]> {
-  const data = await request<ReviewsResponse>(`/reviews?listingId=${listingId}&limit=50`, LISTINGS_REVALIDATE_SECONDS);
-  return data.data;
-}
-
 export interface GuestyPaymentProvider {
   paymentProviderId: string;
   paymentProcessorName?: string;

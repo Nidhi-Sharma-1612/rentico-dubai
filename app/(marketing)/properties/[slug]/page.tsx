@@ -11,8 +11,9 @@ import PropertyAmenities from "@/components/property/PropertyAmenities";
 import PropertyHouseRules from "@/components/property/PropertyHouseRules";
 import PropertyLocation from "@/components/property/PropertyLocation";
 import PropertySidebarBooking from "@/components/property/PropertySidebarBooking";
+import PropertyReviews from "@/components/property/PropertyReviews";
 import SimilarProperties from "@/components/property/SimilarProperties";
-import { GuestyBEListing, searchListings, getListingAvailability } from "@/lib/guesty/bookingApi";
+import { GuestyBEListing, ListingReview, searchListings, getListingAvailability, getListingReviews } from "@/lib/guesty/bookingApi";
 import { mapListingToProperty } from "@/lib/guesty/mappers";
 import { buildBookingQuery, parseBookingSearchParams } from "@/lib/booking";
 import { AVAILABILITY_WINDOW_DAYS, toDateParam } from "@/lib/calendar";
@@ -107,6 +108,13 @@ export default async function PropertyDetailPage({
     console.error("Failed to load availability from Guesty:", err);
   }
 
+  let reviews: ListingReview[] = [];
+  try {
+    reviews = await getListingReviews(listing._id);
+  } catch (err) {
+    console.error("Failed to load reviews from Guesty:", err);
+  }
+
   const resolvedSearchParams = await searchParams;
   const search = parseBookingSearchParams(resolvedSearchParams);
 
@@ -132,6 +140,12 @@ export default async function PropertyDetailPage({
             <PropertyAmenities amenities={property.amenities} />
             <PropertyHouseRules rules={property.houseRules} />
             <PropertyLocation address={property.address} lat={property.lat} lng={property.lng} />
+            {reviews.length > 0 && (
+              <div className="border-b border-navy-900/8 py-8">
+                <h2 className="mb-4 text-xl font-bold text-navy-900">Guest reviews ({reviews.length})</h2>
+                <PropertyReviews reviews={reviews} />
+              </div>
+            )}
           </div>
 
           <PropertySidebarBooking
