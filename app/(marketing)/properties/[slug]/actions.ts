@@ -167,6 +167,20 @@ export async function createInstantChargeReservationAction(params: {
       };
     }
 
+    if (!result.reservation?._id) {
+      await recordCheckoutFailure({
+        quoteId: params.quoteId,
+        ratePlanId: params.ratePlanId,
+        stage: "charged-without-reservation",
+        errorMessage: JSON.stringify(result),
+      });
+      return {
+        success: false,
+        error:
+          "Your payment is being checked and we'll confirm your booking by email shortly. Please don't pay again. If you don't hear from us, contact us with your payment receipt.",
+      };
+    }
+
     return { success: true, data: { reservationId: result.reservation._id } };
   } catch (err) {
     console.error("createInstantChargeReservationAction failed:", err);
