@@ -13,9 +13,9 @@ export const metadata: Metadata = {
   // Lets every page use a relative path for alternates.canonical and resolves
   // it to a full https://staywithrentico.com/... URL.
   metadataBase: new URL(SITE_URL),
-  title: "Rentico Dubai | Luxury Vacation Home Management",
+  title: "Stay with Rentico | Holiday Homes in Dubai – Book Direct",
   description:
-    "Rentico Dubai manages luxury short-term rental homes across Dubai — Downtown, Business Bay, Palm Jumeirah, Dubai Marina, Dubai Hills and Sobha Hartland. Best price guarantee, no hidden fees, direct communication.",
+    "Book luxury holiday homes in Downtown, Business Bay, Palm Jumeirah, Dubai Marina and Dubai Hills directly with Stay with Rentico. Best price when you book direct.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

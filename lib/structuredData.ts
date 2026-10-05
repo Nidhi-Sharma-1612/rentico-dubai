@@ -20,7 +20,7 @@ export function buildOrganizationSchema(settings: SiteSettings) {
   return {
     "@context": "https://schema.org",
     "@type": ["Organization", "LocalBusiness"],
-    name: "Rentico Dubai",
+    name: "Stay with Rentico",
     legalName: settings.copyrightName,
     url: SITE_URL,
     logo: settings.logoUrl,
@@ -30,6 +30,6 @@ export function buildOrganizationSchema(settings: SiteSettings) {
     email: settings.email,
     address: settings.address,
     areaServed: ["Dubai", "Abu Dhabi"],
-    sameAs: settings.socialLinks.map((s) => s.href).filter(Boolean),
+    sameAs: ["https://renticodubai.com", ...settings.socialLinks.map((s) => s.href).filter(Boolean)],
   };
 }

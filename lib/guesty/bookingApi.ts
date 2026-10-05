@@ -498,3 +498,19 @@ export async function getListingReviews(listingId: string): Promise<ListingRevie
     }))
     .sort((a, b) => b.date.localeCompare(a.date));
 }
+
+export async function getPortfolioReviews(
+  listings: { id: string; area: string }[],
+  count: number
+): Promise<(ListingReview & { area: string })[]> {
+  const results = await Promise.allSettled(
+    listings.map(async (l) => (await getListingReviews(l.id)).map((r) => ({ ...r, area: l.area })))
+  );
+  const isCardSized = (text: string) => text.length >= 40 && text.length <= 300;
+  const isLatinText = (text: string) => [...text].filter((c) => c.charCodeAt(0) < 128).length / text.length >= 0.97;
+  return results
+    .flatMap((r) => (r.status === "fulfilled" ? r.value : []))
+    .filter((r) => r.rating === 5 && isCardSized(r.text) && isLatinText(r.text))
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, count);
+}

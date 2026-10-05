@@ -8,6 +8,7 @@ import PricingAndDesign from "@/components/services/PricingAndDesign";
 import OwnerApp from "@/components/services/OwnerApp";
 import WhereWeOperate from "@/components/services/WhereWeOperate";
 import FinalCTASection from "@/components/services/FinalCTASection";
+import FullDetailsLine from "@/components/shared/FullDetailsLine";
 import { db } from "@/lib/db";
 import { faqs } from "@/lib/db/schema";
 import { FAQ } from "@/lib/types";
@@ -20,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metaDescription:
       "Short-term & mid-term rental management across Dubai and Abu Dhabi — dynamic pricing, 24/7 guest care, hotel-grade housekeeping, and transparent monthly reporting for a flat 20% of gross revenue.",
   });
-  return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "/manage-my-property" } };
+  return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "https://renticodubai.com/management" } };
 }
 
 // This page reads admin-editable FAQs from the DB — without this, Next
@@ -49,6 +50,7 @@ export default async function ServicesPage() {
       <OwnerApp {...ownerApp} />
       <WhereWeOperate {...whereWeOperate} />
       <FinalCTASection faqs={servicesFaqs} whatsapp={whatsapp} {...cta} />
+      <FullDetailsLine />
     </>
   );
 }

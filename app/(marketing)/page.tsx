@@ -7,17 +7,18 @@ import TheStay from "@/components/home/TheStay";
 import DirectBooking from "@/components/home/DirectBooking";
 import Testimonials from "@/components/home/Testimonials";
 import FAQSection from "@/components/home/FAQSection";
-import { searchListings, getPortfolioAvailability } from "@/lib/guesty/bookingApi";
+import { GuestyBEListing, searchListings, getPortfolioAvailability, getPortfolioReviews } from "@/lib/guesty/bookingApi";
 import { mapListingToProperty } from "@/lib/guesty/mappers";
 import { AVAILABILITY_WINDOW_DAYS, toDateParam } from "@/lib/calendar";
 import { Property, Testimonial, FAQ as FAQType } from "@/lib/types";
 import { db } from "@/lib/db";
-import { testimonials, faqs } from "@/lib/db/schema";
+import { faqs } from "@/lib/db/schema";
 import { asc, eq } from "drizzle-orm";
 import { getSiteSettings } from "@/lib/data/siteSettings";
 import { getHomeSections, getPageSeo } from "@/lib/data/pageSections";
 
 const FEATURED_COUNT = 3;
+const HOME_REVIEW_COUNT = 6;
 
 // Without this, `next build`'s static-generation probe still attempts the
 // Guesty fetch below before discovering the route is dynamic — silently
@@ -26,21 +27,21 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo("home", {
-    metaTitle: "Rentico Dubai | Luxury Vacation Home Management",
+    metaTitle: "Stay with Rentico | Holiday Homes in Dubai – Book Direct",
     metaDescription:
-      "Rentico Dubai manages luxury short-term rental homes across Dubai — Downtown, Business Bay, Palm Jumeirah, Dubai Marina, Dubai Hills and Sobha Hartland. Best price guarantee, no hidden fees, direct communication.",
+      "Book luxury holiday homes in Downtown, Business Bay, Palm Jumeirah, Dubai Marina and Dubai Hills directly with Stay with Rentico. Best price when you book direct.",
   });
   return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "/" } };
 }
 
 export default async function Home() {
-  let featuredProperties: Property[] = [];
+  let listings: GuestyBEListing[] = [];
   try {
-    const { listings } = await searchListings({ limit: FEATURED_COUNT });
-    featuredProperties = listings.map(mapListingToProperty);
+    ({ listings } = await searchListings({ limit: 50 }));
   } catch (err) {
-    console.error("Failed to load featured properties from Guesty:", err);
+    console.error("Failed to load listings from Guesty:", err);
   }
+  const featuredProperties: Property[] = listings.slice(0, FEATURED_COUNT).map(mapListingToProperty);
 
   let unavailableDates: string[] = [];
   try {
@@ -55,13 +56,21 @@ export default async function Home() {
 
   let homeTestimonials: Testimonial[] = [];
   try {
-    homeTestimonials = await db
-      .select()
-      .from(testimonials)
-      .where(eq(testimonials.showOnHome, true))
-      .orderBy(asc(testimonials.sortOrder));
+    const reviews = await getPortfolioReviews(
+      listings
+        .filter((l) => (l.reviews?.total ?? 0) > 0)
+        .map((l) => ({ id: l._id, area: mapListingToProperty(l).area })),
+      HOME_REVIEW_COUNT
+    );
+    homeTestimonials = reviews.map((r) => ({
+      id: r.id,
+      name: "Airbnb guest",
+      role: `Stayed in ${r.area}`,
+      quote: r.text,
+      rating: r.rating,
+    }));
   } catch (err) {
-    console.error("Failed to load testimonials:", err);
+    console.error("Failed to load reviews from Guesty:", err);
   }
 
   let homeFaqs: FAQType[] = [];

@@ -8,6 +8,7 @@ import NoConflictSection from "@/components/partner/NoConflictSection";
 import PartnerSteps from "@/components/partner/PartnerSteps";
 import OperatorStats from "@/components/partner/OperatorStats";
 import PartnerFormSection from "@/components/partner/PartnerFormSection";
+import FullDetailsLine from "@/components/shared/FullDetailsLine";
 import { db } from "@/lib/db";
 import { faqs } from "@/lib/db/schema";
 import { FAQ } from "@/lib/types";
@@ -20,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
     metaDescription:
       "Send us a property, keep your client, and get paid. Refer owners to Rentico and earn a commission up to AED 20,000 on every unit that goes live.",
   });
-  return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "/become-a-partner" } };
+  return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "https://renticodubai.com/partners" } };
 }
 
 // This page reads admin-editable FAQs from the DB — without this, Next
@@ -48,6 +49,7 @@ export default async function BecomeAPartnerPage() {
       <PartnerSteps {...steps} />
       <OperatorStats {...operatorStats} />
       <PartnerFormSection faqs={partnerFaqs} whatsapp={whatsapp} {...formSection} />
+      <FullDetailsLine />
     </PartnerAudienceProvider>
   );
 }

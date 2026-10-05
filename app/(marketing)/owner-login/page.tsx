@@ -79,6 +79,12 @@ export default async function OwnerLoginPage() {
               {footerLinkLabel}
             </a>
           </p>
+          <p className="mt-4 text-xs text-white/40">
+            Full details at{" "}
+            <a href="https://renticodubai.com" className="font-semibold text-orange-300 hover:underline">
+              renticodubai.com
+            </a>
+          </p>
         </div>
       </Container>
     </section>

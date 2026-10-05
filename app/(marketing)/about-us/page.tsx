@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo("about-us", {
     metaTitle: "About Us | Rentico Dubai",
     metaDescription:
-      "Rentico Dubai manages luxury short-term rental homes across Dubai's finest districts — founded 2025, 4.9-star rated.",
+      "Stay with Rentico offers luxury holiday homes across Dubai's finest districts — founded 2025, 4.9-star rated.",
   });
   return { title: seo.metaTitle, description: seo.metaDescription, alternates: { canonical: "/about-us" } };
 }
